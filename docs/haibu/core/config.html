@@ -1,0 +1,184 @@
+<!DOCTYPE html>  <html> <head>   <title>config.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="../../docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="../..//haibu/balancer/balancer.html">                 haibu/balancer/balancer.html               </a>                                           <a class="source" href="../..//haibu/balancer/index.html">                 haibu/balancer/index.html               </a>                                           <a class="source" href="../..//haibu/core/config.html">                 haibu/core/config.html               </a>                                           <a class="source" href="../..//haibu/core/process-store.html">                 haibu/core/process-store.html               </a>                                           <a class="source" href="../..//haibu/core/spawner.html">                 haibu/core/spawner.html               </a>                                           <a class="source" href="../..//haibu/drone/client.html">                 haibu/drone/client.html               </a>                                           <a class="source" href="../..//haibu/drone/drone.html">                 haibu/drone/drone.html               </a>                                           <a class="source" href="../..//haibu/drone/index.html">                 haibu/drone/index.html               </a>                                           <a class="source" href="../..//haibu/drone/service.html">                 haibu/drone/service.html               </a>                                           <a class="source" href="../..//haibu/plugins/changelog.html">                 haibu/plugins/changelog.html               </a>                                           <a class="source" href="../..//haibu/plugins/chroot.html">                 haibu/plugins/chroot.html               </a>                                           <a class="source" href="../..//haibu/plugins/logger.html">                 haibu/plugins/logger.html               </a>                                           <a class="source" href="../..//haibu/repositories/git.html">                 haibu/repositories/git.html               </a>                                           <a class="source" href="../..//haibu/repositories/index.html">                 haibu/repositories/index.html               </a>                                           <a class="source" href="../..//haibu/repositories/local-file.html">                 haibu/repositories/local-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/npm.html">                 haibu/repositories/npm.html               </a>                                           <a class="source" href="../..//haibu/repositories/remote-file.html">                 haibu/repositories/remote-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/repository.html">                 haibu/repositories/repository.html               </a>                                           <a class="source" href="../..//haibu/repositories/tar.html">                 haibu/repositories/tar.html               </a>                                           <a class="source" href="../..//haibu/repositories/zip.html">                 haibu/repositories/zip.html               </a>                                           <a class="source" href="../..//haibu/utils/base64.html">                 haibu/utils/base64.html               </a>                                           <a class="source" href="../..//haibu/utils/bin.html">                 haibu/utils/bin.html               </a>                                           <a class="source" href="../..//haibu/utils/index.html">                 haibu/utils/index.html               </a>                                           <a class="source" href="../..//haibu.html">                 haibu.html               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               config.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> * index.js: Top level module include for config module.</span>
+<span class="cm"> *</span>
+<span class="cm"> * (C) 2010, Nodejitsu Inc.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+    <span class="nx">eyes</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;eyes&#39;</span><span class="p">),</span>
+    <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">),</span>
+    <span class="nx">exec</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;child_process&#39;</span><span class="p">).</span><span class="nx">exec</span><span class="p">,</span>
+    <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">),</span>
+    <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">),</span>
+    <span class="nx">haibu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;haibu&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">root</span>   <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">),</span>
+    <span class="nx">config</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">nconf</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>function (options)</h3>
+
+<h4>@options {Object} Options to setup for flexibility</h4>
+
+<p>Sets up configuration options with default options for 
+maximum flexibility in usage.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">function</span> <span class="nx">setupOptions</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">options</span>                  <span class="o">=</span> <span class="nx">options</span>                  <span class="o">||</span> <span class="p">{};</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">env</span>              <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">env</span>              <span class="o">||</span> <span class="s1">&#39;development&#39;</span><span class="p">;</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">data</span>             <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span>             <span class="o">||</span> <span class="p">{};</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">config</span>           <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span>           <span class="o">||</span> <span class="p">{};</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">files</span>     <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">files</span>     <span class="o">||</span> <span class="p">[];</span>
+  <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">namespace</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">namespace</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">env</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">options</span><span class="p">;</span>
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>Expose the simple routes for the haibu config API.</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">addRoutes</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">map</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">map</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="sr">/\/reload/</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p><strong>TODO: <em>(indexzero)</em></strong>: Ensure this request is authenticated.</p>             </td>             <td class="code">               <div class="highlight"><pre>      
+      <span class="nx">data</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">config</span> <span class="o">?</span> <span class="nx">data</span> <span class="o">:</span> <span class="nx">haibu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">);</span>
+      <span class="nx">haibu</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span> <span class="p">});</span>
+        <span class="p">}</span>
+        
+        <span class="nx">response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">};</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function seed (options, callback)</h3>
+
+<h4>@options {Object} Options for nconf store.</h4>
+
+<h4>@callback {function} Continuation to respond to when complete.</h4>
+
+<p>Seeds any existing data from <code>options.files</code> into a Redis store
+for distributed use.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">seed</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">options</span><span class="p">;</span>
+    <span class="nx">options</span>  <span class="o">=</span> <span class="p">{};</span>
+  <span class="p">}</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Setup <code>options</code> to be <em>really</em> flexible. </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">options</span>   <span class="o">=</span> <span class="nx">setupOptions</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">store</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">nconf</span><span class="p">.</span><span class="nx">stores</span><span class="p">.</span><span class="nx">Redis</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">),</span> <span class="nx">keys</span><span class="p">;</span>
+
+  <span class="nx">config</span><span class="p">.</span><span class="nx">loadFiles</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">files</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">loaded</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">storeValue</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">store</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span> <span class="nx">next</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">loaded</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">options</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">loaded</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+    <span class="p">});</span>
+    
+    <span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+    <span class="nx">async</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">keys</span><span class="p">,</span> <span class="nx">storeValue</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="nx">store</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;loaded&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">store</span><span class="p">.</span><span class="nx">redis</span><span class="p">.</span><span class="nx">quit</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
+      <span class="p">});</span>
+    <span class="p">});</span>    
+  <span class="p">});</span>  
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>function load (options, callback)</h3>
+
+<h4>@options {Object} Options for nconf store.</h4>
+
+<h4>@callback {function} Continuation to respond to when complete.</h4>
+
+<p>Basically a complex version of <code>nconf.load</code> which will skip the <code>load</code>
+operation when using the memory engine instead of throwing an exception
+and always be async. Also loads any existing configuration from a remote
+Redis server into memory for usage with this process. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">callback</span> <span class="o">=</span> <span class="nx">options</span><span class="p">;</span>
+    <span class="nx">options</span>  <span class="o">=</span> <span class="p">{};</span>
+  <span class="p">}</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Setup <code>options</code> to be <em>really</em> flexible. </p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">options</span> <span class="o">=</span> <span class="nx">setupOptions</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+  
+  <span class="kd">function</span> <span class="nx">setObject</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">loadRemote</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Load the haibu configuration, then extend it with extra information
+read from the nodejitsu config.json.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">store</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">nconf</span><span class="p">.</span><span class="nx">stores</span><span class="p">.</span><span class="nx">Redis</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
+    <span class="nx">store</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">remote</span><span class="p">)</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Shutdown the temporary Redis store. </p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">store</span><span class="p">.</span><span class="nx">redis</span><span class="p">.</span><span class="nx">quit</span><span class="p">();</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Handle errors appropriately</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">remote</span><span class="p">.</span><span class="nx">loaded</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">config</span><span class="p">.</span><span class="nx">seed</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+      </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Set the cache information in the current Memory store.  </p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;cache&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">host</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+        <span class="nx">port</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">port</span> <span class="o">||</span> <span class="mi">6379</span><span class="p">,</span>
+        <span class="nx">auth</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">auth</span>
+      <span class="p">});</span>
+      </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Add any existing remote configuration to the current Memory store.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">setObject</span><span class="p">(</span><span class="nx">remote</span><span class="p">);</span>
+
+      <span class="nx">callback</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="kd">function</span> <span class="nx">loadAll</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">local</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">setObject</span><span class="p">(</span><span class="nx">local</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">host</span> <span class="o">?</span> <span class="nx">loadRemote</span><span class="p">()</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">files</span> 
+    <span class="o">?</span> <span class="nx">config</span><span class="p">.</span><span class="nx">loadFiles</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">files</span><span class="p">,</span> <span class="nx">loadAll</span><span class="p">)</span> 
+    <span class="o">:</span> <span class="nx">loadAll</span><span class="p">();</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h3>function loadFiles (files)</h3>
+
+<h4>@files {Array} List of files to load.</h4>
+
+<p>Loads all the data in the specified <code>files</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">config</span><span class="p">.</span><span class="nx">loadFiles</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">files</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{});</span>
+  <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">allData</span> <span class="o">=</span> <span class="p">{};</span>
+  
+  <span class="kd">function</span> <span class="nx">loadFile</span> <span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">next</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">allData</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+      <span class="p">});</span>
+      
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="nx">async</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">files</span><span class="p">,</span> <span class="nx">loadFile</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">allData</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;directories&#39;</span><span class="p">,</span> <span class="p">{</span> 
+  <span class="nx">apps</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;local&#39;</span><span class="p">),</span>
+  <span class="nx">log</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">),</span>
+  <span class="nx">packages</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;packages&#39;</span><span class="p">),</span>
+  <span class="nx">running</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">),</span>
+  <span class="nx">tmp</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;tmp&#39;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;npm&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">log</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;npm.log&#39;</span><span class="p">),</span>
+  <span class="nx">out</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;npm.out&#39;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="nx">config</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;requiredNodeVersion&#39;</span><span class="p">,</span> <span class="s1">&#39;0.4.5&#39;</span><span class="p">);</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
