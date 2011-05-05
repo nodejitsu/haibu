@@ -1,6 +1,6 @@
 # haibu 
 
-<img src="./examples/haibu.png"/></img>
+<img src="https://github.com/nodejitsu/haibu/blob/master/examples/haibu.png"/></img>
 
 *spawn your own node.js clouds, on your own hardware*
 
