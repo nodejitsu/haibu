@@ -13,17 +13,17 @@
 
 # What is haibu?
 
-haibu is the open-source node.js project for spawning and managing several node.js applications on a single server. It's an integral part of Nodejitsu's production stack and is fully supported by a dedicated team of core node.js developers.
+haibu is the open-source [node.js](http://nodejs.org) project for spawning and managing several node.js applications on a single server. It's an integral part of [Nodejitsu's](http://nodejitsu.com) production stack and is fully supported by a dedicated team of core node.js developers.
 
 # How does it work?
 
-haibu (  which is Japanese for "hive" ) transforms node.js applications ( using a Carapace ) into "drones". This process allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase. 
+haibu (  which is Japanese for "hive" ) transforms node.js applications ( using a [Carapace](https://github.com/nodejitsu/haibu/blob/master/bin/carapace) ) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase. 
 
-haibu builds on the concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. haibu's API is exposed as a node.js module AND a RESTFul HTTP webservice. This means that you can use haibu both programmatically in node.js module OR startup a "haibu server" and communicate with it using simple RESTFul HTTP requests. 
+haibu builds on this concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. haibu's API is exposed as a node.js client wrapper AND a RESTFul HTTP webservice. This means that you can use haibu both programmatically as a node.js module OR startup a "haibu server" and communicate with it using simple RESTFul HTTP requests. 
 
 ## Where can I run haibu?
 
-haibu doesn't discriminate. If your environment supports node.js, you can install haibu and start up your own node.js cloud. This makes haibu an ideal tool for both development purposes and production usage since you can seamlessly setup haibu on your local machine, on utility computing providers ( such as Amazon EC2 or the Rackspace ), on dedicated servers, or even on a mobile phone!
+haibu doesn't discriminate. If your environment supports node.js, you can install haibu and start up your own node.js cloud. This makes haibu an ideal tool for both development purposes and production usage since you can seamlessly setup haibu on your local machine, on utility computing providers ( such as Amazon EC2 or Rackspace ), on dedicated servers, or even on a mobile phone!
 
 # Installation
 
@@ -33,9 +33,40 @@ haibu doesn't discriminate. If your environment supports node.js, you can instal
 
 ## The node.js API wrapper
 
-Allows you to call haibu programmatically from inside your node.js scripts. 
+Allows you to call haibu programmatically from inside your node.js scripts. ( From: /examples/hello-spawn.js )
 
-**require haibu in your node.js script**
+      var eyes = require('eyes'),
+          haibu = require('haibu');
+
+      var client = new haibu.drone.Client({
+        host: 'localhost',
+        port: 9002
+      });
+
+      var app = {
+         "resource": "App",
+         "user": "marak",
+         "name": "test",
+         "domain": "devjitsu.com",
+         "directories": {
+           "home": "hellonode"
+         },
+         "repository": {
+           "type": "git",
+           "url": "https://github.com/Marak/hellonode.git",
+           "branch": "master"
+         },
+         "scripts": {
+           "start": "server.js"
+         }
+      };
+
+      client.start(app, function (err, result) {
+        eyes.inspect(err);
+        eyes.inspect(result);
+      });
+
+**Require haibu in your node.js script**
 
     var haibu = require('haibu');
 
