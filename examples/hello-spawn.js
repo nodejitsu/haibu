@@ -1,4 +1,4 @@
-require.paths.unshift(require('path').join(__dirname, 'lib'));
+require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 
 var eyes = require('eyes'),
     haibu = require('haibu');
