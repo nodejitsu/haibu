@@ -41,7 +41,43 @@ Allows you to call haibu programmatically from inside your node.js scripts.
 
 **Starting and Stopping node.js applications programmatically** 
 
-    TODO: add example code
+```
+$ http-console http://127.0.0.1:9002
+> http-console 0.6.0
+> Welcome, enter .help if you're lost.
+> Connecting to 127.0.0.1 on port 9002.
+
+http://127.0.0.1:9002/> POST /drones/test/start
+... { "start": { "user": "marak", "name": "test", "domain": "devjitsu.com", "repository": { "type": "git", "url": "https://github.com/Marak/hellonode.git" }, "scripts": { "start": "server.js" } } }
+HTTP/1.1 200 OK
+Date: Thu, 05 May 2011 18:15:36 GMT
+Server: journey/0.4.0
+Content-Type: application/json
+Content-Length: 353
+Connection: close
+
+{
+    drone: {
+        uid: 'gbE3',
+        ctime: 1304619335818,
+        pid: 7903,
+        foreverPid: 7195,
+        logFile: '/Users/Charlie/.forever/gbE3.log',
+        options: [ '/Users/Charlie/Nodejitsu/haibu/local/marak/test/hellonode/server.js', '127.0.0.1', 8001 ],
+        file: '/Users/Charlie/Nodejitsu/haibu/bin/carapace',
+        pidFile: '/Users/Charlie/.forever/pids/gbE3.pid',
+        port: 8001,
+        host: '127.0.0.1'
+    }
+}
+http://127.0.0.1:9002/> POST /drones/test/stop
+... { "stop": { "name": "test" } }
+HTTP/1.1 200 OK
+Date: Thu, 05 May 2011 18:16:22 GMT
+Server: journey/0.4.0
+Connection: close
+Transfer-Encoding: chunked
+```
 
 ## The RESTful Webservice
 

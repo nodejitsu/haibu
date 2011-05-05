@@ -9,17 +9,12 @@ var client = new haibu.drone.Client({
 });
 
 var app = {
-   "resource": "App",
    "user": "marak",
    "name": "test",
    "domain": "devjitsu.com",
-   "directories": {
-     "home": "hellonode"
-   },
    "repository": {
      "type": "git",
      "url": "https://github.com/Marak/hellonode.git",
-     "branch": "master"
    },
    "scripts": {
      "start": "server.js"
@@ -27,6 +22,11 @@ var app = {
 };
 
 client.start(app, function (err, result) {
-  eyes.inspect(err);
+  if (err) {
+    console.log('Error spawning app: ' + app.name);
+    return eyes.inspect(err);
+  }
+  
+  console.log('Successfully spawned app:');
   eyes.inspect(result);
 });
