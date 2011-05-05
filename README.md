@@ -29,6 +29,10 @@ haibu doesn't discriminate. If your environment supports node.js, you can instal
 
     [sudo] npm install haibu -g
 
+# Documentation
+
+haibu's documentation is still very much a work in progress. We'll be actively updating the documentation in the upcoming weeks to make it easier to get acclimated with haibu. Aside from the overview provided in this ReadMe file, haibu uses docco and literate style programming to provide comprehensive source code documentation. Check out the /docs/ folder for more information.
+
 # An overview of using haibu
 
 ## The node.js API wrapper
@@ -85,11 +89,71 @@ Allows you to call haibu via a RESTful JSON API. This is ideal for situations wh
 
      [sudo] node bin/haibu-server
 
-**Starting and Stopping node.js applications through the webservice** 
+**Starting an application through the webservice** 
 
-Once you have started up haibu as a webservice you can perform RESTful commands against it to execute any of haibu's API, such as starting and stopping applications. 
+    POST http://127.0.0.1:9002/drones/test/start
+    ... 
+    {
+        "start": {
+            "user": "marak",
+            "name": "test",
+            "domain": "devjitsu.com",
+            "repository": {
+                "type": "git",
+                "url": "https://github.com/Marak/hellonode.git" 
+            },
+            "scripts": {
+                "start": "server.js" 
+            } 
+        } 
+    }    
+    
+ **Response**
+    
+    HTTP/1.1 200 OK
+    Date: Thu, 05 May 2011 18:15:36 GMT
+    Server: journey/0.4.0
+    Content-Type: application/json
+    Content-Length: 353
+    Connection: close
+    ...
+    {
+        drone: {
+            uid: 'gbE3',
+            ctime: 1304619335818,
+            pid: 7903,
+            foreverPid: 7195,
+            logFile: '/Users/Charlie/.forever/gbE3.log',
+            options: [ '/Users/Charlie/Nodejitsu/haibu/local/marak/test/hellonode/server.js', '127.0.0.1', 8001 ],
+            file: '/Users/Charlie/Nodejitsu/haibu/bin/carapace',
+            pidFile: '/Users/Charlie/.forever/pids/gbE3.pid',
+            port: 8001,
+            host: '127.0.0.1'
+        }
+    }
+    
+**Stopping an application through the webservice** 
+    
+    
+    POST http://127.0.0.1:9002/drones/test/stop
+    ... 
+    {
+        "stop": {
+            "name": "test" 
+        } 
+    }
+    
+ **response**
+    
+    HTTP/1.1 200 OK
+    Date: Thu, 05 May 2011 18:16:22 GMT
+    Server: journey/0.4.0
+    Connection: close
+    Transfer-Encoding: chunked
 
 # haibu API
+
+Documentation coming soon...
 
 ## Run Tests
 All of the `haibu` tests are written in [vows][0], and cover all of the use cases described above.
