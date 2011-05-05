@@ -38,77 +38,43 @@ Allows you to call haibu programmatically from inside your node.js scripts. ( Fr
       var eyes = require('eyes'),
           haibu = require('haibu');
 
+      // Create a new client for communicating with the haibu server
       var client = new haibu.drone.Client({
         host: 'localhost',
         port: 9002
       });
 
+      // A basic package.json for a node.js application on Haibu
       var app = {
-         "resource": "App",
          "user": "marak",
          "name": "test",
          "domain": "devjitsu.com",
-         "directories": {
-           "home": "hellonode"
-         },
          "repository": {
            "type": "git",
            "url": "https://github.com/Marak/hellonode.git",
-           "branch": "master"
          },
          "scripts": {
            "start": "server.js"
          }
       };
 
+      // Attempt to start up a new application
+      client.start(app, function (err, result) {
+        if (err) {
+          console.log('Error spawning app: ' + app.name);
+          return eyes.inspect(err);
+        }
+  
+        console.log('Successfully spawned app:');
+        eyes.inspect(result);
+      });
+
+
       client.start(app, function (err, result) {
         eyes.inspect(err);
         eyes.inspect(result);
       });
 
-**Require haibu in your node.js script**
-
-    var haibu = require('haibu');
-
-**Starting and Stopping node.js applications programmatically** 
-
-```
-$ http-console http://127.0.0.1:9002
-> http-console 0.6.0
-> Welcome, enter .help if you're lost.
-> Connecting to 127.0.0.1 on port 9002.
-
-http://127.0.0.1:9002/> POST /drones/test/start
-... { "start": { "user": "marak", "name": "test", "domain": "devjitsu.com", "repository": { "type": "git", "url": "https://github.com/Marak/hellonode.git" }, "scripts": { "start": "server.js" } } }
-HTTP/1.1 200 OK
-Date: Thu, 05 May 2011 18:15:36 GMT
-Server: journey/0.4.0
-Content-Type: application/json
-Content-Length: 353
-Connection: close
-
-{
-    drone: {
-        uid: 'gbE3',
-        ctime: 1304619335818,
-        pid: 7903,
-        foreverPid: 7195,
-        logFile: '/Users/Charlie/.forever/gbE3.log',
-        options: [ '/Users/Charlie/Nodejitsu/haibu/local/marak/test/hellonode/server.js', '127.0.0.1', 8001 ],
-        file: '/Users/Charlie/Nodejitsu/haibu/bin/carapace',
-        pidFile: '/Users/Charlie/.forever/pids/gbE3.pid',
-        port: 8001,
-        host: '127.0.0.1'
-    }
-}
-http://127.0.0.1:9002/> POST /drones/test/stop
-... { "stop": { "name": "test" } }
-HTTP/1.1 200 OK
-Date: Thu, 05 May 2011 18:16:22 GMT
-Server: journey/0.4.0
-Connection: close
-Transfer-Encoding: chunked
-```
 
 ## The RESTful Webservice
 
