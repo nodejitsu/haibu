@@ -12,7 +12,7 @@ haibu is the open-source [node.js](http://nodejs.org) project for spawning and m
 
 haibu (which is Japanese for "hive") transforms node.js applications (using a [Carapace](https://github.com/nodejitsu/haibu/blob/master/bin/carapace)) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase. 
 
-`haibu` builds on this concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. haibu's API is exposed as a node.js client wrapper AND a RESTFul HTTP webservice. This means that you can use haibu both programmatically as a node.js module OR startup a `haibu-server` and communicate with it using simple RESTFul HTTP requests. 
+`haibu` builds on this concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. At a low level, haibu's API is exposed as a RESTFul HTTP webservice. Any system that supports basic HTTP requests can communicate with a haibu server. If you are working in Node.js, haibu comes with a high-level Node.js API client.
 
 ## Where can I run haibu?
 
@@ -116,7 +116,7 @@ As you can see, the `domain` property is set to `devjitsu.com`. This means that 
 
 ## RESTful Webservice
 
-haibu exposes it's API via a RESTful JSON API. This is ideal for situations where you need to integrate haibu with non-node.js systems.
+If you need to integrate non-node.js systems with haibu, you can use haibu's RESTful JSON API. We recommend using haibu's native Node.js Client, but if you need to integrate with none-node.js systems this is not always a viable option. 
 
 **Starting an application through the webservice** 
 
