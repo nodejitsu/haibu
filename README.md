@@ -1,15 +1,6 @@
 # haibu 
 
-```
-      __                  __               
-     / /_    ______  __  / /_     __  __   
-    / __ \  / __  / / / /  __ \  / / / /   
-   / / / / / /_/ / / / /  /_/ / / /_/ /    
-  /_/ /_/  \__,_/ /_/ /_/\___/  \__,_/     
-  
-  This is Open Source Software available under
-  the MIT License.
-```
+<img src="./examples/haibu.png"/></img>
 
 *spawn your own node.js clouds, on your own hardware*
 
