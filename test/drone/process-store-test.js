@@ -16,8 +16,9 @@ var sys = require('sys'),
     assert = require('assert'),
     data = require('fixtures/apps'),
     haibu = require('haibu'),
-    helpers = require('../helpers');
-
+    exec = require('child_process').exec,
+    helpers = require('../helpers'),
+     Drone = haibu.drone.Drone;
 var app = data.apps[0], store;
 
 //
@@ -42,6 +43,36 @@ vows.describe('haibu/drone/process-store').addBatch(
         assert.isNull(err);
         assert.isNotNull(stats);
         assert.isTrue(stats.isFile());
+      }
+    }
+  }
+}).addBatch({
+  "Testing out the purge method!": {
+    "the purge() method": {
+      topic: function () {
+        var that = this;
+        var drone = this.drone = new Drone({
+          minUptime: 100,
+          host: '127.0.0.1',
+          maxRestart: 0
+        });
+
+        drone.start(app, function (err1, result1) {
+          drone.start(app, function (err2, result2) {
+            drone.start(app, function (err3, result3) {
+              exec('ps -A | grep node', function (err, stdout, stderr) {
+                  store.purge(function(){
+                  exec('ps -A | grep node', function (err, stdout, stderr) {
+                    store.list(function(res){that.callback(null,res)});
+                  });
+                });
+              });
+            });
+          });
+        });
+      },
+      "should have killed all carapace instances": function (err,res) {
+        assert.isNull(res);
       }
     }
   }
