@@ -89,4 +89,6 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
 });
 
 // Export the suite so we can run it with vows
-suite.export(module);
+if ( helpers.loadAuth != null ) { //if there is no config file, we can't run the remote tests
+  suite.export(module);
+}
