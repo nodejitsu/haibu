@@ -35,8 +35,8 @@ var ipAddress = '127.0.0.1',
         "start": "server.js"
       }
     };
-    
-vows.describe('haibu/repositories/remote-file').addBatch(
+
+var suite = vows.describe('haibu/repositories/remote-file').addBatch(
   helpers.requireInit(function () {
     remoteFile = new RemoteFile(app);
   })
@@ -92,4 +92,8 @@ vows.describe('haibu/repositories/remote-file').addBatch(
       }
     }
   }
-}).export(module);
+})
+
+if ( helpers.loadAuth != null ) { //if there is no config file, we can't run the remote tests
+  suite.export(module);
+}
