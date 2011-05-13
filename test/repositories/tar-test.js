@@ -45,7 +45,6 @@ var ipAddress = '127.0.0.1',
 
 // Create the vows test suite
 var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit());
-
 //
 // Iterate over the two remote types we wish to execute
 // identical tests for.
@@ -90,4 +89,6 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
 });
 
 // Export the suite so we can run it with vows
-suite.export(module);
+if ( helpers.loadAuth != null ) { //if there is no config file, we can't run the remote tests
+  suite.export(module);
+}

@@ -16,6 +16,15 @@ var util = require('util'),
 
 var testConfig, helpers = exports;
 
+var printed_config_missing = false;
+function print_config_error () {
+  if ( !printed_config_missing ) {
+    console.log("Config file config/auth.json doesn't have valid data." +
+                " Skipping remote tests");
+    printed_config_missing = true;
+  }
+}
+
 // TODO (olauzon) load all /config/*.json at once in parallel
 helpers.loadConfig = function () {
 
@@ -27,9 +36,7 @@ helpers.loadConfig = function () {
 
     if ((config.auth.username === 'test-username') ||
         (config.auth.apiKey === 'test-apiKey')) {
-      util.puts('Config file config/auth.json must be updated ' +
-                'with valid data before running tests.');
-      process.exit(0);
+      return print_config_error();
     }
 
     testConfig = config;
@@ -37,15 +44,15 @@ helpers.loadConfig = function () {
 
   }
   catch (ex) {
-    util.puts('Config file config/auth.json ' +
-              'must be created with valid data before running tests.');
-    process.exit(0);
+    return print_config_error();
   }
 };
 
 Object.defineProperty(helpers, 'loadAuth', {
   get: function() {
-    return helpers.loadConfig().auth;
+    if ( helpers.loadConfig() != null ) {
+      return helpers.loadConfig().auth;
+    }
   }
 });
 
