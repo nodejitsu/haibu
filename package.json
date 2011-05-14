@@ -1,7 +1,7 @@
 {
   "name": "haibu",
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "mkdirp": "0.0.x",
     "nconf": "0.1.x",
     "node_hash": "0.1.x",
-    "npm": "0.3.x",
+    "npm": "1.0.x",
     "optimist": "0.1.x",
     "request": "1.9.x",
     "vows": "0.5.x",
