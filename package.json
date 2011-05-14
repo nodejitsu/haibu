@@ -1,7 +1,7 @@
 {
   "name": "haibu",
-  "description": "Remotely create and control swarms of node.js drones in a hive (haibu)",
-  "version": "0.1.0",
+  "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
+  "version": "0.1.1",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "repository": {
     "type": "git",
