@@ -75,4 +75,4 @@ if (carapace.config.root) {
 require.paths.unshift(process.cwd());
 
 // Now just require the drone to get things moving.
-drone = require(p);
+drone = require('module').Module._load(p, null, true);
