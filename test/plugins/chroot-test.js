@@ -107,26 +107,32 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
   }
 }).addBatch({
   "An instance of the Npm repository": {
-    "the clean() method": {
+    "the allDependencies() method": {
+      topic: function () {
+        repo.allDependencies(this.callback);
+      },
+      "should list the installed dependencies from the chrooted directory": function (err, deps) {
+        assert.isNull(err);
+        assert.isArray(deps);
+        assert.include(deps, 'express');
+      }
+    }
+  }
+}).addBatch({
+  "An instance of the Npm repository": {
+    "the allDependencies() method": {
       topic: function () {
         var that = this;
-        repo.clean(function (err, dependencies, list) {
+        repo.clean(function (err) {
           if (err) {
             that.callback(err);
           }
 
-          fs.readdir(repo.npmConfig.root, function (err, files) {
-            that.callback(null, files, dependencies);
-          })
+          path.exists(repo.homeDir, that.callback.bind(null, null));
         });
       },
-      "should remove the dependencies from the npm directory": function (err, files, dependencies) {
-        assert.isNull(err);
-        assert.isArray(dependencies);
-
-        dependencies.forEach(function (dep) {
-          assert.isTrue(files.indexOf(dep) === -1);
-        });
+      "should remove the dependencies from the node_modules directory": function (ign, exists) {
+        assert.isFalse(exists);
       }
     }
   }

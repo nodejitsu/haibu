@@ -67,6 +67,31 @@ vows.describe('haibu/core/spawner').addBatch(
         }
       }
     },
+    "when passed a valid app json with npm dependencies": {
+      "the trySpawn() method": {
+        topic: function (spawner) {
+          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'npm-deps'),
+              pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
+              npmApp = JSON.parse(pkgJson);
+
+          npmApp.user = 'charlie';
+          npmApp.repository.directory = sourceDir;
+          this.repo = haibu.repository.create(npmApp);
+          spawner.trySpawn(this.repo, this.callback);
+        },
+        "should return a valid drone result object": function (err, result) {
+          assert.isNull(err);
+          assert.isNotNull(result.drone);
+          result.process.kill();
+          
+          var homeFiles = fs.readdirSync(this.repo.homeDir);
+          assert.include(homeFiles, 'node_modules');
+          
+          var modules = fs.readdirSync(path.join(this.repo.homeDir, 'node_modules'));
+          assert.include(modules, 'express');
+        }
+      }
+    },
     "when passed a valid app json with submodules": {
       topic: appWithSubmodules,
       "the trySpawn() method": {
@@ -77,7 +102,7 @@ vows.describe('haibu/core/spawner').addBatch(
           assert.isNull(err);
           assert.isNotNull(result.drone);
           result.process.kill();
-
+          
           // Ensure that the submodule's (vendor/proto) has files
           try {
             var submodulePath = path.join(config.get('directories:apps'), 'charlie', 'exceptiony', 'exceptiony', 'vendor', 'proto');
@@ -92,7 +117,6 @@ vows.describe('haibu/core/spawner').addBatch(
     "when passed a valid app json with bad dependencies": {
       "the trySpawn() method": {
         topic: function (spawner) {
-
           var that = this,
               sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-app'),
               pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
