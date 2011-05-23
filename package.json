@@ -1,7 +1,7 @@
 {
   "name": "haibu",
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -35,5 +35,5 @@
     "haibu-balancer": "./bin/haibu-balancer"
   },
   "scripts": { "test": "sudo vows test/**/*-test.js" },
-  "engines": { "node": "0.4.x" }
+  "engines": { "node": "0.4.x || 0.5.x" }
 }
