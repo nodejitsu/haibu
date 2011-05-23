@@ -47,7 +47,7 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
   "This test requires the chroot directory": {
     topic: function () {
       var that = this,
-          root = haibu.config.get('directories:chroot'),
+          root = haibu.config.get('chroot:root'),
           directories;
 
       directories = [
@@ -58,9 +58,7 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
       ];
 
       exec('mkdir -p ' + directories.join(' '), function () {
-        exec('cp ' + path.join(__dirname, '..', '..', 'bin', 'carapace') + ' ' + haibu.config.get('directories:apps'), function () {
-          that.callback();
-        });
+        that.callback();
       });
     },
     "should create the chroot directory": function () {
