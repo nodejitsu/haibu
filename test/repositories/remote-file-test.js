@@ -25,7 +25,7 @@ var ipAddress = '127.0.0.1',
         "home": "hellonode"
       },
       "repository": {
-        "auth": helpers.loadAuth,
+        "auth": helpers.auth,
         "protocol": "cloudfiles",
         "container": "nodejitsu-apps",
         "filename": "hellonode.tar.gz",
@@ -92,8 +92,11 @@ var suite = vows.describe('haibu/repositories/remote-file').addBatch(
       }
     }
   }
-})
+});
 
-if ( helpers.loadAuth != null ) { //if there is no config file, we can't run the remote tests
+if (helpers.auth) { 
+  //
+  // If there is no config file, we can't run the remote tests
+  //
   suite.export(module);
 }

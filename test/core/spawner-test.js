@@ -47,50 +47,10 @@ var appWithSubmodules = {
   }
 };
 
-vows.describe('haibu/core/spawner').addBatch(
-  helpers.requireInit()
-).addBatch({
+vows.describe('haibu/core/spawner').addBatch(helpers.requireInit()).addBatch({
   "An instance of haibu.Spawner" : {
     topic: function () {
       return new haibu.Spawner({ maxRestart: 1 });
-    },
-    "when passed a valid app json": {
-      topic: app,
-      "the trySpawn() method": {
-        topic: function (app, spawner) {
-          spawner.trySpawn(app, this.callback);
-        },
-        "should return a valid drone result object": function (err, result) {
-          assert.isNull(err);
-          assert.isNotNull(result.drone);
-          result.process.kill();
-        }
-      }
-    },
-    "when passed a valid app json with npm dependencies": {
-      "the trySpawn() method": {
-        topic: function (spawner) {
-          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'npm-deps'),
-              pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
-              npmApp = JSON.parse(pkgJson);
-
-          npmApp.user = 'charlie';
-          npmApp.repository.directory = sourceDir;
-          this.repo = haibu.repository.create(npmApp);
-          spawner.trySpawn(this.repo, this.callback);
-        },
-        "should return a valid drone result object": function (err, result) {
-          assert.isNull(err);
-          assert.isNotNull(result.drone);
-          result.process.kill();
-          
-          var homeFiles = fs.readdirSync(this.repo.homeDir);
-          assert.include(homeFiles, 'node_modules');
-          
-          var modules = fs.readdirSync(path.join(this.repo.homeDir, 'node_modules'));
-          assert.include(modules, 'express');
-        }
-      }
     },
     "when passed a valid app json with submodules": {
       topic: appWithSubmodules,
@@ -134,6 +94,50 @@ vows.describe('haibu/core/spawner').addBatch(
         "should return a valid drone result object": function (err, result) {
           assert.isNotNull(err);
           assert.isTrue(typeof result === 'undefined');
+        }
+      }
+    }
+  }
+}).addBatch({
+  "An instance of haibu.Spawner" : {
+    topic: function () {
+      return new haibu.Spawner({ maxRestart: 1 });
+    },
+    "when passed a valid app json": {
+      topic: app,
+      "the trySpawn() method": {
+        topic: function (app, spawner) {
+          spawner.trySpawn(app, this.callback);
+        },
+        "should return a valid drone result object": function (err, result) {
+          assert.isNull(err);
+          assert.isNotNull(result.drone);
+          result.process.kill();
+        }
+      }
+    },
+    "when passed a valid app json with npm dependencies": {
+      "the trySpawn() method": {
+        topic: function (spawner) {
+          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'npm-deps'),
+              pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
+              npmApp = JSON.parse(pkgJson);
+
+          npmApp.user = 'charlie';
+          npmApp.repository.directory = sourceDir;
+          this.repo = haibu.repository.create(npmApp);
+          spawner.trySpawn(this.repo, this.callback);
+        },
+        "should return a valid drone result object": function (err, result) {
+          assert.isNull(err);
+          assert.isNotNull(result.drone);
+          result.process.kill();
+          
+          var homeFiles = fs.readdirSync(this.repo.homeDir);
+          assert.include(homeFiles, 'node_modules');
+          
+          var modules = fs.readdirSync(path.join(this.repo.homeDir, 'node_modules'));
+          assert.include(modules, 'express');
         }
       }
     }

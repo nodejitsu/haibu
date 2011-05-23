@@ -36,7 +36,7 @@ var ipAddress = '127.0.0.1',
         "protocol": "cloudfiles",
         "filename": "hellonode.tar.gz",
         "container": "nodejitsu-apps",
-        "auth": helpers.loadAuth
+        "auth": helpers.auth
       },
       "scripts": {
         "start": "server.js"
@@ -88,7 +88,9 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
   suite.addBatch(batch);
 });
 
-// Export the suite so we can run it with vows
-if ( helpers.loadAuth != null ) { //if there is no config file, we can't run the remote tests
+if (helpers.auth) { 
+  //
+  // If there is no config file, we can't run the remote tests
+  //
   suite.export(module);
 }
