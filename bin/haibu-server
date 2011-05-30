@@ -43,6 +43,7 @@ haibu.utils.bin.getAddress(argv.a, function (err, address) {
     var options = {
       env: env,
       port: port,
+      host: address,
       config: config
     };
   
