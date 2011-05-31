@@ -190,7 +190,8 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
               return that.callback(err);
             }
 
-            fs.readdir(repo.appDir, function (err, files) {
+            var appDir = path.join(haibu.config.get('directories:apps'), clean.user, clean.name);
+            fs.readdir(appDir, function (err, files) {
               if (err) {
                 return that.callback(err);
               }

@@ -17,7 +17,7 @@ var vows = require('vows'),
     haibu = require('haibu'),
     config = require('haibu').config;
 
-var repo, app = {
+var repo, npmApp, app = {
   "name": "test",
   "user": "marak",
   "repository": {
@@ -87,9 +87,9 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
         topic: function (spawner) {
 
           var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'npm-deps'),
-              pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
-              npmApp = JSON.parse(pkgJson);
-
+              pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json'));
+              
+          npmApp = JSON.parse(pkgJson);
           npmApp.user = 'charlie';
           npmApp.repository.directory = sourceDir;
           repo = haibu.repository.create(npmApp);
@@ -121,7 +121,7 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
     "the allDependencies() method": {
       topic: function () {
         var that = this;
-        repo.clean(function (err) {
+        new (haibu.drone.Drone)().clean(npmApp, function (err) {
           if (err) {
             that.callback(err);
           }
@@ -129,7 +129,8 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
           path.exists(repo.homeDir, that.callback.bind(null, null));
         });
       },
-      "should remove the dependencies from the node_modules directory": function (ign, exists) {
+      "should remove the dependencies from the node_modules directory": function (err, exists) {
+        assert.isTrue(!err);
         assert.isFalse(exists);
       }
     }

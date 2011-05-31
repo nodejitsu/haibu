@@ -24,6 +24,7 @@
     "node_hash": "0.1.x",
     "npm": "1.0.x",
     "optimist": "0.1.x",
+    "rimraf": "1.0.x",
     "request": "1.9.x",
     "vows": "0.5.x",
     "watch": "0.3.x",
