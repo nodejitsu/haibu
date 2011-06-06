@@ -1,0 +1,145 @@
+<!DOCTYPE html>  <html> <head>   <title>npm.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="../../docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="../..//haibu/balancer/balancer.html">                 haibu/balancer/balancer.html               </a>                                           <a class="source" href="../..//haibu/balancer/index.html">                 haibu/balancer/index.html               </a>                                           <a class="source" href="../..//haibu/core/config.html">                 haibu/core/config.html               </a>                                           <a class="source" href="../..//haibu/core/process-store.html">                 haibu/core/process-store.html               </a>                                           <a class="source" href="../..//haibu/core/spawner.html">                 haibu/core/spawner.html               </a>                                           <a class="source" href="../..//haibu/drone/client.html">                 haibu/drone/client.html               </a>                                           <a class="source" href="../..//haibu/drone/drone.html">                 haibu/drone/drone.html               </a>                                           <a class="source" href="../..//haibu/drone/index.html">                 haibu/drone/index.html               </a>                                           <a class="source" href="../..//haibu/drone/service.html">                 haibu/drone/service.html               </a>                                           <a class="source" href="../..//haibu/plugins/changelog.html">                 haibu/plugins/changelog.html               </a>                                           <a class="source" href="../..//haibu/plugins/chroot.html">                 haibu/plugins/chroot.html               </a>                                           <a class="source" href="../..//haibu/plugins/logger.html">                 haibu/plugins/logger.html               </a>                                           <a class="source" href="../..//haibu/repositories/git.html">                 haibu/repositories/git.html               </a>                                           <a class="source" href="../..//haibu/repositories/index.html">                 haibu/repositories/index.html               </a>                                           <a class="source" href="../..//haibu/repositories/local-file.html">                 haibu/repositories/local-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/npm.html">                 haibu/repositories/npm.html               </a>                                           <a class="source" href="../..//haibu/repositories/remote-file.html">                 haibu/repositories/remote-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/repository.html">                 haibu/repositories/repository.html               </a>                                           <a class="source" href="../..//haibu/repositories/tar.html">                 haibu/repositories/tar.html               </a>                                           <a class="source" href="../..//haibu/repositories/zip.html">                 haibu/repositories/zip.html               </a>                                           <a class="source" href="../..//haibu/utils/base64.html">                 haibu/utils/base64.html               </a>                                           <a class="source" href="../..//haibu/utils/bin.html">                 haibu/utils/bin.html               </a>                                           <a class="source" href="../..//haibu/utils/index.html">                 haibu/utils/index.html               </a>                                           <a class="source" href="../..//haibu/utils/npm.html">                 haibu/utils/npm.html               </a>                                           <a class="source" href="../..//haibu.html">                 haibu.html               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               npm.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> * npm.js: Simple utilities for working with npm. </span>
+<span class="cm"> *</span>
+<span class="cm"> * (C) 2010, Nodejitsu Inc.</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+ 
+<span class="kd">var</span> <span class="nx">npm</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;npm&#39;</span><span class="p">),</span>
+    <span class="nx">npmout</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;npm/lib/utils/output&#39;</span><span class="p">),</span>
+    <span class="nx">npmls</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;npm/lib/utils/read-installed&#39;</span><span class="p">),</span>
+    <span class="nx">haibu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;haibu&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">npmConfig</span> <span class="o">=</span> <span class="p">{</span> 
+  <span class="nx">exit</span><span class="o">:</span> <span class="kc">false</span>
+<span class="p">};</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Monkey patch <code>npmout.write()</code> so that we don't need log or out files</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">npmout</span><span class="p">.</span><span class="nx">write</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span>
+      <span class="nx">callback</span><span class="p">;</span>
+
+  <span class="nx">args</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">arg</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>function load (callback)</h3>
+
+<h4>@callback {function} Continuation to respond to when complete.</h4>
+
+<p>Loads npm with the default <code>npmConfig</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:load&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">npmConfig</span><span class="p">);</span>
+  <span class="nx">npm</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">npmConfig</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:load&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span> <span class="p">});</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:load:success&#39;</span><span class="p">,</span> <span class="s1">&#39;silly&#39;</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>function loadDependencies (callback)</h3>
+
+<h4>@app {Object} Application to load dependencies for</h4>
+
+<h4>@callback {function} Continuation to pass control back to when complete.</h4>
+
+<p>Loads npm and the dependencies for the target <code>app</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">loadDependencies</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  <span class="nx">exports</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">app</span><span class="p">.</span><span class="nx">dependencies</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">||</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:install:none&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">app</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">name</span> <span class="p">});</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">[]);</span>
+    <span class="p">}</span>
+    
+    <span class="kd">var</span> <span class="nx">dependencies</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">);</span>
+    <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:install:load&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">app</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">dependencies</span><span class="o">:</span> <span class="nx">dependencies</span> <span class="p">});</span>
+    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">dependencies</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>function install (dir, target, callback)</h3>
+
+<h4>@dir {string} Directory to install targets into.</h4>
+
+<h4>@target {Object|Array} Target dependencies or application to install.</h4>
+
+<h4>@callback {function} Continuation to pass control back to when complete.</h4>
+
+<p>Install the <code>target</code> dependencies, either an Array of dependencies or a package.json
+manifest with potential dependencies. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">install</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">meta</span> <span class="o">=</span> <span class="p">{};</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Install all dependencies into the target directory</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">installAll</span> <span class="p">(</span><span class="nx">deps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">npm</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">install</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">deps</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:install:success&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">meta</span><span class="p">);</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">deps</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Loads all dependencies for the <code>app</code> manifest and then installs
+them into the target directory.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">loadAppAndInstall</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">exports</span><span class="p">.</span><span class="nx">loadDependencies</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">dependencies</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">dependencies</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">[]);</span>
+      <span class="p">}</span>
+      
+      <span class="nx">meta</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">app</span><span class="o">:</span> <span class="nx">target</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+        <span class="nx">dependencies</span><span class="o">:</span> <span class="nx">dependencies</span>
+      <span class="p">};</span>
+      
+      <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:install:start&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">meta</span><span class="p">);</span>
+      <span class="nx">installAll</span><span class="p">(</span><span class="nx">dependencies</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Load npm and install the raw list of dependencies</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">loadAndInstall</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">meta</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">packages</span><span class="o">:</span> <span class="nx">target</span> <span class="p">};</span>  
+    <span class="nx">exports</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="nx">installAll</span><span class="p">(</span><span class="nx">target</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span>
+    <span class="o">?</span> <span class="nx">loadAndInstall</span><span class="p">()</span>
+    <span class="o">:</span> <span class="nx">loadAppAndInstall</span><span class="p">();</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h3>function list (dir, app, callback)</h3>
+
+<h4>@dir {string} Directory to install targets into.</h4>
+
+<h4>@app {Object} Application to list dependencies for.</h4>
+
+<h4>@callback {function} Continuation to pass control back to when complete.</h4>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">exports</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">exports</span><span class="p">.</span><span class="nx">loadDependencies</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">dependencies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">dependencies</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">[]);</span>
+    <span class="p">}</span>
+    
+    <span class="kd">var</span> <span class="nx">all</span> <span class="o">=</span> <span class="nx">dependencies</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;npm:list&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">app</span><span class="o">:</span> <span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">dependencies</span><span class="o">:</span> <span class="nx">dependencies</span> <span class="p">});</span>
+    <span class="nx">npmls</span><span class="p">(</span><span class="nx">dir</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">list</span> <span class="o">&amp;&amp;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">dependencies</span> <span class="o">&amp;&amp;</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">));</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
