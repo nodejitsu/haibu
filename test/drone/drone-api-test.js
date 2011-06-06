@@ -119,6 +119,29 @@ vows.describe('haibu/drone/api').addBatch(
   }
 }).addBatch({
   "When using the drone server": {
+    "a request against /drones/:id/update": {
+      "when there are running drones": {
+        topic: function () {
+          var options = {
+            uri: 'http://localhost:9000/drones/test/update',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(app)
+          };
+
+          request(options, this.callback);
+        },
+        "should respond with 200": function (error, response, body) {
+          console.log(body);
+          assert.equal(response.statusCode, 200);
+        }
+      }
+    }
+  }
+}).addBatch({
+  "When using the drone server": {
     "a request against /drones": {
       "when there are running drones": {
         topic: function () {
