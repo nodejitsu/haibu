@@ -26,6 +26,7 @@
     "optimist": "0.1.x",
     "rimraf": "1.0.x",
     "request": "1.9.x",
+    "traverse": "0.3.x",
     "vows": "0.5.x",
     "watch": "0.3.x",
     "winston": "0.2.x"
