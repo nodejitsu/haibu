@@ -14,7 +14,7 @@ var help = [
     'commands:',
     '  list',
     '  start',
-    '  stop',
+    '  stop <appname>',
     '',
     'options:',
     '  -a, --address   IP Address that you want the server to bind to  [127.0.0.1]',
@@ -46,8 +46,67 @@ function startApplication () {
       return eyes.inspect(err);
     }
 
-    winston.info('Successfully spawned app:');
-    eyes.inspect(result);
+    var address = (result.drone.host + ':' + result.drone.port);
+    winston.info('Successfully spawned app: ' + app.name.yellow + ' on ' + address.magenta);
+  });
+}
+
+function stopApplication () {
+
+  var app = argv._[1] || JSON.parse(fs.readFileSync(argv.f || argv.file || 'package.json')).name;
+
+  // Attempt to start up a new application
+  client.stop(app, function (err, result) {
+    if (err) {
+      winston.error('Error stopping app: ' + app);
+      return eyes.inspect(err);
+    }
+
+    winston.info('Successfully stopped app: ' + app.yellow);
+  });
+}
+
+function listApplications () {
+
+  var pattern = argv._[1];
+
+  // Attempt to start up a new application
+  client.get('', function (err, result) {
+    if (err) {
+      winston.error('Error listing applications');
+      return eyes.inspect(err);
+    }
+
+
+    var appDrones = result.drones,
+        rows = [['app', 'domain', 'address']],
+        colors = ['yellow', 'red', 'magenta'],
+        regexp;
+
+    if (pattern) {
+      regexp = new RegExp(pattern, 'i');
+    }
+
+    for(var app in appDrones) {
+      var appInfo = appDrones[app].app;
+      var drones = appDrones[app].drones;
+      drones.forEach(function(drone) {
+        if (!regexp || (regexp && regexp.test(server.role))) {
+          rows.push([
+            app,
+            appInfo.domain,
+            drone.host + ':' + drone.port
+          ]);
+        }
+      });
+    }
+    if (rows.length === 1) {
+      winston.info("No applications found.");
+      return;
+    }
+
+    winston.info('Applications:');
+    haibu.log.putRows('data', rows, colors);
   });
 }
 
@@ -56,7 +115,11 @@ switch (argv._[0]) {
     startApplication();
     break;
   case 'list':
+    listApplications();
+    break;
   case 'stop':
+    stopApplication();
+    break;
   default:
     return util.puts(help);
 }

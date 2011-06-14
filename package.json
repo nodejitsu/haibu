@@ -5,12 +5,13 @@
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/nodejitsu/haibu.git" 
+    "url": "http://github.com/nodejitsu/haibu.git"
   },
   "keywords": ["cloud computing", "automated deployment", "platform-as-a-service"],
   "dependencies": {
     "async": "0.1.x",
     "cloudfiles": "0.2.x",
+    "cliff": "0.1.x",
     "colors": "0.5.x",
     "cradle": "0.5.x",
     "daemon": "0.3.x",
