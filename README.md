@@ -1,4 +1,4 @@
-# haibu 
+# haibu
 
 <img src="https://github.com/nodejitsu/haibu/raw/master/examples/haibu.png"/></img>
 
@@ -10,7 +10,7 @@ haibu is the open-source [node.js](http://nodejs.org) project for spawning and m
 
 # How does it work?
 
-haibu (which is Japanese for "hive") transforms node.js applications (using a [Carapace](https://github.com/nodejitsu/haibu/blob/master/bin/carapace)) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase. 
+haibu (which is Japanese for "hive") transforms node.js applications (using a [Carapace](https://github.com/nodejitsu/haibu/blob/master/bin/carapace)) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase.
 
 `haibu` builds on this concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. At a low level, haibu's API is exposed as a RESTFul HTTP webservice. Any system that supports basic HTTP requests can communicate with a haibu server. If you are working in Node.js, haibu comes with a high-level Node.js API client.
 
@@ -37,6 +37,24 @@ haibu started @ 127.0.0.1 on port 9002 as api-server
 ```
 
 **Now that there is a haibu server running, we can begin to interact with it's API.**
+
+##Starting an application using the haibu CLI
+
+The haibu CLI allows for easy deployments into haibu with configuration files. A configuration file may be specified or the default '.haibuconf' file will be used. Haibu's CLI will recurse the directory path looking for the config file and prepopulate values for commands for you.
+
+This is what a .haibuconf file may look like:
+```javascript
+{
+  "address" : "127.0.0.1",
+  "port" : 9002
+}
+```
+
+Once we are in a directory with a package.json we want to use to deploy our script we can let the config file take care of communications to haibu for us:
+
+```
+haibu start
+```
 
 ##Starting an application using the haibu Client
 *(From: /examples/hello-spawn.js)*
@@ -116,12 +134,12 @@ As you can see, the `domain` property is set to `devjitsu.com`. This means that 
 
 ## RESTful Webservice
 
-If you need to integrate non-node.js systems with haibu, you can use haibu's RESTful JSON API. We recommend using haibu's native Node.js Client, but if you need to integrate with none-node.js systems this is not always a viable option. 
+If you need to integrate non-node.js systems with haibu, you can use haibu's RESTful JSON API. We recommend using haibu's native Node.js Client, but if you need to integrate with none-node.js systems this is not always a viable option.
 
-**Starting an application through the webservice** 
+**Starting an application through the webservice**
 
     POST http://127.0.0.1:9002/drones/test/start
-    ... 
+    ...
     {
         "start": {
             "user": "marak",
@@ -129,16 +147,16 @@ If you need to integrate non-node.js systems with haibu, you can use haibu's RES
             "domain": "devjitsu.com",
             "repository": {
                 "type": "git",
-                "url": "https://github.com/Marak/hellonode.git" 
+                "url": "https://github.com/Marak/hellonode.git"
             },
             "scripts": {
-                "start": "server.js" 
-            } 
-        } 
-    }    
-    
+                "start": "server.js"
+            }
+        }
+    }
+
  **Response**
-    
+
     HTTP/1.1 200 OK
     Date: Thu, 05 May 2011 18:15:36 GMT
     Server: journey/0.4.0
@@ -160,20 +178,20 @@ If you need to integrate non-node.js systems with haibu, you can use haibu's RES
             host: '127.0.0.1'
         }
     }
-    
-**Stopping an application through the webservice** 
-    
-    
+
+**Stopping an application through the webservice**
+
+
     POST http://127.0.0.1:9002/drones/test/stop
-    ... 
+    ...
     {
         "stop": {
-            "name": "test" 
-        } 
+            "name": "test"
+        }
     }
-    
+
  **response**
-    
+
     HTTP/1.1 200 OK
     Date: Thu, 05 May 2011 18:16:22 GMT
     Server: journey/0.4.0

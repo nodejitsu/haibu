@@ -17,27 +17,30 @@ var help = [
     '  stop <appname>',
     '',
     'options:',
-    '  -a, --address   IP Address that you want the server to bind to  [127.0.0.1]',
-    '  -p, --port      Port that you want the server to run on         [80]',
-    '  -e, --env       The environment to the specified command in     [development]',
-    '  -f, --file      package.json to use when working with Haibu',
-    '  -h, --help      You\'re staring at it'
+    '  -c, --config     Config file to use when grabbing defaults       [.haibuconf]',
+    '  -a, --address    IP Address of the haibu server you want to use  [127.0.0.1]',
+    '  -p, --port       Port that you want to communicate over          [80]',
+    '  -f, --file       App description to use when working with Haibu  [package.json]',
+    '  -h, --help       You\'re staring at it'
 ].join('\n');
 
 if (argv.h || argv.help) {
   return util.puts(help);
 }
 
+var config = require('../lib/haibu/cli/config.js');
+config.load();
+
 var client = new haibu.drone.Client({
-  host: argv.a || argv.address || "127.0.0.1",
-  port: argv.p || argv.port || 80
+  host: config.get('a') || config.get('address'),
+  port: config.get('p') || config.get('port')
 });
 
 var command = argv._;
 
 function startApplication () {
 
-  var app = JSON.parse(fs.readFileSync(argv.f || argv.file || 'package.json'));
+  var app = JSON.parse(fs.readFileSync(config.get('f') || config.get('file')));
 
   // Attempt to start up a new application
   client.start(app, function (err, result) {
@@ -53,7 +56,7 @@ function startApplication () {
 
 function stopApplication () {
 
-  var app = argv._[1] || JSON.parse(fs.readFileSync(argv.f || argv.file || 'package.json')).name;
+  var app = argv._[1] || JSON.parse(fs.readFileSync(config.get('f') || config.get('file'))).name;
 
   // Attempt to start up a new application
   client.stop(app, function (err, result) {
