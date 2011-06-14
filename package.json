@@ -33,7 +33,8 @@
   "main": "./lib/haibu",
   "bin": {
     "haibu-server": "./bin/haibu-server",
-    "haibu-balancer": "./bin/haibu-balancer"
+    "haibu-balancer": "./bin/haibu-balancer",
+    "haibu": "./bin/haibu"
   },
   "scripts": { "test": "sudo vows test/**/*-test.js" },
   "engines": { "node": "0.4.x || 0.5.x" }

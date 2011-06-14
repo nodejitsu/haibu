@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+var util = require('util'),
+    colors = require('colors'),
+    argv = require('optimist').argv,
+    haibu = require('../'),
+    winston = require('winston'),
+    eyes = require('eyes'),
+    fs = require('fs');
+
+var help = [
+    'usage: haibu [command] [options]',
+    '',
+    'commands:',
+    '  list',
+    '  start',
+    '  stop',
+    '',
+    'options:',
+    '  -a, --address   IP Address that you want the server to bind to  [127.0.0.1]',
+    '  -p, --port      Port that you want the server to run on         [80]',
+    '  -e, --env       The environment to the specified command in     [development]',
+    '  -f, --file      package.json to use when working with Haibu',
+    '  -h, --help      You\'re staring at it'
+].join('\n');
+
+if (argv.h || argv.help) {
+  return util.puts(help);
+}
+
+var client = new haibu.drone.Client({
+  host: argv.a || argv.address || "127.0.0.1",
+  port: argv.p || argv.port || 80
+});
+
+var command = argv._;
+
+function startApplication () {
+
+  var app = JSON.parse(fs.readFileSync(argv.f || argv.file || 'package.json'));
+
+  // Attempt to start up a new application
+  client.start(app, function (err, result) {
+    if (err) {
+      winston.error('Error spawning app: ' + app.name);
+      return eyes.inspect(err);
+    }
+
+    winston.info('Successfully spawned app:');
+    eyes.inspect(result);
+  });
+}
+
+switch (argv._[0]) {
+  case 'start':
+    startApplication();
+    break;
+  case 'list':
+  case 'stop':
+  default:
+    return util.puts(help);
+}
