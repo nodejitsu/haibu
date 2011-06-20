@@ -50,6 +50,9 @@ This is what a .haibuconf file may look like:
 }
 ```
 
+The address and port should correspond to our haibu server's API endpoint.
+The API port is displayed in haibu-servers startup and defaults to port 9002.
+
 Once we are in a directory with a package.json we want to use to deploy our script we can let the config file take care of communications to haibu for us:
 
 ```
@@ -197,6 +200,111 @@ If you need to integrate non-node.js systems with haibu, you can use haibu's RES
     Server: journey/0.4.0
     Connection: close
     Transfer-Encoding: chunked
+
+##Package.json settings
+
+Haibu uses a package.json format extension in order to determine what to deploy.
+Also, haibu is a pull based server; this means that it will pull files from outside of the server in order to deploy instead of using uploading directly into the process.
+
+###Name
+
+The name attribute is required and will represent the name of the application being deployed.
+
+```json
+{
+  "name": "app-name"
+}
+```
+
+###User
+
+The user attribute is required and will represent the user who started up a drone.
+
+```json
+{
+  "user": "myusername"
+}
+```
+
+###Repositories
+
+####git
+
+This type of repository will pull a git repository into haibu and deploy its contents.
+
+```json
+{
+  "repository": {
+    "type": "git",
+    "url": "http://path/to/git/server"
+  }
+}
+```
+
+####local
+
+This type of repository will pull a directory relative to the `haibu-server` and deploy its contents.
+
+```json
+{
+  "repository": {
+    "type": "local",
+    "directory": "/path/to/application"
+  }
+}
+```
+
+####npm
+
+This type of repository will pull an `npm` package and deploy its contents.
+
+```json
+{
+  "repository": {
+    "type": "npm",
+    "url": "package-name"
+  }
+}
+```
+
+####remote
+
+This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
+
+```json
+{
+  "repository": {
+    "type": "remote",
+    "url": "http://path/to/archive"
+  }
+}
+```
+
+####tar
+
+This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
+
+```json
+{
+  "repository": {
+    "type": "tar",
+    "url": "http://path/to/archive.tar"
+  }
+}
+```
+
+####zip
+
+This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
+
+```json
+{
+  "repository": {
+    "type": "zip",
+    "url": "http://path/to/archive.zip"
+  }
+}
+```
 
 ## Run Tests
 All of the `haibu` tests are written in [vows][0], and cover all of the use cases described above.
