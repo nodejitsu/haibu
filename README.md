@@ -43,6 +43,7 @@ haibu started @ 127.0.0.1 on port 9002 as api-server
 The haibu CLI allows for easy deployments into haibu with configuration files. A configuration file may be specified or the default '.haibuconf' file will be used. Haibu's CLI will recurse the directory path looking for the config file and prepopulate values for commands for you.
 
 This is what a .haibuconf file may look like:
+
 ```javascript
 {
   "address" : "127.0.0.1",
