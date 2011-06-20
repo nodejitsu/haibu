@@ -15,11 +15,12 @@ var help = [
     '  list',
     '  start',
     '  stop <appname>',
+    '  config <key> [value]',
     '',
     'options:',
     '  -c, --config     Config file to use when grabbing defaults       [.haibuconf]',
     '  -a, --address    IP Address of the haibu server you want to use  [127.0.0.1]',
-    '  -p, --port       Port that you want to communicate over          [80]',
+    '  -p, --port       Port that you want to communicate over          [9002]',
     '  -f, --file       App description to use when working with Haibu  [package.json]',
     '  -h, --help       You\'re staring at it'
 ].join('\n');
@@ -31,12 +32,37 @@ if (argv.h || argv.help) {
 var config = require('../lib/haibu/cli/config.js');
 config.load();
 
-var client = new haibu.drone.Client({
+winston.info('Using config file: ' + config.store.file.magenta);
+
+var clientsettings = {
   host: config.get('a') || config.get('address'),
   port: config.get('p') || config.get('port')
-});
+};
+
+winston.info('Connecting to haibu-server at '+(clientsettings.host+':'+clientsettings.port).magenta);
+
+var client = new haibu.drone.Client(clientsettings);
 
 var command = argv._;
+
+function configureApplication (key, value) {
+
+  if (arguments.length) {
+    if (arguments.length > 1) {
+      config.set(key, value);
+      config.save();
+      winston.info('Set config value for ' + key.magenta+' to ' + (''+value).magenta)
+    }
+    else {
+      winston.info('Config value for ' + key.magenta);
+      winston.data(config.get(key));
+    }
+  }
+  else {
+    winston.error('Config needs arguments');
+  }
+
+}
 
 function startApplication () {
 
@@ -122,6 +148,9 @@ switch (argv._[0]) {
     break;
   case 'stop':
     stopApplication();
+    break;
+  case 'config':
+    configureApplication.apply(null,argv._.slice(1));
     break;
   default:
     return util.puts(help);
