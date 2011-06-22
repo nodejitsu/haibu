@@ -12,10 +12,12 @@ var help = [
     'usage: haibu [command] [options]',
     '',
     'commands:',
+    '  clean',
+    '  config <key> [value]',
     '  list',
     '  start',
     '  stop <appname>',
-    '  config <key> [value]',
+    '  update',
     '',
     'options:',
     '  -c, --config     Config file to use when grabbing defaults       [.haibuconf]',
@@ -78,6 +80,29 @@ function startApplication () {
     var address = (result.drone.host + ':' + result.drone.port);
     winston.info('Successfully spawned app: ' + app.name.yellow + ' on ' + address.magenta);
   });
+}
+
+function cleanApplication (cb) {
+
+  var app = JSON.parse(fs.readFileSync(config.get('f') || config.get('file')));
+
+  // Attempt to start up a new application
+  client.clean(app, function (err, result) {
+    if (err) {
+      winston.error('Error cleaning app: ' + app.name);
+      return eyes.inspect(err);
+    }
+
+    winston.info('Successfully cleaned app: ' + app.name.yellow);
+
+    if (cb) {
+      cb();
+    }
+  });
+}
+
+function updateApplication () {
+  cleanApplication(startApplication);
 }
 
 function stopApplication () {
@@ -151,6 +176,12 @@ switch (argv._[0]) {
     break;
   case 'config':
     configureApplication.apply(null,argv._.slice(1));
+    break;
+  case 'clean':
+    cleanApplication();
+    break;
+  case 'update':
+    updateApplication();
     break;
   default:
     return util.puts(help);
