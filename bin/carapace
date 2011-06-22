@@ -24,7 +24,8 @@ carapace.config = {
   pid     : process.pid
 };
 
-var netListen = net.Server.prototype.listen;
+var netListen = net.Server.prototype.listen,
+    reservedPorts = [843];
 
 //
 // Helper function from Node code to parse port arguments
@@ -54,7 +55,7 @@ net.Server.prototype.listen = function () {
   // If arguments[0] is a port, assume (2, 3) from the documentation 
   // above and change the value of the arguments to what we've been passed.
   //
-  if (port) {
+  if (port && !~reservedPorts.indexOf(port)) {
     args[0] = carapace.config.port;
   }
   
