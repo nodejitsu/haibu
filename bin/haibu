@@ -1,188 +1,62 @@
-#!/usr/bin/env node
+#!/usr/local/bin/node
 
-var util = require('util'),
-    colors = require('colors'),
-    argv = require('optimist').argv,
-    haibu = require('../'),
-    winston = require('winston'),
-    eyes = require('eyes'),
-    fs = require('fs');
+var clip = require('clip');
+var winston = require('winston');
+var colors = require('colors');
+var haibu = require('../');
+var app = new clip();
+var fs = require('fs');
 
-var help = [
-    'usage: haibu [command] [options]',
-    '',
-    'commands:',
-    '  clean',
-    '  config <key> [value]',
-    '  list',
-    '  start',
-    '  stop <appname>',
-    '  update',
-    '',
-    'options:',
-    '  -c, --config     Config file to use when grabbing defaults       [.haibuconf]',
-    '  -a, --address    IP Address of the haibu server you want to use  [127.0.0.1]',
-    '  -p, --port       Port that you want to communicate over          [9002]',
-    '  -f, --file       App description to use when working with Haibu  [package.json]',
-    '  -h, --help       You\'re staring at it'
-].join('\n');
-
-if (argv.h || argv.help) {
-  return util.puts(help);
-}
-
-var config = require('../lib/haibu/cli/config.js');
-config.load();
-
-winston.info('Using config file: ' + config.store.file.magenta);
-
-var clientsettings = {
-  host: config.get('a') || config.get('address'),
-  port: config.get('p') || config.get('port')
-};
-
-winston.info('Connecting to haibu-server at '+(clientsettings.host+':'+clientsettings.port).magenta);
-
-var client = new haibu.drone.Client(clientsettings);
-
-var command = argv._;
-
-function configureApplication (key, value) {
-
-  if (arguments.length) {
-    if (arguments.length > 1) {
-      config.set(key, value);
-      config.save();
-      winston.info('Set config value for ' + key.magenta+' to ' + (''+value).magenta)
-    }
-    else {
-      winston.info('Config value for ' + key.magenta);
-      winston.data(config.get(key));
-    }
+app.config('.haibuconf',{
+  flags: ['c', 'conf'],
+  defaults: {
+    port: 9002,
+    host: '127.0.0.1'
   }
-  else {
-    winston.error('Config needs arguments');
+});
+
+app.flag(['s','silent'],function(req,res,next) {
+  res.remove(res.transports.Console);
+})
+
+app.use(function(req,res,next){
+  res.info('Using config file '+req.config.store.file.magenta);
+
+  try {
+    var deploymentscript = req.config.get('f') || req.config.get('file') || 'package.json';
+    req.app = JSON.parse(fs.readFileSync(deploymentscript));
+    res.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
+  } catch(e) {
+    res.warn('No deployment script was detected');
+    req.app = {};
   }
 
-}
+  var clientsettings = {
+    host: req.config.get('a') || req.config.get('address'),
+    port: req.config.get('p') || req.config.get('port')
+  };
 
-function startApplication () {
+  res.info('haibu-server located at '+(clientsettings.host+':'+clientsettings.port).magenta);
+  req.client = new haibu.drone.Client(clientsettings);
 
-  var app = JSON.parse(fs.readFileSync(config.get('f') || config.get('file')));
+  next();
+});
+require('../lib/haibu/cli/config')(app);
+require('../lib/haibu/cli/apps')(app);
 
-  // Attempt to start up a new application
-  client.start(app, function (err, result) {
-    if (err) {
-      winston.error('Error spawning app: ' + app.name);
-      return eyes.inspect(err);
-    }
+app.usage(function usage(req,res) {
+  res.info('');
+  res.info('haibu'.bold.underline);
+  res.info('  CLI interface to manage a Haibu server.');
+  res.info('  Please refer to documentation of commands using `-h` or `--help`.');
+  res.info('');
+  res.info('commands'.bold);
+  res.info('  haibu apps'.green);
+  res.info('  haibu config'.green);
+  res.info('');
+  res.info('flags'.bold);
+  res.info('  -s --silent                Do not log to console');
+  res.info('');
+});
 
-    var address = (result.drone.host + ':' + result.drone.port);
-    winston.info('Successfully spawned app: ' + app.name.yellow + ' on ' + address.magenta);
-  });
-}
-
-function cleanApplication (cb) {
-
-  var app = JSON.parse(fs.readFileSync(config.get('f') || config.get('file')));
-
-  // Attempt to start up a new application
-  client.clean(app, function (err, result) {
-    if (err) {
-      winston.error('Error cleaning app: ' + app.name);
-      return eyes.inspect(err);
-    }
-
-    winston.info('Successfully cleaned app: ' + app.name.yellow);
-
-    if (cb) {
-      cb();
-    }
-  });
-}
-
-function updateApplication () {
-  cleanApplication(startApplication);
-}
-
-function stopApplication () {
-
-  var app = argv._[1] || JSON.parse(fs.readFileSync(config.get('f') || config.get('file'))).name;
-
-  // Attempt to start up a new application
-  client.stop(app, function (err, result) {
-    if (err) {
-      winston.error('Error stopping app: ' + app);
-      return eyes.inspect(err);
-    }
-
-    winston.info('Successfully stopped app: ' + app.yellow);
-  });
-}
-
-function listApplications () {
-
-  var pattern = argv._[1];
-
-  // Attempt to start up a new application
-  client.get('', function (err, result) {
-    if (err) {
-      winston.error('Error listing applications');
-      return eyes.inspect(err);
-    }
-
-
-    var appDrones = result.drones,
-        rows = [['app', 'domain', 'address']],
-        colors = ['yellow', 'red', 'magenta'],
-        regexp;
-
-    if (pattern) {
-      regexp = new RegExp(pattern, 'i');
-    }
-
-    for(var app in appDrones) {
-      var appInfo = appDrones[app].app;
-      var drones = appDrones[app].drones;
-      drones.forEach(function(drone) {
-        if (!regexp || (regexp && regexp.test(server.role))) {
-          rows.push([
-            app,
-            appInfo.domain,
-            drone.host + ':' + drone.port
-          ]);
-        }
-      });
-    }
-    if (rows.length === 1) {
-      winston.info("No applications found.");
-      return;
-    }
-
-    winston.info('Applications:');
-    haibu.log.putRows('data', rows, colors);
-  });
-}
-
-switch (argv._[0]) {
-  case 'start':
-    startApplication();
-    break;
-  case 'list':
-    listApplications();
-    break;
-  case 'stop':
-    stopApplication();
-    break;
-  case 'config':
-    configureApplication.apply(null,argv._.slice(1));
-    break;
-  case 'clean':
-    cleanApplication();
-    break;
-  case 'update':
-    updateApplication();
-    break;
-  default:
-    return util.puts(help);
-}
+app.run();
