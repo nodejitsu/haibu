@@ -33,19 +33,20 @@ haibu.utils.bin.getAddress(argv.a, function (err, address) {
   if (err) {
     log('Error getting IP Address: ' + err.message);
   }
-  
+
   haibu.utils.bin.tryLoadCache(function (err, config) {
     var options = {
       env: env,
       port: port,
-      config: config
+      config: config,
+      nopurge: true
     };
-    
+
     haibu.balancer.start(options, function (err, server, proxy, active) {
       if (logger) {
         haibu.use(haibu.plugins.logger);
       }
-      
+
       haibu.utils.showWelcome('balancer', address, port);
     });
   });
