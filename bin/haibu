@@ -23,11 +23,25 @@ app.use(function(cmd,tty,next){
   tty.info('Using config file '+cmd.config.store.file.magenta);
 
   try {
-    var deploymentscript = cmd.config.get('f') || cmd.config.get('file') || 'package.json';
-    cmd.app = JSON.parse(fs.readFileSync(deploymentscript));
-    tty.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
+    var app = JSON.parse(fs.readFileSync('package.json'));
+    var deploymentscript = cmd.config.get('f') || cmd.config.get('file') || 'deploy.json';
+    try {
+      var deployment = JSON.parse(fs.readFileSync(deploymentscript));
+      tty.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
+      ;['repository','name','env','user'].forEach(function(item){
+        if(deployment.hasOwnProperty(item)) {
+          app[item] = deployment[item];
+        }
+      })
+      if(!app.user) {
+        app.user = cmd.config.get('user');
+      }
+    }
+    catch(e) {
+      tty.warn('No deployment script was detected');
+    }
+    cmd.app = app;
   } catch(e) {
-    tty.warn('No deployment script was detected');
     cmd.app = {};
   }
 
