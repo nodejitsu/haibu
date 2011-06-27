@@ -28,7 +28,7 @@ app.use(function(cmd,tty,next){
     try {
       var deployment = JSON.parse(fs.readFileSync(deploymentscript));
       tty.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
-      ;['repository','name','env','user'].forEach(function(item){
+      ;['repository','name','domain','subdomain','env','user'].forEach(function(item){
         if(deployment.hasOwnProperty(item)) {
           app[item] = deployment[item];
         }
