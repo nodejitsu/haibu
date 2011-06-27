@@ -15,48 +15,48 @@ app.config('.haibuconf',{
   }
 });
 
-app.flag(['s','silent'],function(req,res,next) {
-  res.remove(res.transports.Console);
+app.flag(['s','silent'],function(cmd,tty,next) {
+  tty.remove(tty.transports.Console);
 })
 
-app.use(function(req,res,next){
-  res.info('Using config file '+req.config.store.file.magenta);
+app.use(function(cmd,tty,next){
+  tty.info('Using config file '+cmd.config.store.file.magenta);
 
   try {
-    var deploymentscript = req.config.get('f') || req.config.get('file') || 'package.json';
-    req.app = JSON.parse(fs.readFileSync(deploymentscript));
-    res.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
+    var deploymentscript = cmd.config.get('f') || cmd.config.get('file') || 'package.json';
+    cmd.app = JSON.parse(fs.readFileSync(deploymentscript));
+    tty.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
   } catch(e) {
-    res.warn('No deployment script was detected');
-    req.app = {};
+    tty.warn('No deployment script was detected');
+    cmd.app = {};
   }
 
   var clientsettings = {
-    host: req.config.get('a') || req.config.get('address'),
-    port: req.config.get('p') || req.config.get('port')
+    host: cmd.config.get('a') || cmd.config.get('address'),
+    port: cmd.config.get('p') || cmd.config.get('port')
   };
 
-  res.info('haibu-server located at '+(clientsettings.host+':'+clientsettings.port).magenta);
-  req.client = new haibu.drone.Client(clientsettings);
+  tty.info('haibu-server located at '+(clientsettings.host+':'+clientsettings.port).magenta);
+  cmd.client = new haibu.drone.Client(clientsettings);
 
   next();
 });
 require('../lib/haibu/cli/config')(app);
 require('../lib/haibu/cli/apps')(app);
 
-app.usage(function usage(req,res) {
-  res.info('');
-  res.info('haibu'.bold.underline);
-  res.info('  CLI interface to manage a Haibu server.');
-  res.info('  Please refer to documentation of commands using `-h` or `--help`.');
-  res.info('');
-  res.info('commands'.bold);
-  res.info('  haibu apps'.green);
-  res.info('  haibu config'.green);
-  res.info('');
-  res.info('flags'.bold);
-  res.info('  -s --silent                Do not log to console');
-  res.info('');
+app.usage(function usage(cmd,tty) {
+  tty.info('');
+  tty.info('haibu'.bold.underline);
+  tty.info('  CLI interface to manage a Haibu server.');
+  tty.info('  Please refer to documentation of commands using `-h` or `--help`.');
+  tty.info('');
+  tty.info('commands'.bold);
+  tty.info('  haibu apps'.green);
+  tty.info('  haibu config'.green);
+  tty.info('');
+  tty.info('flags'.bold);
+  tty.info('  -s --silent                Do not log to console');
+  tty.info('');
 });
 
 app.run();
