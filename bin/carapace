@@ -1,79 +1,153 @@
-/*
- * carapace.js: Light-weight wrapper thats envelopes a drone, allowing us to override 
- *              several aspects of the drone, such as the HTTP server. We also have the 
- *              benefit of getting returned process informations about the drone.
- *
- * (C) 2010, Nodejitsu Inc.
- *
- */
-
-var util = require('util'),
-    net = require('net'),
-    http = require('http');
-
+#!/usr/local/bin/node
 //
-// TODO (indexzero): Make this more robust when forever is included.
+// Carapace.js
 //
+// Rooting environment for Haibu applications
+//
+// 1. Needs to intercept binding ports for listening
+// 2. Needs to chroot
+// 3. Needs to chdir
+// 4. Needs to notify master about events (port binding)
+// 5. Make the script it runs act as if it were exactly the same (down to argv / require.main)
+//
+var net = require('net');
+var netListen = net.Server.prototype._doListen;
+var binding = process.binding('net');
+var bindingBind = binding.bind;
+var http = require('http');
+
+//First 6 arguments are for carapace
+//
+// Carapace arguments are for the rooting environment
+//  1. carapace.script
+//  2. carapace.root
+//  3. carapace.appPath
+//
+// HaibuServer arguments are for dealing with provisioning and administration
+//  4. haibuServer.host
+//  5. haibuServer.port
+//  6. haibuServer.appName
+//
+var config = process.argv.splice(2,7);
 var carapace = {};
 carapace.config = {
-  script  : process.argv[2],
-  server  : process.argv[3],
-  port    : process.argv[4],
-  root    : process.argv[5],
-  appPath : process.argv[6], 
+  script  : config.shift(),
+  root    : config.shift(),
+  appPath : config.shift() || process.cwd(),
   pid     : process.pid
 };
 
-var netListen = net.Server.prototype.listen,
-    reservedPorts = [843];
+var haibu = {};
+haibu.config = {
+  host: config.shift(),
+  port: config.shift(),
+  appName: config.shift()
+}
+
+//
+// Send a string to our master server; generally used to notify of events.
+//
+function notifyServer(method, url, data) {
+  if(!haibu.config.port) return;
+  var timer = setTimeout(function() {
+    process.exit(1);
+  },200);
+  var req = http.request({
+    port: haibu.config.port,
+    host: haibu.config.host || '127.0.0.1',
+    method: method,
+    path: url
+  }, function mappedPortResponse() {
+    var res = req.res;
+    if(res.statusCode >= 200 && res.statusCode < 400) {
+      clearTimeout(timer);
+    }
+  });
+  req.write(data);
+  req.end();
+}
+
+//
+// Set the root of the child process if requested
+//
+if (carapace.config.root) {
+  var daemon = require('daemon');
+  daemon.chroot(carapace.config.root);
+}
+if (carapace.config.appPath) {
+  process.chdir(carapace.config.appPath);
+}
 
 //
 // Helper function from Node code to parse port arguments
 // passed to net.prototype.Server.listen
 //
-function toPort(x) { 
-  return (x = Number(x)) >= 0 ? x : false; 
+function toPort(x) {
+  return (x = Number(x)) >= 0 ? x : false;
 }
 
 //
-// Donkey punch the listen() function.
+// Bind clobber
+// fd, port | unix, addr?
 //
-// 1. Listen on a UNIX socket: server.listen('/tmp/socket');
-//    Ignore these cases, pass through to netListen
+// Used to prevent a socket being bound to a port and instead use a different port
 //
-// 2. Listen on port 8000, accept connections from INADDR_ANY: server.listen(8000);
-//    Change the port to the port we have been passed by the config
-//
-// 3. Listen on port 8000, accept connections to '192.168.1.2': server.listen(8000, '192.168.1.2');
-//    Change the port to the port we have been passed by the config
-//
-net.Server.prototype.listen = function () {
-  var args = Array.prototype.slice.call(arguments),
-      port = toPort(args[0]);
-
-  //
-  // If arguments[0] is a port, assume (2, 3) from the documentation 
-  // above and change the value of the arguments to what we've been passed.
-  //
-  if (port && !~reservedPorts.indexOf(port)) {
-    args[0] = carapace.config.port;
+binding.bind = function bind() {
+  var port = arguments[1];
+  port = toPort(port);
+  if(!port) {
+    return bindingBind.apply(this,arguments);
   }
-  
-  return netListen.apply(this, args);
-};
-
-// Update the require path of the target drone start script
-var p = carapace.config.script.replace('.js', ''),
-    tmp = util.puts, drone;
-    
-// Set the root of the child process if requested
-if (carapace.config.root) {
-  var daemon = require('daemon');
-  daemon.chroot(carapace.config.root);
-  process.chdir(carapace.config.appPath);
+  var desiredPort = port;
+  arguments[1] = undefined;
+  var result = bindingBind.apply(this,arguments);
+  var actualPort = binding.getsockname(arguments[0]).port;
+  var descriptor = {
+    actualPort: actualPort,
+    desiredPort: desiredPort,
+    pid: carapace.config.pid,
+    app: {
+      name: haibu.config.appName
+    }
+  }
+  notifyServer('POST','/drones/' + haibu.config.appName + '/map', JSON.stringify(descriptor));
+  return result;
 }
 
-require.paths.unshift(process.cwd());
+//
+// Server _doListen clobber
+//
+// This needs to be done because listen uses a cached bind
+// Listening on a port should be deferred to any port and a port mapping should be emitted
+//
+net.Server.prototype._doListen = function _doListen() {
+  port = arguments[0];
+  port = toPort(port);
+  if(!port) {
+    return netListen.apply(this,arguments);
+  }
+  var desiredPort = port;
+  arguments[0] = undefined;
+  var result = netListen.apply(this,arguments);
+  var actualPort = this.address().port;
+  var descriptor = {
+    actualPort: actualPort,
+    desiredPort: desiredPort,
+    pid: carapace.config.pid,
+    app: {
+      name: haibu.config.appName
+    }
+  }
+  notifyServer('POST','/drones/' + haibu.config.appName + '/map', JSON.stringify(descriptor));
+  return result;
+}
 
-// Now just require the drone to get things moving.
-drone = require('module').Module._load(p, null, true);
+//
+// Start up the script as if it were the main module
+//
+// Note: this is doable because of removing the argv cli arguments
+var path = require('path')
+var fs = require('fs')
+process.argv.splice(1,1,fs.realpathSync(require.resolve(path.join(process.cwd(),carapace.config.script))));
+process.nextTick(function(){require('module').Module.runMain()});
+

@@ -42,6 +42,11 @@ app.use(function(cmd,tty,next){
     }
     cmd.app = app;
   } catch(e) {
+    if(e.name === 'SyntaxError') {
+      tty.error('Unable to read deployment configuration.');
+      process.exit(1);
+      return;
+    }
     cmd.app = {};
   }
 
