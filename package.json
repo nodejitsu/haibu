@@ -15,6 +15,7 @@
     "clip": "0.1.x",
     "colors": "0.5.x",
     "daemon": "0.3.x",
+    "dnode": "0.7.x",
     "eyes": "0.1.x",
     "forever": "0.5.x",
     "http-proxy": "0.5.x",

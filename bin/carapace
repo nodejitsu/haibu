@@ -14,57 +14,94 @@ var net = require('net');
 var netListen = net.Server.prototype._doListen;
 var binding = process.binding('net');
 var bindingBind = binding.bind;
-var http = require('http');
-
+var dnode = require('dnode');
+var drone = require('../lib/haibu/bridge/drone');
+//
+// Helper function from Node code to parse port arguments
+// passed to net.prototype.Server.listen
+//
+function toPort(x) {
+  return (x = Number(x)) >= 0 ? x : false;
+}
+//
+// Helper if our master is lost
+//
+function exitWithError() {
+  return process.exit(1);
+}
 //First 6 arguments are for carapace
 //
 // Carapace arguments are for the rooting environment
-//  1. carapace.script
-//  2. carapace.root
-//  3. carapace.appPath
+//  * carapace.script
+//  * carapace.root
+//  * carapace.appPath
+//  * carapace.socketFile || carapace.port
+//  * carapace.appName
+//  * carapace.id
 //
 // HaibuServer arguments are for dealing with provisioning and administration
-//  4. haibuServer.host
-//  5. haibuServer.port
-//  6. haibuServer.appName
+//  * haibuServer.host
+//  * haibuServer.port
 //
-var config = process.argv.splice(2,7);
+var config = process.argv.splice(2,9);
 var carapace = {};
 carapace.config = {
   script  : config.shift(),
   root    : config.shift(),
   appPath : config.shift() || process.cwd(),
-  pid     : process.pid
+  port : config.shift(),
+  appName: config.shift(),
+  id     : config.shift()
 };
+if(!toPort(carapace.config.port)) {
+  carapace.config.socketPath = carapace.config.port;
+  delete carapace.config.port;
+}
+
+
+carapace.drone = {
+  proxies : {}
+};
+
+var bridgeServer = net.createServer();
+var socket = carapace.config.port || carapace.config.socketPath;
+if (socket) {
+  bridgeServer.listen(socket);
+}
+new drone(carapace.drone).listen(bridgeServer);
+
 
 var haibu = {};
 haibu.config = {
   host: config.shift(),
-  port: config.shift(),
-  appName: config.shift()
+  port: config.shift()
+}
+if(!toPort(haibu.config.port)) {
+  delete haibu.config.host;
+  haibu.config.socketPath = haibu.config.port;
+  delete haibu.config.port;
 }
 
 //
-// Send a string to our master server; generally used to notify of events.
+//  Helpers for talking to haibu
 //
-function notifyServer(method, url, data) {
-  if(!haibu.config.port) return;
-  var timer = setTimeout(function() {
-    process.exit(1);
-  },200);
-  var req = http.request({
-    port: haibu.config.port,
-    host: haibu.config.host || '127.0.0.1',
-    method: method,
-    path: url
-  }, function mappedPortResponse() {
-    var res = req.res;
-    if(res.statusCode >= 200 && res.statusCode < 400) {
-      clearTimeout(timer);
-    }
-  });
-  req.write(data);
-  req.end();
+function getMasterClient(cb) {
+ if(haibu.config.port) {
+   dnode.connect(haibu.config.host, haibu.config.port, cb);
+ }
+ else if(haibu.config.socketPath) {
+   dnode.connect(haibu.config.socketPath, cb);
+ }
+}
+function registerPort(desiredPort, actualPort) {
+  carapace.drone.proxies[desiredPort] = actualPort;
+  getMasterClient(function(remote,conn) {
+    conn.on('refuse',exitWithError)
+    conn.on('drop',exitWithError);
+    remote.proxy(carapace.config.id, desiredPort, actualPort, function(){
+      remote.end();
+    });
+  })
 }
 
 //
@@ -79,75 +116,59 @@ if (carapace.config.appPath) {
 }
 
 //
-// Helper function from Node code to parse port arguments
-// passed to net.prototype.Server.listen
-//
-function toPort(x) {
-  return (x = Number(x)) >= 0 ? x : false;
-}
-
-//
-// Bind clobber
-// fd, port | unix, addr?
-//
-// Used to prevent a socket being bound to a port and instead use a different port
-//
-binding.bind = function bind() {
-  var port = arguments[1];
-  port = toPort(port);
-  if(!port) {
-    return bindingBind.apply(this,arguments);
-  }
-  var desiredPort = port;
-  arguments[1] = undefined;
-  var result = bindingBind.apply(this,arguments);
-  var actualPort = binding.getsockname(arguments[0]).port;
-  var descriptor = {
-    actualPort: actualPort,
-    desiredPort: desiredPort,
-    pid: carapace.config.pid,
-    app: {
-      name: haibu.config.appName
-    }
-  }
-  notifyServer('POST','/drones/' + haibu.config.appName + '/map', JSON.stringify(descriptor));
-  return result;
-}
-
-//
-// Server _doListen clobber
-//
-// This needs to be done because listen uses a cached bind
-// Listening on a port should be deferred to any port and a port mapping should be emitted
-//
-net.Server.prototype._doListen = function _doListen() {
-  port = arguments[0];
-  port = toPort(port);
-  if(!port) {
-    return netListen.apply(this,arguments);
-  }
-  var desiredPort = port;
-  arguments[0] = undefined;
-  var result = netListen.apply(this,arguments);
-  var actualPort = this.address().port;
-  var descriptor = {
-    actualPort: actualPort,
-    desiredPort: desiredPort,
-    pid: carapace.config.pid,
-    app: {
-      name: haibu.config.appName
-    }
-  }
-  notifyServer('POST','/drones/' + haibu.config.appName + '/map', JSON.stringify(descriptor));
-  return result;
-}
-
-//
 // Start up the script as if it were the main module
 //
 // Note: this is doable because of removing the argv cli arguments
-var path = require('path')
-var fs = require('fs')
+var path = require('path');
+var fs = require('fs');
 process.argv.splice(1,1,fs.realpathSync(require.resolve(path.join(process.cwd(),carapace.config.script))));
-process.nextTick(function(){require('module').Module.runMain()});
-
+//
+// Reset the cache if for some awful reason we required something that needs to be rerun during require
+//
+require('module').Module._cache = {};
+getMasterClient(function(remote,conn) {
+  console.dir(arguments)
+  //
+  // Bind clobber
+  // fd, port | unix, addr?
+  //
+  // Used to prevent a socket being bound to a port and instead use a different port
+  //
+  binding.bind = function bind() {
+    var port = arguments[1];
+    port = toPort(port);
+    if(!port) {
+      return bindingBind.apply(this,arguments);
+    }
+    var desiredPort = port;
+    arguments[1] = undefined;
+    var result = bindingBind.apply(this,arguments);
+    var actualPort = binding.getsockname(arguments[0]).port;
+    registerPort(desiredPort,actualPort);
+    return result;
+  }
+  
+  //
+  // Server _doListen clobber
+  //
+  // This needs to be done because listen uses a cached bind
+  // Listening on a port should be deferred to any port and a port mapping should be emitted
+  //
+  net.Server.prototype._doListen = function _doListen() {
+    port = arguments[0];
+    port = toPort(port);
+    if(!port) {
+      return netListen.apply(this,arguments);
+    }
+    var desiredPort = port;
+    arguments[0] = undefined;
+    var result = netListen.apply(this,arguments);
+    var actualPort = this.address().port;
+    registerPort(desiredPort,actualPort);
+    return result;
+  }
+  
+  remote.heartbeat(carapace.config.id, function() {
+    process.nextTick(function(){require('module').Module.runMain()});
+  })
+})
