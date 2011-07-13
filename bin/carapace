@@ -99,7 +99,7 @@ function registerPort(desiredPort, actualPort) {
     conn.on('refuse',exitWithError)
     conn.on('drop',exitWithError);
     remote.proxy(carapace.config.id, desiredPort, actualPort, function(){
-      remote.end();
+      conn.end();
     });
   })
 }
@@ -114,7 +114,45 @@ if (carapace.config.root) {
 if (carapace.config.appPath) {
   process.chdir(carapace.config.appPath);
 }
+//
+// Bind clobber
+// fd, port | unix, addr?
+//
+// Used to prevent a socket being bound to a port and instead use a different port
+//
+binding.bind = function bind() {
+  var port = arguments[1];
+  port = toPort(port);
+  if(!port) {
+    return bindingBind.apply(this,arguments);
+  }
+  var desiredPort = port;
+  arguments[1] = undefined;
+  var result = bindingBind.apply(this,arguments);
+  var actualPort = binding.getsockname(arguments[0]).port;
+  registerPort(desiredPort,actualPort);
+  return result;
+}
 
+//
+// Server _doListen clobber
+//
+// This needs to be done because listen uses a cached bind
+// Listening on a port should be deferred to any port and a port mapping should be emitted
+//
+net.Server.prototype._doListen = function _doListen() {
+  port = arguments[0];
+  port = toPort(port);
+  if(!port) {
+    return netListen.apply(this,arguments);
+  }
+  var desiredPort = port;
+  arguments[0] = undefined;
+  var result = netListen.apply(this,arguments);
+  var actualPort = this.address().port;
+  registerPort(desiredPort,actualPort);
+  return result;
+}
 //
 // Start up the script as if it were the main module
 //
@@ -127,47 +165,6 @@ process.argv.splice(1,1,fs.realpathSync(require.resolve(path.join(process.cwd(),
 //
 require('module').Module._cache = {};
 getMasterClient(function(remote,conn) {
-  console.dir(arguments)
-  //
-  // Bind clobber
-  // fd, port | unix, addr?
-  //
-  // Used to prevent a socket being bound to a port and instead use a different port
-  //
-  binding.bind = function bind() {
-    var port = arguments[1];
-    port = toPort(port);
-    if(!port) {
-      return bindingBind.apply(this,arguments);
-    }
-    var desiredPort = port;
-    arguments[1] = undefined;
-    var result = bindingBind.apply(this,arguments);
-    var actualPort = binding.getsockname(arguments[0]).port;
-    registerPort(desiredPort,actualPort);
-    return result;
-  }
-  
-  //
-  // Server _doListen clobber
-  //
-  // This needs to be done because listen uses a cached bind
-  // Listening on a port should be deferred to any port and a port mapping should be emitted
-  //
-  net.Server.prototype._doListen = function _doListen() {
-    port = arguments[0];
-    port = toPort(port);
-    if(!port) {
-      return netListen.apply(this,arguments);
-    }
-    var desiredPort = port;
-    arguments[0] = undefined;
-    var result = netListen.apply(this,arguments);
-    var actualPort = this.address().port;
-    registerPort(desiredPort,actualPort);
-    return result;
-  }
-  
   remote.heartbeat(carapace.config.id, function() {
     process.nextTick(function(){require('module').Module.runMain()});
   })
