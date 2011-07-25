@@ -5,6 +5,7 @@ require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
 var util = require('util'),
     colors = require('colors'),
     argv = require('optimist').argv,
+    hookio = require('hook.io'),
     haibu = require('haibu');
 
 var help = [
@@ -32,7 +33,8 @@ if (argv.chroot) {
 
 var env    = argv.env || 'development',
     logger = typeof argv.logger !== 'undefined' ? argv.logger : true,
-    port   = argv.p   || 9002;
+    port   = argv.p   || 9002,
+    hookPort = argv.hook-port || 9003;
 
 haibu.utils.bin.getAddress(argv.a, function (err, address) {
   if (err) {
@@ -44,15 +46,21 @@ haibu.utils.bin.getAddress(argv.a, function (err, address) {
       env: env,
       port: port,
       host: address,
-      config: config
-    };
-  
-    haibu.drone.start(options, function () {
-      if (logger) {
-        haibu.use(haibu.plugins.logger);
+      config: config,
+      hook: {
+        name : 'haibu-hook',
+        'hook-port' : hookPort,
       }
-      
-      haibu.utils.showWelcome('api-server', address, port);
+    };
+    hook = new hookio.Hook(options.hook);
+    hook.start( function () {
+      haibu.drone.start(options, function () {
+        if (logger) {
+          haibu.use(haibu.plugins.logger);
+        }
+        
+        haibu.utils.showWelcome('api-server', address, port, hookPort);
+      });
     });
   });
 });

@@ -19,6 +19,7 @@
     "eventemitter2": "0.2.x",
     "eyes": "0.1.x",
     "forever": "0.6.x",
+    "hook.io" : "0.5.x",
     "haibu-carapace": "0.1.x", 
     "http-proxy": "0.5.x",
     "journey": ">= 0.4.0-pre-2",
