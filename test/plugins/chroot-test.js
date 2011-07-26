@@ -83,7 +83,7 @@ vows.describe('haibu/plugins/chroot').addBatch(
         }
       }
     },
-    /*"when passed a valid app json with npm dependencies": {
+    "when passed a valid app json with npm dependencies": {
       "the trySpawn() method": {
         topic: function (spawner) {
 
@@ -102,9 +102,9 @@ vows.describe('haibu/plugins/chroot').addBatch(
           result.process.kill();
         }
       }
-    }*/
+    }
   }
-})/*.addBatch({
+}).addBatch({
   "An instance of the Npm repository": {
     "the allDependencies() method": {
       topic: function () {
@@ -136,4 +136,4 @@ vows.describe('haibu/plugins/chroot').addBatch(
       }
     }
   }
-})*/.export(module);
+}).export(module);
