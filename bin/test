@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+var spawn = require('child_process').spawn,
+    path = require('path'),
+    fs = require('fs'),
+    async = require('async'),
+    findit = require('findit'),
+    winston = require('winston').cli();
+
+//
+// Grab the trailing arguments off of this script
+// and pass them through to the child
+//
+var testDir = path.join(__dirname, '..', 'test'),
+    args = process.argv.slice(2);
+    tests = findit.findSync(testDir);
+
+function streamChild (file, next) {
+  if (!/-test\.js$/.test(file)) {
+    return next();
+  }
+
+  var child = spawn('vows', [file.replace(testDir, '')].concat(args), { cwd: testDir });
+
+  winston.info('');
+  winston.info('vows ' + file.magenta + ' ' + args.join(' ').yellow);
+  winston.info('');
+
+  function streamData (level, data) {
+    data.toString().split('\n').forEach(function (line) { 
+      if (line && line.length > 0) {
+        winston[level](line);
+      }
+    });
+  }
+
+  child.stdout.on('data', streamData.bind(null, 'data'));
+  child.stderr.on('data', streamData.bind(null, 'error'));
+  child.on('exit', next.bind(null, null));
+}
+
+//
+// Remark: This only works for a one-level deep file structure. 
+// Need nesting? Use `findit` from @substack.
+//
+async.forEachSeries(tests, streamChild, function () {
+  winston.info('');
+  winston.info('Done running tests');
+  winston.info('');
+});

@@ -27,13 +27,8 @@ var ipAddress = '127.0.0.1',
 app.user = 'marak';
 
 vows.describe('haibu/drone/api').addBatch(
-  helpers.requireInit(function () {
-    server = haibu.drone.createServer({
-      minUptime: 0,
-      port: port,
-      host: ipAddress,
-      maxRestart: 1
-    });
+  helpers.requireStart(port, function (_server) {
+    server = _server;
   })
 ).addBatch({
   "When using the drone server": {
@@ -62,9 +57,7 @@ vows.describe('haibu/drone/api').addBatch(
       }
     },
     "a request against /drones/:id/start": {
-
       topic: function () {
-
         var options = {
           uri: 'http://localhost:9000/drones/test/start',
           method: 'POST',
@@ -134,7 +127,6 @@ vows.describe('haibu/drone/api').addBatch(
           request(options, this.callback);
         },
         "should respond with 200": function (error, response, body) {
-          console.log(body);
           assert.equal(response.statusCode, 200);
         }
       }

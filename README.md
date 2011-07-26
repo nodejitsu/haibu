@@ -18,6 +18,28 @@ haibu (which is Japanese for "hive") transforms node.js applications (using a [C
 
 `haibu` doesn't discriminate. If your environment supports node.js, you can install `haibu` and start up your own node.js cloud. This makes `haibu` an ideal tool for both development purposes and production usage since you can seamlessly setup haibu on your local machine, on utility computing providers (such as Amazon EC2 or Rackspace), on dedicated servers, or even on a mobile phone!
 
+## What are the parts of haibu?
+
+`haibu` consists of 3 main applications, while only 2 of those are required to run your own cloud.
+
+### haibu-balancer
+
+`haibu` includes a load balancer that can manage domain filtering and drone load balancing for you.
+The `haibu-balancer` application will spawn up a load-balancer for your haibu installation.
+This is entirely optional and not all deployments will want to use it.
+
+### haibu-server
+
+`haibu-server` is `haibu`'s main server and drone management application.
+This application is used to manage all of the drones that are active on a particular install as well as track installed apps.
+
+### haibu
+
+`haibu` is the main application used for interaction with a running haibu server.
+This application will help administration of drones and applications.
+
+# [Screencasts](http://www.youtube.com/playlist?list=...)
+
 # Installation
 
     [sudo] npm install haibu -g
@@ -229,7 +251,7 @@ The user attribute is required and will represent the user who started up a dron
 
 ###Repositories
 
-####git
+#### git
 
 This type of repository will pull a git repository into haibu and deploy its contents.
 
@@ -242,7 +264,7 @@ This type of repository will pull a git repository into haibu and deploy its con
 }
 ```
 
-####local
+#### local
 
 This type of repository will pull a directory relative to the `haibu-server` and deploy its contents.
 
@@ -255,33 +277,7 @@ This type of repository will pull a directory relative to the `haibu-server` and
 }
 ```
 
-####npm
-
-This type of repository will pull an `npm` package and deploy its contents.
-
-```json
-{
-  "repository": {
-    "type": "npm",
-    "url": "package-name"
-  }
-}
-```
-
-####remote
-
-This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
-
-```json
-{
-  "repository": {
-    "type": "remote",
-    "url": "http://path/to/archive"
-  }
-}
-```
-
-####tar
+#### tar
 
 This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
 
@@ -294,7 +290,7 @@ This type of repository will pull a remote archive relative to the `haibu-server
 }
 ```
 
-####zip
+#### zip
 
 This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
 
@@ -310,10 +306,24 @@ This type of repository will pull a remote archive relative to the `haibu-server
 ## Run Tests
 All of the `haibu` tests are written in [vows][0], and cover all of the use cases described above.
 <pre>
-  sudo vows test/**/*-test.js --spec
+  sudo bin/test --spec
 </pre>
 
 *If you copy and paste the above link, the test suite will attempt to connect to Rackspace for some of the remote file tests. You don't need to run these tests or use Rackspace to get started. We'll be improving our test runner soon to help make this process a bit more intuitive.*
+
+## FAQ
+
+### `jitsu` is not working with `haibu`
+
+`jitsu` is intended to work with the full production stack at Nodejitsu and should not be used with `haibu`.
+
+### My drones are not being balanced in a logical order
+
+Many browsers will submit multiple requests beyond a simple html page, favicons are a likely culprit.
+
+### Do I have to use `haibu-balancer`?
+
+No, `haibu-balancer` is a completely optional part of `haibu` and does not need to be run.
 
 #### Author: [Nodejitsu Inc.](http://www.nodejitsu.com)
 
