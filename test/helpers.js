@@ -75,10 +75,10 @@ helpers.start = function (port, callback) {
     haibu.drone.start({
       minUptime: 0,
       port: port,
-      maxRestart: 1,
+      maxRestart: 2,
       init: false
     }, function (err, server) {
-      return callback(err);
+      return callback(err, server);
     });
   });
 };
@@ -127,10 +127,10 @@ helpers.requireStart = function (port, started) {
       topic: function () {
         helpers.start(port, this.callback);
       },
-      "should respond with no error": function (err) {
+      "should respond with no error": function (err, server) {
         assert.isTrue(!err);
         if (started) {
-          started();
+          started(server);
         }
       }
     }
