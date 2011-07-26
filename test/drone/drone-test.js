@@ -28,7 +28,7 @@ var ipAddress = '127.0.0.1',
 //
 app.user = 'marak';
 
-vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
+vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
   "An instance of haibu.drone.Drone": {
     "when passed a valid app json": {
       topic: app,
@@ -48,32 +48,15 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
           assert.isObject(result);
           assert.include(this.drone.apps, app.name);
           assert.include(this.drone.apps[app.name].drones, result.drone.pid);
-
-          //this.drone.stop(app.name, function () { });
-        }
-      }
-    }
-  }
-}).addBatch({
-  "An instance of haibu.drone.Drone": {
-    "when passed a valid app json": {
-      topic: app,
-      "the stop() method when stopping a single drone": {
-        topic: function (create) {
-          var that = this;
-          var drone = this.drone = new Drone({
-            minUptime: 0,
-            host: ipAddress,
-            maxRestart: 1
-          });
-
-          drone.start(create, function (err, result) {
-            drone.stop(create.name, that.callback);
-          });
         },
-        "should respond with no error": function (err, result) {
-          assert.isNull(err);
-          assert.isUndefined(this.drone.apps[app.name]);
+        "the stop() method when stopping a single drone": {
+          topic: function (_, create) {
+            this.drone.stop(create.name, this.callback);
+          },
+          "should respond with no error": function (err, result) {
+            assert.isNull(err);
+            assert.isUndefined(this.drone.apps[app.name]);
+          }
         }
       }
     }
@@ -115,7 +98,7 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
           var drone = this.drone = new Drone({
             minUptime: 0,
             host: ipAddress,
-            maxRestart: 1
+            maxRestart: 2
           });
 
           drone.start(create, function (err, result) {
@@ -149,9 +132,10 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
           var drone = this.drone = new Drone({
             minUptime: 0,
             host: ipAddress,
-            maxRestart: 1
+            maxRestart: 2
           });
 
+          
           drone.start(create, function (err, result) {
             drone.start(create, function (err, result) {
               drone.start(create, function (err, result) {

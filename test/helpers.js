@@ -83,6 +83,12 @@ helpers.start = function (port, callback) {
   });
 };
 
+helpers.startHook = function (callback) {
+  helpers.init(function (err) {
+    haibu.drone.startHook(callback);
+  });
+}
+
 helpers.requireInit = function (initialized) {
   return {
     "This test requires haibu.init": {
@@ -90,7 +96,7 @@ helpers.requireInit = function (initialized) {
         helpers.init(this.callback);
       },
       "should respond with no error": function (err) {
-        assert.isTrue(typeof err === 'undefined');
+        assert.isTrue(!err);
         if (initialized) {
           initialized();
         }
@@ -98,6 +104,22 @@ helpers.requireInit = function (initialized) {
     }
   };
 };
+
+helpers.requireHook = function (initialized) {
+  return {
+    "This test requires haibu.running.hook": {
+      topic: function () {
+        helpers.startHook(this.callback);
+      },
+      "should respond with no error": function (err, hook) {
+        assert.isTrue(!err);
+        if (initialized) {
+          initialized();
+        }
+      }
+    }
+  }
+}
 
 helpers.requireStart = function (port, started) {
   return {
