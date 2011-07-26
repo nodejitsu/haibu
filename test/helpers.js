@@ -83,3 +83,42 @@ helpers.requireInit = function (initialized) {
     }
   };
 };
+
+helpers.requireStart = function (port, started) {
+  return {
+    "This test requires haibu.drone.start": {
+      topic: function () {
+        var that = this;
+
+        haibu.init({ env: 'development' }, function (err) {
+          if (err) {
+            return that.callback(err);
+          }
+          
+          haibu.use(haibu.plugins.logger, {
+            loggly: haibu.config.get('loggly'),
+            console: {
+              level: 'silly',
+              silent: true
+            }
+          });
+          
+          haibu.drone.start({
+            minUptime: 0,
+            port: port,
+            maxRestart: 1,
+            init: false
+          }, function (err) {
+            return err ? that.callback(err) : that.callback();
+          });
+        });
+      },
+      "should respond with no error": function (err) {
+        assert.isTrue(!err);
+        if (started) {
+          started();
+        }
+      }
+    }
+  };
+};

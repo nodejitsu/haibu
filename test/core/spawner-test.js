@@ -47,7 +47,7 @@ var appWithSubmodules = {
   }
 };
 
-vows.describe('haibu/core/spawner').addBatch(helpers.requireInit()).addBatch({
+vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatch({
   "An instance of haibu.Spawner" : {
     topic: function () {
       return new haibu.Spawner({ maxRestart: 1 });
