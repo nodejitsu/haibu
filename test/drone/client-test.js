@@ -27,18 +27,13 @@ var ipAddress = '127.0.0.1',
 app.user = 'marak';
 
 vows.describe('haibu/drone/api/client').addBatch(
-  helpers.requireInit(function () {
+  helpers.requireStart(port, function (_server) {
     client = new haibu.drone.Client({
       host: ipAddress,
       port: port
     });
 
-    server = haibu.drone.createServer({
-      minUptime: 0,
-      port: port,
-      host: ipAddress,
-      maxRestart: 1
-    });
+    server = _server;
   })
 ).addBatch({
   "When using the drone client": {

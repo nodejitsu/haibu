@@ -33,8 +33,9 @@ var repo, npmApp, app = {
   }
 };
 
-vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
-.addBatch({
+vows.describe('haibu/plugins/chroot').addBatch(
+  helpers.requireHook()
+).addBatch({
   "This test requires the chroot plugin": {
     topic: function () {
       haibu.use(haibu.plugins.chroot, this.callback);
@@ -82,7 +83,7 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
         }
       }
     },
-    "when passed a valid app json with npm dependencies": {
+    /*"when passed a valid app json with npm dependencies": {
       "the trySpawn() method": {
         topic: function (spawner) {
 
@@ -101,9 +102,9 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
           result.process.kill();
         }
       }
-    }
+    }*/
   }
-}).addBatch({
+})/*.addBatch({
   "An instance of the Npm repository": {
     "the allDependencies() method": {
       topic: function () {
@@ -135,4 +136,4 @@ vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit())
       }
     }
   }
-}).export(module);
+})*/.export(module);

@@ -47,7 +47,7 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
           assert.isNotNull(result);
           assert.isObject(result);
           assert.include(this.drone.apps, app.name);
-          assert.include(this.drone.apps[app.name].drones, result.drone.pid);
+          assert.include(this.drone.apps[app.name].drones, result.pid);
         },
         "the stop() method when stopping a single drone": {
           topic: function (_, create) {
