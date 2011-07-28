@@ -38,8 +38,6 @@ This application is used to manage all of the drones that are active on a partic
 `haibu` is the main application used for interaction with a running haibu server.
 This application will help administration of drones and applications.
 
-# [Screencasts](http://www.youtube.com/playlist?list=...)
-
 # Installation
 
     [sudo] npm install haibu -g
