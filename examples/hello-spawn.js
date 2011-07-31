@@ -16,7 +16,7 @@ var app = {
    "domain": "devjitsu.com",
    "repository": {
      "type": "git",
-     "url": "https://github.com/Marak/hellonode.git",
+     "url": "https://github.com/Marak/hellonode.git"
    },
    "scripts": {
      "start": "server.js"

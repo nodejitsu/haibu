@@ -146,7 +146,7 @@ Lets look at the sample data we sent to the `haibu-server` in the above example
    "domain": "devjitsu.com",
    "repository": {
      "type": "git",
-     "url": "https://github.com/Marak/hellonode.git",
+     "url": "https://github.com/Marak/hellonode.git"
    },
    "scripts": {
      "start": "server.js"
