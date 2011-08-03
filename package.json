@@ -38,6 +38,6 @@
     "haibu-balancer": "./bin/haibu-balancer",
     "haibu": "./bin/haibu"
   },
-  "scripts": { "test": "sudo vows test/**/*-test.js" },
+  "scripts": { "test": "sudo bin/test --spec" },
   "engines": { "node": "0.4.x || 0.5.x" }
 }
