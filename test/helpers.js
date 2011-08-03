@@ -49,7 +49,7 @@ helpers.loadConfig = function () {
 };
 
 Object.defineProperty(helpers, 'auth', {
-  get: function() {
+  get: function () {
     if (helpers.loadConfig() !== null) {
       return helpers.loadConfig().auth;
     }
