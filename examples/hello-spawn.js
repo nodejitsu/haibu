@@ -1,7 +1,5 @@
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var eyes = require('eyes'),
-    haibu = require('haibu');
+    haibu = require('../lib/haibu');
 
 // Create a new client for communicating with the haibu server
 var client = new haibu.drone.Client({
