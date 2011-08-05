@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var util = require('util'),
     colors = require('colors'),
     argv = require('optimist').argv,
-    haibu = require('haibu');
+    haibu = require('../lib/haibu');
 
 var help = [
     'usage: haibu-balancer [options]',

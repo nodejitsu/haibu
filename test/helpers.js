@@ -6,17 +6,15 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
-var util = require('util'),
-    assert = require('assert'),
+var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
-    haibu = require('haibu');
+    util = require('util'),
+    haibu = require('../lib/haibu');
 
-var testConfig, helpers = exports;
-
-var configMissing = false;
+var helpers = exports,
+    configMissing = false,
+    testConfig;
 
 function showConfigError () {
   if (!configMissing) {

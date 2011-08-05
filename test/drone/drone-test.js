@@ -5,19 +5,16 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-require.paths.unshift(require('path').join(__dirname, '..'));
-
-var sys = require('sys'),
-    vows = require('vows'),
-    helpers = require('../helpers'),
-    path = require('path'),
-    fs = require('fs'),
-    eyes = require('eyes'),
-    assert = require('assert'),
+var assert = require('assert'),
     exec = require('child_process').exec,
-    data = require('fixtures/apps'),
-    haibu = require('haibu'),
+    fs = require('fs'),
+    path = require('path'),
+    sys = require('sys'),
+    eyes = require('eyes'),
+    vows = require('vows'),
+    data = require('../fixtures/apps'),
+    helpers = require('../helpers'),
+    haibu = require('../../lib/haibu'),
     Drone = haibu.drone.Drone;
 
 var ipAddress = '127.0.0.1',

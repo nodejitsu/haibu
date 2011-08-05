@@ -5,16 +5,14 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-
-var vows = require('vows'),
+var assert = require('assert'),
+    exec = require('child_process').exec,
     path = require('path'),
     eyes = require('eyes'),
-    assert = require('assert'),
-    exec = require('child_process').exec,
     winston = require('winston'),
-    haibu = require('haibu'),
-    helpers = require('./../helpers');
+    vows = require('vows'),
+    haibu = require('../../lib/haibu'),
+    helpers = require('../helpers');
 
 vows.describe('haibu/plugins/logger').addBatch(helpers.requireInit()).addBatch({
   "When using the log module": {

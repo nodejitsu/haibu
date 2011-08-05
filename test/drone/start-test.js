@@ -5,15 +5,12 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-require.paths.unshift(require('path').join(__dirname, '..'));
-
-var sys = require('sys'),
-    assert = require('assert'),
+var assert = require('assert'),
+    path = require('path'),
+    sys = require('sys'),
     vows = require('vows'),
     helpers = require('../helpers'),
-    path = require('path'),
-    haibu = require('haibu');
+    haibu = require('../../lib/haibu');
 
 vows.describe('haibu/drone/start').addBatch(helpers.requireInit()).addBatch({
   "When using haibu": {

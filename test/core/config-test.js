@@ -5,13 +5,11 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-
 var vows = require('vows'),
     helpers = require('../helpers'),
     assert = require('assert'),
     eyes = require('eyes'),
-    haibu = require('haibu');
+    haibu = require('../../lib/haibu');
 
 vows.describe('haibu/config').addBatch({
   "When using the haibu config module": {

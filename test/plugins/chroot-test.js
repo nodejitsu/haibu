@@ -5,17 +5,15 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-
-var vows = require('vows'),
-    helpers = require('../helpers'),
-    path = require('path'),
-    fs = require('fs'),
-    eyes = require('eyes'),
+var assert = require('assert'),
     exec = require('child_process').exec,
-    assert = require('assert'),
-    haibu = require('haibu'),
-    config = require('haibu').config;
+    fs = require('fs'),
+    path = require('path'),
+    eyes = require('eyes'),
+    vows = require('vows'),
+    helpers = require('../helpers'),
+    haibu = require('../../lib/haibu'),
+    config = haibu.config;
 
 var repo, npmApp, app = {
   "name": "test",

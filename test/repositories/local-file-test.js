@@ -5,15 +5,13 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-
-var vows = require('vows'),
-    path = require('path'),
+var assert = require('assert'),
     fs = require('fs'),
+    path = require('path'),
     eyes = require('eyes'),
-    assert = require('assert'),
-    haibu = require('haibu'), 
-    helpers = require('./../helpers');
+    vows = require('vows'),
+    helpers = require('../helpers'),
+    haibu = require('../../lib/haibu');
 
 var ipAddress = '127.0.0.1', 
     port = 9000, 

@@ -5,16 +5,14 @@
  *
  */
 
-require.paths.unshift(require('path').join(__dirname, '..', '..', 'lib'));
-
 var vows = require('vows'),
     helpers = require('../helpers'),
     path = require('path'),
     fs = require('fs'),
     eyes = require('eyes'),
     assert = require('assert'),
-    haibu = require('haibu'),
-    config = require('haibu').config;
+    haibu = require('../../lib/haibu'),
+    config = haibu.config;
 
 var app = {
   "name": "test",

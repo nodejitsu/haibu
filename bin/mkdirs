@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-require.paths.unshift(require('path').join(__dirname, '..', 'lib'));
-
 var sys = require('sys'),
-    haibu = require('haibu');
+    haibu = require('../lib/haibu');
 
 haibu.utils.initDirectories(function (err, paths) {
   if (err) {
