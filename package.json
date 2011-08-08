@@ -32,6 +32,9 @@
     "watch": "0.3.x",
     "winston": "0.3.x"
   },
+  "devDependencies": {
+    "findit": "0.1.x"
+  },
   "main": "./lib/haibu",
   "bin": {
     "haibu-server": "./bin/haibu-server",
