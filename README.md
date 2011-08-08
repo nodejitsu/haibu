@@ -10,7 +10,7 @@ haibu is the open-source [node.js](http://nodejs.org) project for spawning and m
 
 # How does it work?
 
-haibu (which is Japanese for "hive") transforms node.js applications (using a [Carapace](https://github.com/nodejitsu/haibu/blob/master/bin/carapace)) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase.
+haibu (which is Japanese for "hive") transforms node.js applications (using a [Carapace](https://github.com/nodejitsu/haibu-carapace)) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase.
 
 `haibu` builds on this concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. At a low level, haibu's API is exposed as a RESTFul HTTP webservice. Any system that supports basic HTTP requests can communicate with a haibu server. If you are working in Node.js, haibu comes with a high-level Node.js API client.
 
