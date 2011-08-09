@@ -47,8 +47,7 @@ vows.describe('haibu/config').addBatch({
   "When using the haibu config module": {
     "it should have the correct default config": function () {
       var include = {
-        directories: ['apps', 'log', 'packages', 'tmp'],
-        npm:         ['out', 'log']
+        directories: ['apps', 'packages', 'tmp'],
       };
 
       Object.keys(include).forEach(function (key) {
