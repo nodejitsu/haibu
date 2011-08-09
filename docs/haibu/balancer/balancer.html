@@ -1,4 +1,4 @@
-<!DOCTYPE html>  <html> <head>   <title>balancer.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="../../docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="../..//haibu/balancer/balancer.html">                 haibu/balancer/balancer.html               </a>                                           <a class="source" href="../..//haibu/balancer/index.html">                 haibu/balancer/index.html               </a>                                           <a class="source" href="../..//haibu/core/config.html">                 haibu/core/config.html               </a>                                           <a class="source" href="../..//haibu/core/process-store.html">                 haibu/core/process-store.html               </a>                                           <a class="source" href="../..//haibu/core/spawner.html">                 haibu/core/spawner.html               </a>                                           <a class="source" href="../..//haibu/drone/client.html">                 haibu/drone/client.html               </a>                                           <a class="source" href="../..//haibu/drone/drone.html">                 haibu/drone/drone.html               </a>                                           <a class="source" href="../..//haibu/drone/index.html">                 haibu/drone/index.html               </a>                                           <a class="source" href="../..//haibu/drone/service.html">                 haibu/drone/service.html               </a>                                           <a class="source" href="../..//haibu/plugins/changelog.html">                 haibu/plugins/changelog.html               </a>                                           <a class="source" href="../..//haibu/plugins/chroot.html">                 haibu/plugins/chroot.html               </a>                                           <a class="source" href="../..//haibu/plugins/logger.html">                 haibu/plugins/logger.html               </a>                                           <a class="source" href="../..//haibu/repositories/git.html">                 haibu/repositories/git.html               </a>                                           <a class="source" href="../..//haibu/repositories/index.html">                 haibu/repositories/index.html               </a>                                           <a class="source" href="../..//haibu/repositories/local-file.html">                 haibu/repositories/local-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/npm.html">                 haibu/repositories/npm.html               </a>                                           <a class="source" href="../..//haibu/repositories/remote-file.html">                 haibu/repositories/remote-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/repository.html">                 haibu/repositories/repository.html               </a>                                           <a class="source" href="../..//haibu/repositories/tar.html">                 haibu/repositories/tar.html               </a>                                           <a class="source" href="../..//haibu/repositories/zip.html">                 haibu/repositories/zip.html               </a>                                           <a class="source" href="../..//haibu/utils/base64.html">                 haibu/utils/base64.html               </a>                                           <a class="source" href="../..//haibu/utils/bin.html">                 haibu/utils/bin.html               </a>                                           <a class="source" href="../..//haibu/utils/index.html">                 haibu/utils/index.html               </a>                                           <a class="source" href="../..//haibu/utils/npm.html">                 haibu/utils/npm.html               </a>                                           <a class="source" href="../..//haibu.html">                 haibu.html               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               balancer.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*</span>
+<!DOCTYPE html>  <html> <head>   <title>balancer.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="../../docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="../..//haibu/balancer/balancer.html">                 haibu/balancer/balancer.html               </a>                                           <a class="source" href="../..//haibu/balancer/index.html">                 haibu/balancer/index.html               </a>                                           <a class="source" href="../..//haibu/cli/apps.html">                 haibu/cli/apps.html               </a>                                           <a class="source" href="../..//haibu/cli/config.html">                 haibu/cli/config.html               </a>                                           <a class="source" href="../..//haibu/core/config.html">                 haibu/core/config.html               </a>                                           <a class="source" href="../..//haibu/core/spawner.html">                 haibu/core/spawner.html               </a>                                           <a class="source" href="../..//haibu/drone/client.html">                 haibu/drone/client.html               </a>                                           <a class="source" href="../..//haibu/drone/drone.html">                 haibu/drone/drone.html               </a>                                           <a class="source" href="../..//haibu/drone/index.html">                 haibu/drone/index.html               </a>                                           <a class="source" href="../..//haibu/drone/service.html">                 haibu/drone/service.html               </a>                                           <a class="source" href="../..//haibu/plugins/changelog.html">                 haibu/plugins/changelog.html               </a>                                           <a class="source" href="../..//haibu/plugins/chroot.html">                 haibu/plugins/chroot.html               </a>                                           <a class="source" href="../..//haibu/plugins/logger.html">                 haibu/plugins/logger.html               </a>                                           <a class="source" href="../..//haibu/repositories/git.html">                 haibu/repositories/git.html               </a>                                           <a class="source" href="../..//haibu/repositories/index.html">                 haibu/repositories/index.html               </a>                                           <a class="source" href="../..//haibu/repositories/local-file.html">                 haibu/repositories/local-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/npm.html">                 haibu/repositories/npm.html               </a>                                           <a class="source" href="../..//haibu/repositories/remote-file.html">                 haibu/repositories/remote-file.html               </a>                                           <a class="source" href="../..//haibu/repositories/repository.html">                 haibu/repositories/repository.html               </a>                                           <a class="source" href="../..//haibu/repositories/tar.html">                 haibu/repositories/tar.html               </a>                                           <a class="source" href="../..//haibu/repositories/zip.html">                 haibu/repositories/zip.html               </a>                                           <a class="source" href="../..//haibu/utils/base64.html">                 haibu/utils/base64.html               </a>                                           <a class="source" href="../..//haibu/utils/bin.html">                 haibu/utils/bin.html               </a>                                           <a class="source" href="../..//haibu/utils/index.html">                 haibu/utils/index.html               </a>                                           <a class="source" href="../..//haibu/utils/npm.html">                 haibu/utils/npm.html               </a>                                           <a class="source" href="../..//haibu.html">                 haibu.html               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               balancer.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="cm">/*</span>
 <span class="cm"> * proxy.js: Responsible for proxying across all applications available to haibu.</span>
 <span class="cm"> *</span>
 <span class="cm"> * (C) 2010, Nodejitsu Inc.</span>
@@ -10,10 +10,9 @@
     <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
     <span class="nx">events</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">),</span>
     <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">),</span>
-    <span class="nx">colors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">),</span>
     <span class="nx">qs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;querystring&#39;</span><span class="p">),</span>
     <span class="nx">httpProxy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">),</span>
-    <span class="nx">haibu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;haibu&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>@matchers</h3>
+    <span class="nx">haibu</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../../haibu&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>@matchers</h3>
 
 <p>Regular expression parsers for handling different
 persistent storage files used by <code>haibu</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">matchers</span> <span class="o">=</span> <span class="p">{</span>
@@ -24,38 +23,19 @@ persistent storage files used by <code>haibu</code>.</p>             </td>      
 <h4>@options {Object} Options for this instance.</h4>
 
 <p>Constructor function for the <code>haibu</code> Balancer responsible
-for load balancing across all applications know to haibu on 
+for load balancing across all applications know to haibu on
 this machine.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">Balancer</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">Balancer</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-  
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Setup shared state for the <code>haibu.ProcessStore</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">active</span>    <span class="o">=</span> <span class="p">{};</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">processes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">haibu</span><span class="p">.</span><span class="nx">ProcessStore</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Load files into Memory when they are found 
-in the ProcessStore</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">processes</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">_add</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-      <span class="nx">self</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;created&#39;</span><span class="p">,</span> <span class="nx">file</span><span class="p">);</span>
-      <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;balancer:created&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">file</span><span class="o">:</span> <span class="nx">file</span> <span class="p">});</span>
-    <span class="p">});</span>
-  <span class="p">});</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Remove files from the Balancer when they are removed
-from the ProcessStore.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">processes</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;removed&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">_remove</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;removed&#39;</span><span class="p">,</span> <span class="nx">file</span><span class="p">);</span>
-    <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;balancer:removed&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">file</span><span class="o">:</span> <span class="nx">file</span> <span class="p">});</span>
-  <span class="p">});</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Load all relevant files on initial load.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">processes</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">function</span> <span class="nx">checkFile</span> <span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">files</span><span class="p">[</span><span class="nx">file</span><span class="p">].</span><span class="nx">isFile</span><span class="p">()</span> <span class="o">?</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_add</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="o">:</span> <span class="nx">next</span><span class="p">();</span>
-    <span class="p">}</span>
 
-    <span class="nx">async</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">files</span><span class="p">),</span> <span class="nx">checkFile</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">err</span> <span class="o">?</span> <span class="nx">self</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;ready&#39;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">})</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Start monitoring for process files.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">processes</span><span class="p">.</span><span class="nx">monitor</span><span class="p">();</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Setup the balancing proxy using <code>node-http-proxy</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">httpProxy</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">HttpProxy</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
-  
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Setup shared state for the <code>haibu.ProcessStore</code>.</p>
+
+<p>app : {name:...,user:...,drones:...[],domains:...[],proxies:{desiredport:[{droneid:,port:}]}}</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">users</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>user : apps{ name: app}</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">domains</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Domain : app</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">drones</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>id : {id: ..., user : ..., app:  ..., proxies: ...}</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="p">};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">proxies</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">active</span>    <span class="o">=</span> <span class="p">{};</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>Setup the balancing proxy using <code>node-http-proxy</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">this</span><span class="p">.</span><span class="nx">httpProxy</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">HttpProxy</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+
   <span class="k">this</span><span class="p">.</span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">req</span><span class="p">.</span><span class="nx">ptime</span><span class="p">;</span>
     <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;balancer:proxy&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -64,185 +44,253 @@ from the ProcessStore.</p>             </td>             <td class="code">      
       <span class="nx">time</span><span class="o">:</span> <span class="nx">diff</span> <span class="o">+</span> <span class="s1">&#39;ms&#39;</span>
     <span class="p">});</span>
   <span class="p">});</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Inherit from <code>events.EventEmitter</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">util</span><span class="p">.</span><span class="nx">inherits</span><span class="p">(</span><span class="nx">Balancer</span><span class="p">,</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h3>function handle (req, res)</h3>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Inherit from <code>events.EventEmitter</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">util</span><span class="p">.</span><span class="nx">inherits</span><span class="p">(</span><span class="nx">Balancer</span><span class="p">,</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h3>function handle (req, res)</h3>
 
 <h4>@req {ServerRequest} Incoming server request to balancer</h4>
 
 <h4>@res {ServerResponse} Outoing server request to write to.</h4>
 
 <p>Attempts to proxy the incoming request to the specified application
-by using the <code>req.headers.host</code> property.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">handle</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">findDrone</span><span class="p">(</span><span class="nx">req</span><span class="p">),</span> <span class="nx">drone</span><span class="p">;</span>
+by using the <code>req.headers.host</code> property.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">handle</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">desiredPort</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+      <span class="nx">host</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">host</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span>
+      <span class="nx">domain</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
   
+  <span class="kd">var</span> <span class="nx">apps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">domains</span><span class="p">[</span><span class="nx">domain</span><span class="p">],</span> <span class="nx">app</span><span class="p">,</span> <span class="nx">drone</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">apps</span> <span class="o">||</span> <span class="o">!</span><span class="nx">apps</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">serveText</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">code</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span>
+      <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;App not found for domain: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">host</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">droneMappings</span><span class="p">,</span> <span class="nx">droneMapping</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">apps</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">app</span> <span class="o">=</span> <span class="nx">apps</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="nx">droneMappings</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">proxies</span><span class="p">[</span><span class="nx">desiredPort</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">drones</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">droneMapping</span> <span class="o">=</span> <span class="nx">droneMappings</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+      <span class="nx">droneMappings</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">droneMapping</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">droneMapping</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">serveText</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">code</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span>
+      <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;Drone not found for : &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nx">port</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">droneId</span> <span class="o">=</span> <span class="nx">droneMapping</span><span class="p">.</span><span class="nx">droneId</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">actualPort</span> <span class="o">=</span> <span class="nx">droneMapping</span><span class="p">.</span><span class="nx">port</span><span class="p">;</span>
+
   <span class="nx">req</span><span class="p">.</span><span class="nx">ptime</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
   <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;balancer:incoming&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">);</span>
-  
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">record</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">serveText</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">code</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span> 
-      <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;Application not found for: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">host</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
-  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">record</span><span class="p">.</span><span class="nx">drones</span> <span class="o">||</span> <span class="nx">record</span><span class="p">.</span><span class="nx">drones</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">serveText</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
-      <span class="nx">code</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span> 
-      <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;No drones for: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">host</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
-  
-  <span class="nx">drone</span> <span class="o">=</span> <span class="nx">record</span><span class="p">.</span><span class="nx">drones</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">proxyRequest</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">drone</span><span class="p">);</span>
-  <span class="nx">record</span><span class="p">.</span><span class="nx">drones</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">drone</span><span class="p">);</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h3>function findDrone (req)</h3>
 
-<h4>@req {ServerRequest} Incoming server request to find drones against</h4>
-
-<p>Attempts to find a drone for the incoming server request
-by cross-referencing <code>req.headers.host</code> against the <code>domain</code>
-or <code>domains</code> property of each application known to <code>haibu</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">findDrone</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> 
-      <span class="nx">host</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">host</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span>
-      <span class="nx">domain</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
-  
-  <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">];</span>
-  <span class="p">}).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">rec</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">rec</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">domain</span> <span class="o">===</span> <span class="nx">domain</span> <span class="o">||</span> <span class="p">(</span><span class="nx">rec</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">domains</span>
-      <span class="o">&amp;&amp;</span> <span class="nx">rec</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">domains</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">domain</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-  <span class="p">})[</span><span class="mi">0</span><span class="p">];</span>  
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <h3>function serveText (req, res, data)</h3>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">proxyRequest</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">droneMapping</span><span class="p">);</span>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h3>function serveText (req, res, data)</h3>
 
 <h4>@req {ServerRequest} Incoming server request</h4>
 
 <h4>@res {ServerResponse} Outoing server request to write to.</h4>
 
-<p>Writes <code>data.message</code> to the outgoing <code>res</code> along with any 
+<p>Writes <code>data.message</code> to the outgoing <code>res</code> along with any
 metadata passed as <code>data.meta</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">serveText</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">message</span><span class="p">,</span>
-      <span class="nx">diff</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">req</span><span class="p">.</span><span class="nx">ptime</span><span class="p">;</span> 
-  
+      <span class="nx">diff</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">req</span><span class="p">.</span><span class="nx">ptime</span><span class="p">;</span>
+
   <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">text</span> <span class="o">=</span> <span class="p">[</span><span class="nx">message</span><span class="p">,</span> <span class="nx">qs</span><span class="p">.</span><span class="nx">unescape</span><span class="p">(</span><span class="nx">qs</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">meta</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="p">))].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39; | &#39;</span><span class="p">);</span>
   <span class="p">}</span>
-  
+
   <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span> <span class="p">{</span>
     <span class="s1">&#39;Content-Length&#39;</span><span class="o">:</span> <span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
     <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span>
   <span class="p">});</span>
-  
+
   <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">method</span> <span class="o">!==</span> <span class="s1">&#39;HEAD&#39;</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
   <span class="p">}</span>
-  
+
   <span class="nx">haibu</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;balancer:serve&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="nx">text</span><span class="o">:</span> <span class="nx">text</span><span class="p">,</span>
     <span class="nx">code</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span>
     <span class="nx">time</span><span class="o">:</span> <span class="nx">diff</span> <span class="o">+</span> <span class="s1">&#39;ms&#39;</span>
   <span class="p">});</span>
-  
+
   <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h3>function close ()</h3>
+<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h3>function close ()</h3>
 
 <p>Closes this balancer by shutting down the child
 <code>HttpProxy</code> instance.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">close</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h3>function _add (file, callback)</h3>
+<span class="p">};</span>
 
-<h4>@file {string} Filename to add to this instance.</h4>
-
-<h4>@callback {function} <strong>Optional</strong> Continuation to respond to when complete.</h4>
-
-<p>Adds the data in the specified <code>file</code> to the managed state for 
-this balancer instance. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_add</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addApp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">userApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">]</span> <span class="o">=</span> <span class="p">{});</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Clean the app if it already exists</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="k">if</span> <span class="p">(</span><span class="nx">userApps</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nx">destroyApp</span><span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">app</span><span class="p">,</span> <span class="nx">add</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">add</span><span class="p">();</span>
+  <span class="p">}</span>
   
-  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">callback</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="kd">function</span> <span class="nx">add</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">drones</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">userApps</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">app</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">app</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">app</span><span class="p">.</span><span class="nx">active</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span>
-    
-    <span class="k">try</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">()),</span>
-          <span class="nx">app</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_parseFilename</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">domain</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">domain</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">domain</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">domainApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">domains</span><span class="p">[</span><span class="nx">domain</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">domains</span><span class="p">[</span><span class="nx">domain</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]);</span>
+      <span class="nx">domainApps</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">domain</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">domains</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">app</span><span class="p">.</span><span class="nx">domains</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">domain</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">domainApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">domains</span><span class="p">[</span><span class="nx">domain</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">domains</span><span class="p">[</span><span class="nx">domain</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]);</span>
+        <span class="nx">domainApps</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">domain</span><span class="p">);</span>
+      <span class="p">})</span>
+    <span class="p">}</span>
+    <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">deactivateApp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">userApps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; does not exists.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">userApps</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">active</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">activateApp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span>
+      <span class="nx">userApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">],</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">userApps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; does not exists.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">app</span> <span class="o">=</span> <span class="nx">userApps</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; has no app &quot;&#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">app</span><span class="p">.</span><span class="nx">active</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">destroyApp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span>
+      <span class="nx">userApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">],</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+      <span class="nx">empty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
       
-      <span class="k">if</span> <span class="p">(</span><span class="nx">app</span> <span class="o">&amp;&amp;</span> <span class="nx">app</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">switch</span> <span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">case</span> <span class="s1">&#39;package&#39;</span><span class="o">:</span>
-            <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">||</span> <span class="p">{</span>
-              <span class="nx">drones</span><span class="o">:</span> <span class="p">[]</span>
-            <span class="p">};</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">userApps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; does not exists.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">app</span> <span class="o">=</span> <span class="nx">userApps</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; has no app &quot;&#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="k">delete</span> <span class="nx">userApps</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="k">in</span> <span class="nx">userApps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">empty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">empty</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">];</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span>
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addDrone</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">droneid</span><span class="p">,</span> <span class="nx">app</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span>
+      <span class="nx">userApps</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">users</span><span class="p">[</span><span class="nx">user</span><span class="p">],</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+      <span class="nx">appDrones</span><span class="p">,</span>
+      <span class="nx">drone</span><span class="p">;</span>
+      
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">userApps</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; does not exists.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">app</span> <span class="o">=</span> <span class="nx">userApps</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;User &quot;&#39;</span> <span class="o">+</span> <span class="nx">user</span> <span class="o">+</span> <span class="s1">&#39;&quot; has no app &quot;&#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="nx">appDrones</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">drones</span> <span class="o">||</span> <span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">drones</span> <span class="o">=</span> <span class="p">[]);</span>
+  <span class="nx">drone</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">drones</span><span class="p">[</span><span class="nx">droneid</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="nx">droneid</span><span class="p">,</span>
+    <span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">,</span>
+    <span class="nx">app</span><span class="o">:</span> <span class="nx">app</span><span class="p">,</span>
+    <span class="nx">proxies</span><span class="o">:</span> <span class="p">{}</span>
+  <span class="p">};</span>
+  
+  <span class="nx">appDrones</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">drone</span><span class="p">);</span>
+  
+  <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span>
 
-            <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">json</span><span class="p">;</span>
-            <span class="k">break</span><span class="p">;</span>
-          <span class="k">case</span> <span class="s1">&#39;pid&#39;</span><span class="o">:</span>
-            <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">||</span> <span class="p">{</span>
-              <span class="nx">drones</span><span class="o">:</span> <span class="p">[]</span>
-            <span class="p">};</span>
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">destroyDrone</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">droneid</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">drone</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">drones</span><span class="p">[</span><span class="nx">droneid</span><span class="p">],</span>
+      <span class="nx">app</span> <span class="o">=</span> <span class="nx">drone</span><span class="p">.</span><span class="nx">app</span><span class="p">,</span>
+      <span class="nx">appDrones</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">drones</span><span class="p">,</span>
+      <span class="nx">l</span> <span class="o">=</span> <span class="nx">appDrones</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+      <span class="nx">droneProxies</span> <span class="o">=</span> <span class="nx">drone</span><span class="p">.</span><span class="nx">proxies</span><span class="p">,</span>
+      <span class="nx">appProxies</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">proxies</span><span class="p">,</span>
+      <span class="nx">mapping</span><span class="p">;</span>
 
-            <span class="nx">self</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">drones</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-              <span class="nx">pid</span><span class="o">:</span> <span class="nx">json</span><span class="p">.</span><span class="nx">pid</span><span class="p">,</span>
-              <span class="nx">host</span><span class="o">:</span> <span class="nx">json</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
-              <span class="nx">port</span><span class="o">:</span> <span class="nx">json</span><span class="p">.</span><span class="nx">port</span>
-            <span class="p">});</span>
-            <span class="k">break</span><span class="p">;</span>
-        <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">drone</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;Drone &quot;&#39;</span> <span class="o">+</span> <span class="nx">droneid</span> <span class="o">+</span> <span class="s1">&#39;&quot; does not exists.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">drones</span><span class="p">[</span><span class="nx">droneid</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">appDrones</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">===</span> <span class="nx">drone</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">appDrones</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">desiredPort</span> <span class="k">in</span> <span class="nx">droneProxies</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">mappings</span> <span class="o">=</span> <span class="nx">appProxies</span><span class="p">[</span><span class="nx">desiredPort</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">mappings</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">mappings</span> <span class="o">=</span> <span class="nx">mappings</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">droneMapping</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">droneMapping</span><span class="p">.</span><span class="nx">droneId</span> <span class="o">!==</span> <span class="nx">droneid</span><span class="p">;</span>
+      <span class="p">});</span>
+      
+      <span class="k">if</span> <span class="p">(</span><span class="nx">mappings</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="nx">appProxies</span><span class="p">[</span><span class="nx">desiredPort</span><span class="p">];</span>
       <span class="p">}</span>
-
-      <span class="k">return</span> <span class="nx">callback</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">()</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">catch</span> <span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">callback</span> <span class="o">?</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">ex</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">});</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h3>function _remove (file)</h3>
-
-<h4>@file {string} Filename to remove from this instance</h4>
-
-<p>Removes the data in the specified <code>file</code> from the managed state
-for this instance.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_remove</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_parseFilename</span><span class="p">(</span><span class="nx">file</span><span class="p">),</span> <span class="nx">index</span><span class="p">;</span>
-  
-  <span class="k">if</span> <span class="p">(</span><span class="nx">app</span> <span class="o">&amp;&amp;</span> <span class="nx">app</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">switch</span> <span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">case</span> <span class="s1">&#39;package&#39;</span><span class="o">:</span>
-        <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">];</span>
-        <span class="k">break</span><span class="p">;</span>
-      <span class="k">case</span> <span class="s1">&#39;pid&#39;</span><span class="o">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">drones</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">index</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">drones</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
-            <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">pid</span><span class="p">;</span>
-          <span class="p">}).</span><span class="nx">indexOf</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">drone</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
-          
-          <span class="k">this</span><span class="p">.</span><span class="nx">active</span><span class="p">[</span><span class="nx">app</span><span class="p">.</span><span class="nx">name</span><span class="p">].</span><span class="nx">drones</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <h3>function _parseFilename (file)</h3>
-
-<h4>@file {string} Filename to parse</h4>
-
-<p>Parses the data out of the specified <code>file</code> to be used
-in the managed application state for this instance.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_parseFilename</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">file</span><span class="p">),</span>
-      <span class="nx">match</span><span class="p">,</span> <span class="nx">drone</span><span class="p">,</span> <span class="nx">app</span><span class="p">;</span>
   
-  <span class="k">if</span> <span class="p">(</span><span class="nx">matchers</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">base</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;package&#39;</span><span class="p">,</span>
-      <span class="nx">name</span><span class="o">:</span> <span class="nx">base</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">matchers</span><span class="p">.</span><span class="nx">app</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">proxies</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">mapping</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">droneId</span> <span class="k">in</span> <span class="nx">mapping</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">portMapping</span> <span class="o">=</span> <span class="nx">mapping</span><span class="p">[</span><span class="nx">droneId</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">desiredPort</span> <span class="k">in</span> <span class="nx">portMapping</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">proxy</span><span class="p">(</span><span class="nx">droneId</span><span class="p">,</span> <span class="nx">desiredPort</span><span class="p">,</span> <span class="nx">portMapping</span><span class="p">[</span><span class="nx">desiredPort</span><span class="p">]);</span>
     <span class="p">}</span>
   <span class="p">}</span>
-  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">matchers</span><span class="p">.</span><span class="nx">pid</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">base</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nx">match</span> <span class="o">=</span> <span class="nx">base</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">matchers</span><span class="p">.</span><span class="nx">pid</span><span class="p">);</span>
-    <span class="k">return</span> <span class="p">{</span>
-      <span class="nx">type</span><span class="o">:</span>  <span class="s1">&#39;pid&#39;</span><span class="p">,</span>
-      <span class="nx">name</span><span class="o">:</span>  <span class="nx">match</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-      <span class="nx">drone</span><span class="o">:</span> <span class="nx">match</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="p">};</span>
-  <span class="p">}</span>
   
-  <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">proxy</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">droneid</span><span class="p">,</span> <span class="nx">desiredport</span><span class="p">,</span> <span class="nx">actualport</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+
 <span class="p">};</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
