@@ -30,7 +30,7 @@
     "request": "1.9.x",
     "vows": "0.5.x",
     "watch": "0.3.x",
-    "winston": ">= 0.3.5"
+    "winston": "0.3.x >=0.3.5"
   },
   "devDependencies": {
     "findit": "0.1.x"
