@@ -48,7 +48,7 @@ vows.describe('haibu/drone/autostart').addBatch(helpers).addBatch({
 }).addBatch({
   "Stopping server": {
     topic: function () {
-      haibu.drone.stop(this.callback);
+      haibu.drone.stop(false, this.callback);
     },
     "should be successfull": function() {
     }
