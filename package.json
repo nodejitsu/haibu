@@ -13,7 +13,7 @@
     "cloudfiles": "0.2.x",
     "cliff": "0.1.x",
     "clip": "0.1.x",
-    "colors": "0.5.x",
+    "colors": "0.x.x",
     "eyes": "0.1.x",
     "forever": "0.6.x",
     "haibu-carapace": "0.2.x >=0.2.4",
@@ -28,12 +28,11 @@
     "reconf": "0.1.x",
     "rimraf": "1.0.x",
     "request": "1.9.x",
-    "vows": "0.5.x",
-    "watch": "0.3.x",
     "winston": "0.3.x >=0.3.5"
   },
   "devDependencies": {
-    "findit": "0.1.x"
+    "findit": "0.1.x",
+    "vows": "0.5.x >=0.5.10"
   },
   "main": "./lib/haibu",
   "bin": {
@@ -41,6 +40,6 @@
     "haibu-balancer": "./bin/haibu-balancer",
     "haibu": "./bin/haibu"
   },
-  "scripts": { "test": "sudo bin/test --spec" },
+  "scripts": { "test": "sudo vows test/**/*-test.js --isolate --spec" },
   "engines": { "node": "0.4.x || 0.5.x" }
 }
