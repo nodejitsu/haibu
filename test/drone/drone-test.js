@@ -131,7 +131,6 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
             host: ipAddress,
             maxRestart: 2
           });
-
           
           drone.start(create, function (err, result) {
             drone.start(create, function (err, result) {

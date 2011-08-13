@@ -14,6 +14,8 @@ var vows = require('vows'),
     haibu = require('../../lib/haibu'),
     config = haibu.config;
 
+var spawner = new haibu.Spawner({ maxRestart: 1 });
+
 var app = {
   "name": "test",
   "user": "marak",
@@ -47,13 +49,10 @@ var appWithSubmodules = {
 
 vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatch({
   "An instance of haibu.Spawner" : {
-    topic: function () {
-      return new haibu.Spawner({ maxRestart: 1 });
-    },
     "when passed a valid app json with submodules": {
       topic: appWithSubmodules,
       "the trySpawn() method": {
-        topic: function (app, spawner) {
+        topic: function (app) {
           spawner.trySpawn(app, this.callback);
         },
         "should return a valid drone result object": function (err, result) {
@@ -71,40 +70,45 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
           }
         }
       }
-    },
+    }
+  }
+}).addBatch({
+  "An instance of haibu.Spawner" : {
     "when passed a valid app json with bad dependencies": {
       "the trySpawn() method": {
-        topic: function (spawner) {
-          var that = this,
-              sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-app'),
+        topic: function () {
+          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-app'),
               pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
               npmApp = JSON.parse(pkgJson);
 
           npmApp.user = 'charlie';
           npmApp.repository.directory = sourceDir;
           repo = haibu.repository.create(npmApp);
-          spawner.trySpawn(repo, function (err, result) {
-            setTimeout(function () {
-              that.callback(err, result);
-            }, 2000);
-          });
+          spawner.trySpawn(repo, this.callback);
         },
-        "should return a valid drone result object": function (err, result) {
+        "should return an error with the correct stack trace": function (err, result) {
           assert.isNotNull(err);
           assert.isTrue(typeof result === 'undefined');
+          assert.isString(err.message);
+          
+          //
+          // Assert that the correct error message from the drone was passed 
+          // back up the callback chain.
+          //
+          var errLine = err.message.split('\n').filter(function (line) {
+            return line.indexOf("Cannot find module 'badmodule'") > -1;
+          })[0];
+          assert.isString(errLine);
         }
       }
     }
   }
 }).addBatch({
   "An instance of haibu.Spawner" : {
-    topic: function () {
-      return new haibu.Spawner({ maxRestart: 1 });
-    },
     "when passed a valid app json": {
       topic: app,
       "the trySpawn() method": {
-        topic: function (app, spawner) {
+        topic: function (app) {
           spawner.trySpawn(app, this.callback);
         },
         "should return a valid drone result object": function (err, result) {
@@ -113,10 +117,13 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
           result.process.kill();
         }
       }
-    },
+    }
+  }
+}).addBatch({
+  "An instance of haibu.Spawner" : {
     "when passed a valid app json with npm dependencies": {
       "the trySpawn() method": {
-        topic: function (spawner) {
+        topic: function () {
           var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'npm-deps'),
               pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
               npmApp = JSON.parse(pkgJson);

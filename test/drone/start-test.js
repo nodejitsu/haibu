@@ -34,6 +34,8 @@ vows.describe('haibu/drone/start').addBatch(helpers.requireInit()).addBatch({
     topic: function () {
       haibu.drone.stop(this.callback);
     },
-    "the server should clean up": function () {}
+    "the server should clean up": function () {
+      assert.length(Object.keys(haibu.running), 0);
+    }
   }
 }).export(module);

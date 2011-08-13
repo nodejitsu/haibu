@@ -7,6 +7,7 @@
  */
 
 var assert = require('assert'),
+    exec = require('child_process').exec,
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
@@ -54,17 +55,23 @@ Object.defineProperty(helpers, 'auth', {
   }
 });
 
+helpers.cleanAutostart = function (callback) {
+  exec('rm -rf ' + path.join(haibu.config.get('directories:autostart'), '*'), callback);
+};
+
 helpers.init = function (callback) {
-  haibu.init({ env: 'development' }, function (err) {
-    haibu.use(haibu.plugins.logger, {
-      loggly: haibu.config.get('loggly'),
-      console: {
-        level: 'silly',
-        silent: true
-      }
+  helpers.cleanAutostart(function () {
+    haibu.init({ env: 'development' }, function (err) {
+      haibu.use(haibu.plugins.logger, {
+        loggly: haibu.config.get('loggly'),
+        console: {
+          level: 'silly',
+          silent: true
+        }
+      });
+
+      return callback(err);
     });
-    
-    return callback(err);
   });
 };
 
