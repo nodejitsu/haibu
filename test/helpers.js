@@ -11,6 +11,7 @@ var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
     util = require('util'),
+    request = require('request'),
     haibu = require('../lib/haibu');
 
 var helpers = exports,
@@ -140,4 +141,24 @@ helpers.requireStart = function (port, started) {
       }
     }
   };
+};
+
+helpers.assertApp = function (message, assertFn) {
+  var context = {
+    topic: function (res, body) {
+      var result = JSON.parse(body);
+      request({ 
+        uri: 'http://' + result.drone.host + ':' + result.drone.port
+      }, this.callback);
+    }
+  };
+  
+  context[message] = assertFn;
+  return context
+}
+
+helpers.assertTestApp = function () {
+  return helpers.assertApp("should respond with 'hello, i know nodejitsu.'", function (err, res, body) {
+    assert.equal(body, 'hello, i know nodejitsu.');
+  });
 };

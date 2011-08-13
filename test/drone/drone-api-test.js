@@ -75,7 +75,8 @@ vows.describe('haibu/drone/api').addBatch(
         assert.include(result.drone, 'pid');
         assert.include(result.drone, 'port');
         assert.include(result.drone, 'host');
-      }
+      },
+      "a request against the application": helpers.assertTestApp()
     }
   }
 }).addBatch({
@@ -251,6 +252,11 @@ vows.describe('haibu/drone/api').addBatch(
         },
         "should respond with 500": function (error, response, body) {
           assert.equal(response.statusCode, 500);
+        },
+        "should respond with the appropriate error": function (error, response, body) {
+          var result = JSON.parse(body);
+          assert.isObject(result.error);
+          assert.equal(result.error.message, 'Cannot restart application that is not running.');
         }
       }
     }
@@ -275,6 +281,56 @@ vows.describe('haibu/drone/api').addBatch(
         },
         "should respond with 500": function (error, response, body) {
           assert.equal(response.statusCode, 500);
+        },
+        "should respond with the appropriate error": function (error, response, body) {
+          var result = JSON.parse(body);
+          assert.isObject(result.error);
+          assert.equal(result.error.message, 'Cannot stop application that is not running.');
+        }
+      }
+    }
+  }
+}).addBatch({
+  "When using the drone server": {
+    "a request against /drones/:id/start": {
+      "for an application with errors": {
+        topic: function () {
+          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-app'),
+              pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
+              npmApp = JSON.parse(pkgJson),
+              options;
+
+          npmApp.user = 'charlie';
+          npmApp.repository.directory = sourceDir;
+          
+          options = {
+            uri: 'http://localhost:9000/drones/bad-app/start',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              start: npmApp
+            })
+          };
+
+          request(options, this.callback);
+        },
+        "should respond with 500": function (error, response, body) {
+          assert.equal(response.statusCode, 500);
+        },
+        "should respond with the appropriate error": function (error, response, body) {
+          var result = JSON.parse(body);
+          assert.equal(result.error.message, 'Error spawning drone');
+          
+          //
+          // Assert that the correct error message from the drone was passed 
+          // back up the callback chain.
+          //
+          var errLine = result.error.stderr.split('\n').filter(function (line) {
+            return line.indexOf("Cannot find module 'badmodule'") > -1;
+          })[0];
+          assert.isString(errLine);
         }
       }
     }

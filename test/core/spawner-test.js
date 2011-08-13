@@ -48,7 +48,7 @@ var appWithSubmodules = {
 };
 
 vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatch({
-  "An instance of haibu.Spawner" : {
+  "An instance of haibu.Spawner": {
     "when passed a valid app json with submodules": {
       topic: appWithSubmodules,
       "the trySpawn() method": {
@@ -73,7 +73,7 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
     }
   }
 }).addBatch({
-  "An instance of haibu.Spawner" : {
+  "An instance of haibu.Spawner": {
     "when passed a valid app json with bad dependencies": {
       "the trySpawn() method": {
         topic: function () {
@@ -89,13 +89,13 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
         "should return an error with the correct stack trace": function (err, result) {
           assert.isNotNull(err);
           assert.isTrue(typeof result === 'undefined');
-          assert.isString(err.message);
+          assert.equal(err.message, 'Error spawning drone');
           
           //
           // Assert that the correct error message from the drone was passed 
           // back up the callback chain.
           //
-          var errLine = err.message.split('\n').filter(function (line) {
+          var errLine = err.stderr.split('\n').filter(function (line) {
             return line.indexOf("Cannot find module 'badmodule'") > -1;
           })[0];
           assert.isString(errLine);
@@ -104,7 +104,7 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
     }
   }
 }).addBatch({
-  "An instance of haibu.Spawner" : {
+  "An instance of haibu.Spawner": {
     "when passed a valid app json": {
       topic: app,
       "the trySpawn() method": {
@@ -120,7 +120,7 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
     }
   }
 }).addBatch({
-  "An instance of haibu.Spawner" : {
+  "An instance of haibu.Spawner": {
     "when passed a valid app json with npm dependencies": {
       "the trySpawn() method": {
         topic: function () {

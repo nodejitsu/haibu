@@ -66,8 +66,8 @@ This is what a .haibuconf file may look like:
 
 ```javascript
 {
-  "address" : "127.0.0.1",
-  "port" : 9002
+  "address": "127.0.0.1",
+  "port": 9002
 }
 ```
 
