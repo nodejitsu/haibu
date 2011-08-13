@@ -10,7 +10,7 @@ var assert = require('assert'),
     sys = require('sys'),
     vows = require('vows'),
     data = require('../fixtures/apps'),
-    helpers = require('../helpers').requireInit(),
+    helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
 var app = data.apps[0];
@@ -20,7 +20,7 @@ var app = data.apps[0];
 //
 app.user = 'marak';
 
-vows.describe('haibu/drone/autostart').addBatch(helpers).addBatch({
+vows.describe('haibu/drone/autostart').addBatch(helpers.requireInit()).addBatch({
   "When using haibu": {
     "a call to haibu.drone.start()": {
       topic: function () {
@@ -39,7 +39,7 @@ vows.describe('haibu/drone/autostart').addBatch(helpers).addBatch({
         topic: function (server) {
           server.drone.start(app, this.callback);
         },
-        "should be successfull": function(err, drone) {
+        "should be successfull": function (err, drone) {
           assert.isNull(err);
         }
       }
@@ -50,7 +50,8 @@ vows.describe('haibu/drone/autostart').addBatch(helpers).addBatch({
     topic: function () {
       haibu.drone.stop(false, this.callback);
     },
-    "should be successfull": function() {
+    "should be successfull": function () {
+      assert.length(Object.keys(haibu.running), 0);
     }
   }
 }).addBatch({
@@ -69,8 +70,10 @@ vows.describe('haibu/drone/autostart').addBatch(helpers).addBatch({
         assert.isObject(haibu.running.drone);
       },
       "and a resulting server": {
-        topic: function (server) {return server;},
-        "should be running `test` app": function (server) {
+        topic: function (server) {
+          this.callback(null, server)
+        },
+        "should be running `test` app": function (err, server) {
           assert.isNotNull(server.drone.apps.test);
           assert.equal(Object.keys(server.drone.apps.test.drones).length, 1);
         }
@@ -82,6 +85,8 @@ vows.describe('haibu/drone/autostart').addBatch(helpers).addBatch({
     topic: function () {
       haibu.drone.stop(this.callback);
     },
-    "the server should clean up": function () {}
+    "the server should clean up": function () {
+      assert.length(Object.keys(haibu.running), 0);
+    }
   }
 }).export(module);
