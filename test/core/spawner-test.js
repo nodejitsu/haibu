@@ -147,4 +147,37 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
       }
     }
   }
+}).addBatch({
+  "An instance of haibu.Spawner": {
+    "when passed a valid app json with environment variables": {
+      "the trySpawn() method": {
+        topic: function () {
+          var that = this,
+              sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'env-vars'),
+              pkg = this.pkg = fs.readFileSync(path.join(sourceDir, 'package.json')),
+              envApp = JSON.parse(pkg);
+
+          envApp.user = 'charlie';
+          envApp.repository.directory = sourceDir;
+          this.repo = haibu.repository.create(envApp);
+          
+          spawner.trySpawn(this.repo, function (err, result) {
+            if (err) {
+              return that.callback(err);
+            }
+            
+            result.process.stdout.on('data', that.callback.bind(that, null, result.process));
+          });
+        },
+        "should output the expected `username:password`": function (err, child, result) {
+          assert.isNull(err);
+          result = result.toString().split(':');
+          assert.length(result, 2);
+          assert.equal(result[0], this.repo.app.env['username']);
+          assert.equal(result[1], this.repo.app.env['password']);
+          child.kill();
+        }
+      }
+    }
+  }
 }).export(module);

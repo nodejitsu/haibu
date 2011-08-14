@@ -1,0 +1,17 @@
+{
+  "name": "env-vars",
+  "description": "This application tests if environment variable passing works correctly in haibu",
+  "version": "0.1.0",
+  "author": "Charlie Robbins",
+  "repository": {
+    "type": "local"
+  },
+  "env": {
+    "username": "someone-secretz",
+    "password": "mad-secretz"
+  },
+  "scripts": {
+    "start": "index.js"
+  },
+  "engines": { "node": ">= 0.4.0" }
+}
