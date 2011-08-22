@@ -84,11 +84,11 @@ vows.describe('haibu/drone/api/client').addBatch(
       "should remove the files from the app dir": function (err) {
         assert.isNull(err);
         try {
-          fs.readdir(path.join(haibu.config.directories.apps, app.user, app.name));
+          fs.readdirSync(path.join(haibu.config.get('directories:apps'), app.user, app.name));
           assert.isTrue(false);
         }
         catch (ex) {
-          assert.isTrue(true);
+          assert.equal(ex.code, 'ENOENT');
         }
       }
     }
@@ -116,6 +116,19 @@ vows.describe('haibu/drone/api/client').addBatch(
         "should respond with an error": function (ign, err) {
           assert.isNotNull(err);
         }
+      }
+    }
+  }
+}).addBatch({
+  "When using the drone client": {
+    "the cleanAll() method": {
+      topic: function () {
+        client.cleanAll(this.callback);
+      },
+      "should remove the files from the app dir": function (err) {
+        assert.isTrue(!err);
+        var files = fs.readdirSync(haibu.config.get('directories:apps'));
+        assert.length(files, 0);
       }
     }
   }

@@ -188,4 +188,23 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
       }
     }
   }
+}).addBatch({
+  "An instance of haibu.drone.Drone": {
+    "the cleanAll() method": {
+      topic: function (clean) {
+        var drone = new Drone({
+          minUptime: 0,
+          host: ipAddress,
+          maxRestart: 1
+        });
+
+        drone.cleanAll(this.callback);
+      },
+      "should remove the dependencies and source files": function (err) {
+        assert.isTrue(!err);
+        var files = fs.readdirSync(haibu.config.get('directories:apps'));
+        assert.length(files, 0);
+      }
+    }
+  }
 }).export(module);

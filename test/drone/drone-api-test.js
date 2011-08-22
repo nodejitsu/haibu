@@ -336,6 +336,27 @@ vows.describe('haibu/drone/api').addBatch(
     }
   }
 }).addBatch({
+  "When using the drone server": {
+    "a request against /drones/cleanall": {
+      topic: function () {
+        var options = {
+          uri: 'http://localhost:9000/drones/cleanall',
+          method: 'POST'
+        };
+
+        request(options, this.callback);
+      },
+      "should respond with 200": function (error, response, body) {
+        assert.equal(response.statusCode, 200);
+      },
+      "should remove the files from the app dir": function (err, response, body) {
+        assert.isTrue(!err);
+        var files = fs.readdirSync(haibu.config.get('directories:apps'));
+        assert.length(files, 0);
+      }
+    }
+  }
+}).addBatch({
   "when the tests are over": {
     topic: function () {
       return false;
