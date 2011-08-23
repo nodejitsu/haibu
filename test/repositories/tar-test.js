@@ -14,9 +14,9 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1', 
     port = 9000, 
+    config = helpers.loadConfig(true) || {},
     cloudfilesApp,
-    httpApp,
-    config = helpers.loadConfig(true);
+    httpApp;
     
 httpApp = {
   "name": "test",
@@ -91,7 +91,9 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
   suite.addBatch(batch);
 });
 
-//
-// Export the suite to the test module
-//
-suite.export(module);
+if (config.auth) {
+  //
+  // Export the suite to the test module
+  //
+  suite.export(module);
+}

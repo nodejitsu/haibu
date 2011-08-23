@@ -16,7 +16,7 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1', 
     port = 9000, 
-    config = helpers.loadConfig(true),
+    config = helpers.loadConfig(true) || {},
     remoteFile,
     app;
     
@@ -96,7 +96,9 @@ var suite = vows.describe('haibu/repositories/remote-file').addBatch(
   }
 });
 
-//
-// Export the suite to the test module
-//
-suite.export(module);
+if (config.auth) {
+  //
+  // Export the suite to the test module
+  //
+  suite.export(module);
+}

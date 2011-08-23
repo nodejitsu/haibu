@@ -22,14 +22,13 @@ function showConfigWarning (requireAuth) {
       testConfig.auth.username === 'test-username' ||
       testConfig.auth.apiKey === 'test-apiKey') 
       && requireAuth) {
-    console.log("Config file test/fixtures/test-config.json doesn't have valid data. Skipping remote tests");
-    process.exit(1);
+    console.warn("Config file test/fixtures/test-config.json doesn't have valid data. Skipping remote tests");
   }
 }
 
 helpers.loadConfig = function (requireAuth) {
   function showConfig () {
-    showConfigWarning();
+    showConfigWarning(requireAuth);
     return testConfig;
   }
   
@@ -54,7 +53,7 @@ helpers.cleanAutostart = function (callback) {
 };
 
 helpers.init = function (callback) {
-  var config = helpers.loadConfig();
+  var config = helpers.loadConfig() || {};
   helpers.cleanAutostart(function () {
     haibu.init({ env: 'development' }, function (err) {
       haibu.use(haibu.plugins.logger, {

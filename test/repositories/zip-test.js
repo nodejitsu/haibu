@@ -14,7 +14,7 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1',
     port = 9000,
-    config = helpers.loadConfig(true),
+    config = helpers.loadConfig(true) || {},
     cloudfilesApp,
     httpApp;
     
@@ -91,9 +91,9 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
   suite.addBatch(batch);
 });
 
-if (helpers.auth) { 
+if (config.auth) {
   //
-  // If there is no config file, we can't run the remote tests
+  // Export the suite to the test module
   //
   suite.export(module);
 }
