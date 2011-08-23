@@ -28,7 +28,7 @@
     "reconf": "0.1.x",
     "rimraf": "1.0.x",
     "request": "1.9.x",
-    "winston": "0.3.x >=0.3.5"
+    "winston": "0.4.x"
   },
   "devDependencies": {
     "findit": "0.1.x",
