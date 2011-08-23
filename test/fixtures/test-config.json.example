@@ -1,0 +1,13 @@
+{
+  "auth": {
+    "username": "test-username",
+    "apiKey": "test-apiKey"
+  },
+  "loggly": {
+    "subdomain": "your-subdomain",
+    "inputs": {
+      "haibu": "your-input-token-for-haibu-logs",
+      "user": "your-input-token-for-user-logs"
+    }
+  }
+}

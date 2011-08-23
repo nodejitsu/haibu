@@ -1,5 +1,4 @@
 .DS_Store
-config/auth.json
 autostart/
 autostart/*
 local/
@@ -10,6 +9,7 @@ packages/
 packages/*
 tmp/
 tmp/*
+test/fixtures/test-config.json
 test/data/repositories/marak-*
 test/data/repositories/nodejitsu-*
 test/data/repositories/noob-*

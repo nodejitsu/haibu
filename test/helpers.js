@@ -15,56 +15,50 @@ var assert = require('assert'),
     haibu = require('../lib/haibu');
 
 var helpers = exports,
-    configMissing = false,
     testConfig;
 
-function showConfigError () {
-  if (!configMissing) {
-    console.log("Config file config/auth.json doesn't have valid data. Skipping remote tests");
-    configMissing = true;
+function showConfigWarning (requireAuth) {
+  if ((!testConfig || !testConfig.auth || 
+      testConfig.auth.username === 'test-username' ||
+      testConfig.auth.apiKey === 'test-apiKey') 
+      && requireAuth) {
+    console.log("Config file test/fixtures/test-config.json doesn't have valid data. Skipping remote tests");
+    process.exit(1);
   }
 }
 
-helpers.loadConfig = function () {
-  //
-  // TODO (olauzon) load all /config/*.json at once in parallel
-  //
-  var configFile = path.join(__dirname, '..', 'config', 'auth.json');
-
+helpers.loadConfig = function (requireAuth) {
+  function showConfig () {
+    showConfigWarning();
+    return testConfig;
+  }
+  
+  if (testConfig) {
+    return showConfig();
+  }
+  
   try {
-    var stats = fs.statSync(configFile),
+    var configFile = path.join(__dirname, 'fixtures', 'test-config.json'),
         config = JSON.parse(fs.readFileSync(configFile).toString());
 
-    if ((config.auth.username === 'test-username') ||
-        (config.auth.apiKey === 'test-apiKey')) {
-      return showConfigError();
-    }
-
     testConfig = config;
-    return config;
+    return showConfig();
   }
   catch (ex) {
-    return showConfigError();
+    return showConfig();
   }
 };
-
-Object.defineProperty(helpers, 'auth', {
-  get: function () {
-    if (helpers.loadConfig() !== null) {
-      return helpers.loadConfig().auth;
-    }
-  }
-});
 
 helpers.cleanAutostart = function (callback) {
   exec('rm -rf ' + path.join(haibu.config.get('directories:autostart'), '*'), callback);
 };
 
 helpers.init = function (callback) {
+  var config = helpers.loadConfig();
   helpers.cleanAutostart(function () {
     haibu.init({ env: 'development' }, function (err) {
       haibu.use(haibu.plugins.logger, {
-        loggly: haibu.config.get('loggly'),
+        loggly: config.loggly || haibu.config.get('loggly'),
         console: {
           level: 'silly',
           silent: true

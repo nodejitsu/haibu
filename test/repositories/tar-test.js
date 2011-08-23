@@ -14,32 +14,37 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1', 
     port = 9000, 
-    httpApp = {
-      "name": "test",
-      "user": "marak", 
-      "repository": {
-        "type": "tar",
-        "protocol": "http",
-        "url": "http://c0027507.cdn1.cloudfiles.rackspacecloud.com/hellonode.tar.gz"
-      },
-      "scripts": {
-        "start": "server.js"
-      }
-    },
-    cloudfilesApp = {
-      "name": "test",
-      "user": "charlie",
-      "repository": {
-        "type": "tar",
-        "protocol": "cloudfiles",
-        "filename": "hellonode.tar.gz",
-        "container": "nodejitsu-apps",
-        "auth": helpers.auth
-      },
-      "scripts": {
-        "start": "server.js"
-      }
-    };
+    cloudfilesApp,
+    httpApp,
+    config = helpers.loadConfig(true);
+    
+httpApp = {
+  "name": "test",
+  "user": "marak", 
+  "repository": {
+    "type": "tar",
+    "protocol": "http",
+    "url": "http://c0027507.cdn1.cloudfiles.rackspacecloud.com/hellonode.tar.gz"
+  },
+  "scripts": {
+    "start": "server.js"
+  }
+};
+
+cloudfilesApp = {
+  "name": "test",
+  "user": "charlie",
+  "repository": {
+    "type": "tar",
+    "protocol": "cloudfiles",
+    "filename": "hellonode.tar.gz",
+    "container": "nodejitsu-apps",
+    "auth": config.auth
+  },
+  "scripts": {
+    "start": "server.js"
+  }
+};
 
 // Create the vows test suite
 var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit());
@@ -86,9 +91,7 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
   suite.addBatch(batch);
 });
 
-if (helpers.auth) { 
-  //
-  // If there is no config file, we can't run the remote tests
-  //
-  suite.export(module);
-}
+//
+// Export the suite to the test module
+//
+suite.export(module);

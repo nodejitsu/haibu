@@ -15,24 +15,28 @@ var assert = require('assert'),
     RemoteFile = require('../../lib/haibu/repositories/remote-file').RemoteFile;
 
 var ipAddress = '127.0.0.1', 
-    port = 9000, remoteFile,
-    app = {
-      "name": "test",
-      "user": "marak",
-      "directories": {
-        "home": "hellonode"
-      },
-      "repository": {
-        "auth": helpers.auth,
-        "protocol": "cloudfiles",
-        "container": "nodejitsu-apps",
-        "filename": "hellonode.tar.gz",
-        "type": "tar"
-      },
-      "scripts": {
-        "start": "server.js"
-      }
-    };
+    port = 9000, 
+    config = helpers.loadConfig(true),
+    remoteFile,
+    app;
+    
+app = {
+  "name": "test",
+  "user": "marak",
+  "directories": {
+    "home": "hellonode"
+  },
+  "repository": {
+    "auth": config.auth,
+    "protocol": "cloudfiles",
+    "container": "nodejitsu-apps",
+    "filename": "hellonode.tar.gz",
+    "type": "tar"
+  },
+  "scripts": {
+    "start": "server.js"
+  }
+};
 
 var suite = vows.describe('haibu/repositories/remote-file').addBatch(
   helpers.requireInit(function () {
@@ -92,9 +96,7 @@ var suite = vows.describe('haibu/repositories/remote-file').addBatch(
   }
 });
 
-if (helpers.auth) { 
-  //
-  // If there is no config file, we can't run the remote tests
-  //
-  suite.export(module);
-}
+//
+// Export the suite to the test module
+//
+suite.export(module);

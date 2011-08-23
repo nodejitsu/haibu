@@ -14,32 +14,37 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1',
     port = 9000,
-    httpApp = {
-      "name": "test",
-      "user": "marak",
-      "repository": {
-        "type": "zip",
-        "protocol": "http",
-        "url": "http://c0027507.cdn1.cloudfiles.rackspacecloud.com/hellonode.zip"
-      },
-      "scripts": {
-        "start": "server.js"
-      }
-    },
-    cloudfilesApp = {
-      "name": "test",
-      "user": "charlie",
-      "repository": {
-        "type": "zip",
-        "protocol": "cloudfiles",
-        "filename": "hellonode.zip",
-        "container": "nodejitsu-apps",
-        "auth": helpers.auth
-      },
-      "scripts": {
-        "start": "server.js"
-      }
-    };
+    config = helpers.loadConfig(true),
+    cloudfilesApp,
+    httpApp;
+    
+httpApp = {
+  "name": "test",
+  "user": "marak",
+  "repository": {
+    "type": "zip",
+    "protocol": "http",
+    "url": "http://c0027507.cdn1.cloudfiles.rackspacecloud.com/hellonode.zip"
+  },
+  "scripts": {
+    "start": "server.js"
+  }
+};
+
+cloudfilesApp = {
+  "name": "test",
+  "user": "charlie",
+  "repository": {
+    "type": "zip",
+    "protocol": "cloudfiles",
+    "filename": "hellonode.zip",
+    "container": "nodejitsu-apps",
+    "auth": config.auth
+  },
+  "scripts": {
+    "start": "server.js"
+  }
+};
 
 // Create the vows test suite
 var suite = vows.describe('haibu/repositories/zip').addBatch(
