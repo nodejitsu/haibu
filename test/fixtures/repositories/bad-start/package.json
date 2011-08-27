@@ -1,5 +1,5 @@
 {
-  "name": "bad-app",
+  "name": "bad-start",
   "description": "This application simulates an app that attempts to require submodules that don't exist",
   "version": "0.1.0",
   "author": "Nodejitsu Inc.",
@@ -12,5 +12,5 @@
   "engine": [
     "node >=0.4.5"
   ],
-  "subdomain": "bad-app"
+  "subdomain": "bad-start"
 }

@@ -1,0 +1,16 @@
+{
+  "name": "delayed-fail",
+  "description": "This application simulates user generated failure after bound port.",
+  "version": "0.1.0",
+  "author": "Nodejitsu Inc.",
+  "repository": {
+    "type": "local"
+  },
+  "scripts": {
+    "start": "index.js"
+  },
+  "engine": [
+    "node >=0.4.5"
+  ],
+  "subdomain": "delayed-fail"
+}

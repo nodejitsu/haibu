@@ -295,7 +295,7 @@ vows.describe('haibu/drone/api').addBatch(
     "a request against /drones/:id/start": {
       "for an application with errors": {
         topic: function () {
-          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-app'),
+          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-start'),
               pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
               npmApp = JSON.parse(pkgJson),
               options;
@@ -304,7 +304,7 @@ vows.describe('haibu/drone/api').addBatch(
           npmApp.repository.directory = sourceDir;
           
           options = {
-            uri: 'http://localhost:9000/drones/bad-app/start',
+            uri: 'http://localhost:9000/drones/bad-start/start',
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

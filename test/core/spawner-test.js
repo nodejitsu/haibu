@@ -77,7 +77,7 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
     "when passed a valid app json with bad dependencies": {
       "the trySpawn() method": {
         topic: function () {
-          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-app'),
+          var sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'bad-start'),
               pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
               npmApp = JSON.parse(pkgJson);
 
@@ -109,6 +109,7 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
       topic: app,
       "the trySpawn() method": {
         topic: function (app) {
+          console.dir(app);
           spawner.trySpawn(app, this.callback);
         },
         "should return a valid drone result object": function (err, result) {

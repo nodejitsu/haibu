@@ -156,6 +156,44 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
 }).addBatch({
   "An instance of haibu.drone.Drone": {
     "when passed a valid app json": {
+      "the start() method": {
+        topic: function () {
+           var that = this,
+               sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'delayed-fail'),
+               pkgJson = fs.readFileSync(path.join(sourceDir, 'package.json')),
+               delayFail = JSON.parse(pkgJson),
+               drone;
+            
+           drone = this.drone = new Drone({
+             minUptime: 2000,
+             host: ipAddress,
+             maxRestart: 3
+           });
+
+          delayFail.user = 'charlie';
+          delayFail.repository.directory = sourceDir;
+          drone.start(delayFail, this.callback);
+        },
+        "after the user has made the application crash": {
+          topic: function () {
+            this.pids = Object.keys(this.drone.apps['delayed-fail'].drones);
+            setTimeout(this.callback.bind(this, null, this.pids, this.drone), 3000);
+          },
+          "should have an updated pid for the drone": function (_, pids, drone) {
+            assert.isObject(drone);
+            
+            var updatedPids = Object.keys(drone.apps['delayed-fail'].drones);
+            
+            assert.length(pids, 1);
+            assert.notEqual(pids[0], updatedPids[0]);
+          }
+        }
+      }
+    }
+  }
+}).addBatch({
+  "An instance of haibu.drone.Drone": {
+    "when passed a valid app json": {
       topic: app,
       "the clean() method": {
         topic: function (clean) {
