@@ -109,7 +109,6 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
       topic: app,
       "the trySpawn() method": {
         topic: function (app) {
-          console.dir(app);
           spawner.trySpawn(app, this.callback);
         },
         "should return a valid drone result object": function (err, result) {
