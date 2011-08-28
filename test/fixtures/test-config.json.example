@@ -6,6 +6,8 @@
   "loggly": {
     "subdomain": "your-subdomain",
     "inputs": {
+      "errors": "your-input-token-for-error-logs",
+      "exceptions": "your-input-token-exceptions-logs",      
       "haibu": "your-input-token-for-haibu-logs",
       "user": "your-input-token-for-user-logs"
     }
