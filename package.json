@@ -15,7 +15,7 @@
     "clip": "0.1.x",
     "colors": "0.x.x",
     "eyes": "0.1.x",
-    "forever": "0.6.x >=0.6.5",
+    "forever": "0.6.x >=0.6.6",
     "haibu-carapace": "0.2.x >=0.2.4",
     "hook.io": "0.6.x >=0.6.0",
     "http-proxy": "0.5.x",
