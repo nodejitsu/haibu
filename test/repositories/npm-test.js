@@ -42,7 +42,7 @@ vows.describe('haibu/repositories/npm').addBatch(
   "When using haibu": {
     "an instance of the Npm repository": {
       "should be a valid repository": function () {
-        assert.equal(haibu.repository.validate(npm.app).valid, true);
+        assert.instanceOf(npm, haibu.repository.Repository);
         assert.isFunction(npm.init);
         assert.isFunction(npm.exists);
         assert.isFunction(npm.update);
