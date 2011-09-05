@@ -39,7 +39,7 @@ vows.describe('haibu/repositories/git').addBatch(
         return haibu.repository.create(app);
       },
       "should be a valid repository": function (git) {
-        assert.equal(haibu.repository.validate(git.app).valid, true);
+        assert.instanceOf(git, haibu.repository.Repository);
         assert.isFunction(git.init);
         assert.isFunction(git.exists);
         assert.isFunction(git.update);

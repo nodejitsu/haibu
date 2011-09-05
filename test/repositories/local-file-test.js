@@ -37,7 +37,7 @@ vows.describe('haibu/repositories/local-file').addBatch(helpers.requireInit()).a
         return haibu.repository.create(app);
       },
       "should be a valid repository": function (localFile) {
-        assert.equal(haibu.repository.validate(localFile.app).valid, true);
+        assert.instanceOf(localFile, haibu.repository.Repository);
         assert.isFunction(localFile.init);
         assert.isFunction(localFile.exists);
         assert.isFunction(localFile.update);

@@ -74,7 +74,7 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
         return haibu.repository.create(app);
       },
       "should be a valid repository": function (zip) {
-        assert.equal(haibu.repository.validate(zip.app).valid, true);
+        assert.instanceOf(zip, haibu.repository.Repository);
         assert.isFunction(zip.init);
         assert.isFunction(zip.exists);
         assert.isFunction(zip.update);

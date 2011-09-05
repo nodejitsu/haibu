@@ -71,7 +71,7 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
         return haibu.repository.create(app);
       },
       "should be a valid repository": function (tar) {
-        assert.equal(haibu.repository.validate(tar.app).valid, true);
+        assert.instanceOf(tar, haibu.repository.Repository);
         assert.isFunction(tar.init);
         assert.isFunction(tar.exists);
         assert.isFunction(tar.update);
