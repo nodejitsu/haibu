@@ -14,7 +14,7 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1', 
     port = 9000, 
-    config = helpers.loadConfig(true) || {},
+    config = helpers.loadConfig(false) || {},
     cloudfilesApp,
     httpApp;
     
@@ -56,31 +56,43 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
   var remoteType = (app === httpApp) ? "http" : "cloudfiles";
   var tests = {};
   
-  tests["with an " + remoteType + " remote"] = {
-    topic: function () {
-      return haibu.repository.create(app);
-    },
-    "should be a valid repository": function (tar) {
-      assert.equal(haibu.repository.validate(tar.app).valid, true);
-      assert.isFunction(tar.init);
-      assert.isFunction(tar.exists);
-      assert.isFunction(tar.update);
-      assert.isFunction(tar.fetchHttp);
-      assert.isFunction(tar.fetchCloudfiles);
-    },
-    "the init() method": {
-      topic: function (tar) {
-        var self = this;
-        tar.bootstrap(function () {
-          tar.init(self.callback);
-        })
+  // skip cloudfiles tests if no authentication available
+  if (!config.auth && app === cloudfilesApp) {
+    tests["Config file test/fixtures/test-config.json doesn't have valid data"] = {
+      topic: function () {
+        return {};
       },
-      "should untar to the specified location": function (err, success, files) {
-        assert.isNull(err);
-        assert.isArray(files);
+      "so skipping cloudfiles tests": function(obj) {
+        assert.isNull(null);
       }
-    }
-  };
+    };
+  } else {
+    tests["with an " + remoteType + " remote"] = {
+      topic: function () {
+        return haibu.repository.create(app);
+      },
+      "should be a valid repository": function (tar) {
+        assert.equal(haibu.repository.validate(tar.app).valid, true);
+        assert.isFunction(tar.init);
+        assert.isFunction(tar.exists);
+        assert.isFunction(tar.update);
+        assert.isFunction(tar.fetchHttp);
+        assert.isFunction(tar.fetchCloudfiles);
+      },
+      "the init() method": {
+        topic: function (tar) {
+          var self = this;
+          tar.bootstrap(function () {
+            tar.init(self.callback);
+          })
+        },
+        "should untar to the specified location": function (err, success, files) {
+          assert.isNull(err);
+          assert.isArray(files);
+        }
+      }
+    };
+  }
   
   var batch = {
     "When using haibu": {
@@ -91,9 +103,7 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
   suite.addBatch(batch);
 });
 
-if (config.auth) {
-  //
-  // Export the suite to the test module
-  //
-  suite.export(module);
-}
+//
+// Export the suite to the test module
+//
+suite.export(module);
