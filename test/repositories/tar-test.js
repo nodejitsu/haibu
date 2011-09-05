@@ -63,7 +63,6 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
         return {};
       },
       "so skipping cloudfiles tests": function(obj) {
-        assert.isNull(null);
       }
     };
   } else {
