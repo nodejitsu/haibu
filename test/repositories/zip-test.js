@@ -14,7 +14,7 @@ var assert = require('assert'),
 
 var ipAddress = '127.0.0.1',
     port = 9000,
-    config = helpers.loadConfig(true) || {},
+    config = helpers.loadConfig(false) || {},
     cloudfilesApp,
     httpApp;
     
@@ -58,29 +58,41 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
 [httpApp, cloudfilesApp].forEach(function (app) {
   var remoteType = (app === httpApp) ? "http" : "cloudfiles";
   var tests = {};
-
-  tests["with an " + remoteType + " remote"] = {
-    topic: function () {
-      return haibu.repository.create(app);
-    },
-    "should be a valid repository": function (zip) {
-      assert.equal(haibu.repository.validate(zip.app).valid, true);
-      assert.isFunction(zip.init);
-      assert.isFunction(zip.exists);
-      assert.isFunction(zip.update);
-      assert.isFunction(zip.fetchHttp);
-      assert.isFunction(zip.fetchCloudfiles);
-    },
-    "the init() method": {
-      topic: function (zip) {
-        zip.init(this.callback);
+  
+  // skip cloudfiles tests if no authentication available
+  if (!config.auth && app === cloudfilesApp) {
+    tests["Config file test/fixtures/test-config.json doesn't have valid data"] = {
+      topic: function () {
+        return {};
       },
-      "should unzip to the specified location": function (err, success, files) {
-        assert.isNull(err);
-        assert.isArray(files);
+      "so skipping cloudfiles tests": function(obj) {
+        assert.isNull(null);
       }
-    }
-  };
+    };
+  } else {
+    tests["with an " + remoteType + " remote"] = {
+      topic: function () {
+        return haibu.repository.create(app);
+      },
+      "should be a valid repository": function (zip) {
+        assert.equal(haibu.repository.validate(zip.app).valid, true);
+        assert.isFunction(zip.init);
+        assert.isFunction(zip.exists);
+        assert.isFunction(zip.update);
+        assert.isFunction(zip.fetchHttp);
+        assert.isFunction(zip.fetchCloudfiles);
+      },
+      "the init() method": {
+        topic: function (zip) {
+          zip.init(this.callback);
+        },
+        "should unzip to the specified location": function (err, success, files) {
+          assert.isNull(err);
+          assert.isArray(files);
+        }
+      }
+    };
+  }
 
   var batch = {
     "When using haibu": {
@@ -91,9 +103,7 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
   suite.addBatch(batch);
 });
 
-if (config.auth) {
-  //
-  // Export the suite to the test module
-  //
-  suite.export(module);
-}
+//
+// Export the suite to the test module
+//
+suite.export(module);
