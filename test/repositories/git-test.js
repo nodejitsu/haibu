@@ -49,8 +49,10 @@ vows.describe('haibu/repositories/git').addBatch(
         topic: function (git) {
           var self = this;
           exec('rm -rf ' + path.join(git.appDir, '*'), function(err) {
-            if (err) self.callback(err);
-            git.init(self.callback);
+            git.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              git.init(self.callback);
+            });
           });
         },
         "should install to the specified location": function (err, success, files) {

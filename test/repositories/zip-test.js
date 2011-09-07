@@ -86,8 +86,10 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
         topic: function (zip) {
           var self = this;
           exec('rm -rf ' + path.join(zip.appDir, '*'), function(err) {
-            if (err) self.callback(err);
-            zip.init(self.callback);
+            zip.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              zip.init(self.callback);
+            });
           });
         },
         "should unzip to the specified location": function (err, success, files) {
