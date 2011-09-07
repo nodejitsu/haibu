@@ -7,6 +7,7 @@
 
 var assert = require('assert'),
     path = require('path'),
+    exec = require('child_process').exec,
     eyes = require('eyes'),
     vows = require('vows'),
     helpers = require('../helpers'),
@@ -47,7 +48,10 @@ cloudfilesApp = {
 };
 
 // Create the vows test suite
-var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit());
+var suite = vows.describe('haibu/repositories/tar').addBatch(
+  helpers.requireInit()
+);
+
 //
 // Iterate over the two remote types we wish to execute
 // identical tests for.
@@ -81,9 +85,10 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(helpers.requireInit
       "the init() method": {
         topic: function (tar) {
           var self = this;
-          tar.bootstrap(function () {
+          exec('rm -rf ' + path.join(tar.appDir, '*'), function(err) {
+            if (err) self.callback(err);
             tar.init(self.callback);
-          })
+          });
         },
         "should untar to the specified location": function (err, success, files) {
           assert.isNull(err);
