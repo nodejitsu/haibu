@@ -7,6 +7,7 @@
 
 var assert = require('assert'),
     path = require('path'),
+    exec = require('child_process').exec,
     eyes = require('eyes'),
     vows = require('vows'),
     helpers = require('../helpers'),
@@ -83,7 +84,11 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
       },
       "the init() method": {
         topic: function (zip) {
-          zip.init(this.callback);
+          var self = this;
+          exec('rm -rf ' + path.join(zip.appDir, '*'), function(err) {
+            if (err) self.callback(err);
+            zip.init(self.callback);
+          });
         },
         "should unzip to the specified location": function (err, success, files) {
           assert.isNull(err);
