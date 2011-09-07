@@ -73,8 +73,10 @@ vows.describe('haibu/repositories/local-file').addBatch(helpers.requireInit()).a
         topic: function (localFile) {
           var self = this;
           exec('rm -rf ' + path.join(localFile.appDir, '*'), function(err) {
-            if (err) self.callback(err);
-            localFile.init(self.callback);
+            localFile.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              localFile.init(self.callback);
+            });
           });
         },
         "should install to the specified location": function (err, success, files) {

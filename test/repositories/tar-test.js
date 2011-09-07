@@ -86,8 +86,10 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
         topic: function (tar) {
           var self = this;
           exec('rm -rf ' + path.join(tar.appDir, '*'), function(err) {
-            if (err) self.callback(err);
-            tar.init(self.callback);
+            tar.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              tar.init(self.callback);
+            });
           });
         },
         "should untar to the specified location": function (err, success, files) {
