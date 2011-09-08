@@ -13,13 +13,9 @@ var assert = require('assert'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
-var ipAddress = '127.0.0.1',
-    port = 9000,
-    config = helpers.loadConfig(false) || {},
-    cloudfilesApp,
-    httpApp;
+var config = helpers.loadConfig(false) || {};
     
-httpApp = {
+var httpApp = {
   "name": "test",
   "user": "marak",
   "repository": {
@@ -32,7 +28,7 @@ httpApp = {
   }
 };
 
-cloudfilesApp = {
+var cloudfilesApp = {
   "name": "test",
   "user": "charlie",
   "repository": {
@@ -77,14 +73,13 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
       "should be a valid repository": function (zip) {
         assert.instanceOf(zip, haibu.repository.Repository);
         assert.isFunction(zip.init);
-        assert.isFunction(zip.exists);
-        assert.isFunction(zip.update);
         assert.isFunction(zip.fetchHttp);
         assert.isFunction(zip.fetchCloudfiles);
       },
       "the init() method": {
         topic: function (zip) {
           var self = this;
+          if (!(zip instanceof haibu.repository.Repository)) return zip;
           exec('rm -rf ' + path.join(zip.appDir, '*'), function(err) {
             zip.mkdir(function (err, created) {
               if (err) self.callback(err);

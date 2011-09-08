@@ -7,14 +7,11 @@
 
 var assert = require('assert'),
     path = require('path'),
-    eyes = require('eyes'),
     vows = require('vows'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
-var ipAddress = '127.0.0.1',
-    port = 9000,
-    app = {
+var app = {
       "name": "test",
       "user": "marak",
       "repository": {

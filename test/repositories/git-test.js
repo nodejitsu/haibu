@@ -8,19 +8,13 @@
 var assert = require('assert'),
     path = require('path'),
     exec = require('child_process').exec,
-    eyes = require('eyes'),
     vows = require('vows'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
-var ipAddress = '127.0.0.1',
-    port = 9000,
-    app = {
+var app = {
       "name": "test",
       "user": "marak",
-      "directories": {
-        "home": "hellonode"
-      },
       "repository": {
         "type": "git",
         "url": "https://github.com/Marak/hellonode.git",
@@ -34,7 +28,7 @@ var ipAddress = '127.0.0.1',
 vows.describe('haibu/repositories/git').addBatch(
   helpers.requireInit()
 ).addBatch({
-  "When using haibu": {
+  "When using haibu,": {
     "an instance of the Git repository": {
       topic: function () {
         return haibu.repository.create(app);
@@ -42,18 +36,17 @@ vows.describe('haibu/repositories/git').addBatch(
       "should be a valid repository": function (git) {
         assert.instanceOf(git, haibu.repository.Repository);
         assert.isFunction(git.init);
-        assert.isFunction(git.exists);
-        assert.isFunction(git.update);
       },
       "the init() method": {
         topic: function (git) {
           var self = this;
+          if (!(git instanceof haibu.repository.Repository)) return git;
           exec('rm -rf ' + path.join(git.appDir, '*'), function(err) {
             git.mkdir(function (err, created) {
               if (err) self.callback(err);
               git.init(self.callback);
-            });
-          });
+            })
+          })
         },
         "should install to the specified location": function (err, success, files) {
           assert.isNull(err);
