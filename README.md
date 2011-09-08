@@ -301,6 +301,34 @@ This type of repository will pull a remote archive relative to the `haibu-server
 }
 ```
 
+#### npm
+
+This type of repository will install a npm package as application. The package will be available as directory under its name and the scripts will be installed in the `.bin` directory.
+So scripts.start should have one of both as relative directory:
+
+```json
+"scripts": {
+  "start": ".bin/server.js"
+}
+```
+
+or:
+
+```json
+"scripts": {
+  "start": "name of npm package/server.js"
+}
+```
+
+```json
+{
+  "repository": {
+    "type": "npm",
+    "package": "name of npm package"
+  }
+}
+```
+
 ## Run Tests
 All of the `haibu` tests are written in [vows][0], and cover all of the use cases described above.
 <pre>
