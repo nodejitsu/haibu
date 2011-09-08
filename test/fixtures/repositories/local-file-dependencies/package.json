@@ -1,0 +1,10 @@
+{
+  "name": "local-file",
+  "description": "this application attempts to break out of the chroot and do nasty things to your server",
+  "version": "0.1.0",
+  "author": "Elijah Insua",
+  "dependencies": {
+    "color": "x.x.x"
+  },
+  "engine": [ "node >=0.1.90" ]
+}
