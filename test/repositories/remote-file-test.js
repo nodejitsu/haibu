@@ -14,36 +14,26 @@ var assert = require('assert'),
     haibu = require('../../lib/haibu'),
     RemoteFile = require('../../lib/haibu/repositories/remote-file').RemoteFile;
 
-var ipAddress = '127.0.0.1', 
-    port = 9000, 
-    config = helpers.loadConfig(false) || {},
-    remoteFile,
-    app;
+var config = helpers.loadConfig(false) || {};
     
-cloudfilesApp = {
+var cloudfilesApp = {
   "name": "test",
   "user": "charlie",
-  "directories": {
-    "home": "hellonode"
-  },
   "repository": {
-    "auth": config.auth,
+    "type": "tar",
     "protocol": "cloudfiles",
+    "auth": config.auth,
     "container": "nodejitsu-apps",
-    "filename": "hellonode.tar.gz",
-    "type": "tar"
+    "filename": "hellonode.tar.gz"
   },
   "scripts": {
     "start": "server.js"
   }
 };
 
-httpApp = {
+var httpApp = {
   "name": "test",
   "user": "marak", 
-  "directories": {
-    "home": "hellonode"
-  },
   "repository": {
     "type": "tar",
     "protocol": "http",
@@ -80,8 +70,6 @@ if (!config.auth) {
       "an instance of the RemoteFile repository": {
         "should be a valid repository": function () {
           assert.isFunction(remoteFile.init);
-          assert.isFunction(remoteFile.exists);
-          assert.isFunction(remoteFile.update);
           assert.isFunction(remoteFile.fetchHttp);
           assert.isFunction(remoteFile.fetchCloudfiles);
         },

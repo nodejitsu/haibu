@@ -13,13 +13,9 @@ var assert = require('assert'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
-var ipAddress = '127.0.0.1', 
-    port = 9000, 
-    config = helpers.loadConfig(false) || {},
-    cloudfilesApp,
-    httpApp;
+var config = helpers.loadConfig(false) || {};
     
-httpApp = {
+var httpApp = {
   "name": "test",
   "user": "marak", 
   "repository": {
@@ -32,7 +28,7 @@ httpApp = {
   }
 };
 
-cloudfilesApp = {
+var cloudfilesApp = {
   "name": "test",
   "user": "charlie",
   "repository": {
@@ -77,14 +73,13 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
       "should be a valid repository": function (tar) {
         assert.instanceOf(tar, haibu.repository.Repository);
         assert.isFunction(tar.init);
-        assert.isFunction(tar.exists);
-        assert.isFunction(tar.update);
         assert.isFunction(tar.fetchHttp);
         assert.isFunction(tar.fetchCloudfiles);
       },
       "the init() method": {
         topic: function (tar) {
           var self = this;
+          if (!(tar instanceof haibu.repository.Repository)) return tar;
           exec('rm -rf ' + path.join(tar.appDir, '*'), function(err) {
             tar.mkdir(function (err, created) {
               if (err) self.callback(err);
