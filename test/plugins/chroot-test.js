@@ -106,19 +106,6 @@ vows.describe('haibu/plugins/chroot').addBatch(
   "An instance of the Npm repository": {
     "the allDependencies() method": {
       topic: function () {
-        repo.allDependencies(this.callback);
-      },
-      "should list the installed dependencies from the chrooted directory": function (err, deps) {
-        assert.isNull(err);
-        assert.isArray(deps);
-        assert.include(deps, 'express');
-      }
-    }
-  }
-}).addBatch({
-  "An instance of the Npm repository": {
-    "the allDependencies() method": {
-      topic: function () {
         var that = this;
         new (haibu.drone.Drone)().clean(npmApp, function (err) {
           if (err) {
