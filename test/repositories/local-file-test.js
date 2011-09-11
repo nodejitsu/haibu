@@ -8,19 +8,14 @@
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
-    eyes = require('eyes'),
+    exec = require('child_process').exec,
     vows = require('vows'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
-var ipAddress = '127.0.0.1', 
-    port = 9000, 
-    app = {
+var app = {
        "name": "test",
        "user": "marak",
-       "directories": {
-         "home": "hellonode"
-       },
        "repository": {
          "type": "local",
          "directory": path.join(__dirname, '..', 'fixtures', 'repositories', 'local-file'),
@@ -37,17 +32,15 @@ vows.describe('haibu/repositories/local-file').addBatch(helpers.requireInit()).a
         return haibu.repository.create(app);
       },
       "should be a valid repository": function (localFile) {
-        assert.equal(haibu.repository.validate(localFile.app).valid, true);
+        assert.instanceOf(localFile, haibu.repository.Repository);
         assert.isFunction(localFile.init);
-        assert.isFunction(localFile.exists);
-        assert.isFunction(localFile.update);
         assert.isFunction(localFile.fetch);
       },
       "the fetch() method": {
         topic: function (localFile) {
           localFile.fetch(this.callback);
         },
-        "use the local filesystem": function (err, localFile) {
+        "should find the local app directory": function (err, localFile) {
           try {
             assert.isNotNull(fs.statSync(localFile));
           }
@@ -55,6 +48,22 @@ vows.describe('haibu/repositories/local-file').addBatch(helpers.requireInit()).a
             // If this operation fails, fail the test
             assert.isNull(ex);
           }
+        }
+      },
+      "the init() method": {
+        topic: function (localFile) {
+          var self = this;
+          if (!(localFile instanceof haibu.repository.Repository)) return localFile;
+          exec('rm -rf ' + path.join(localFile.appDir, '*'), function(err) {
+            localFile.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              localFile.init(self.callback);
+            });
+          });
+        },
+        "should install to the specified location": function (err, success, files) {
+          assert.isNull(err);
+          assert.isArray(files);
         }
       }
     }

@@ -7,27 +7,17 @@
  
 var assert = require('assert'),
     path = require('path'),
-    eyes = require('eyes'),
+    exec = require('child_process').exec,
     vows = require('vows'),
     haibu = require('../../lib/haibu'),
-    Npm = require('../../lib/haibu/repositories/npm').Npm,
     helpers = require('./../helpers');
 
-var ipAddress = '127.0.0.1', 
-    port = 9000, npm,
-    app = {
-      "name": "test",
+var app = {
       "user": "marak",
-      "directories": {
-        "home": "hellonode"
-      },
+      "name": "test",
       "repository": {
-        "type": "zip",
-        "protocol": "http",
-        "url": "http://c0027507.cdn1.cloudfiles.rackspacecloud.com/hellonode.zip",
-      },
-      "dependencies": {
-        "translate": ">= 0.3.3"
+        "type": "npm",
+        "package": "hook.io-helloworld"
       },
       "scripts": {
         "start": "server.js"
@@ -35,33 +25,35 @@ var ipAddress = '127.0.0.1',
     };    
 
 vows.describe('haibu/repositories/npm').addBatch(
-  helpers.requireInit(function () {
-    npm = new Npm(app);
-  })
+  helpers.requireInit()
 ).addBatch({
   "When using haibu": {
     "an instance of the Npm repository": {
-      "should be a valid repository": function () {
-        assert.equal(haibu.repository.validate(npm.app).valid, true);
+      topic: function () {
+        return haibu.repository.create(app);
+      },
+      "should be a valid repository": function (npm) {
+        assert.instanceOf(npm, haibu.repository.Repository);
         assert.isFunction(npm.init);
-        assert.isFunction(npm.exists);
-        assert.isFunction(npm.update);
-      }
-    }
-  }
-}).addBatch({
-  "When using haibu": {
-    "an instance of the Npm repository": {
-      "the update() method": {
-        topic: function () {
-          npm.update(this.callback);
+        assert.isFunction(npm.installDependencies);
+      },
+      "the init() method": {
+        topic: function (npm) {
+          var self = this;
+          if (!(npm instanceof haibu.repository.Repository)) return npm;
+          exec('rm -rf ' + path.join(npm.appDir, '*'), function(err) {
+            npm.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              npm.init(self.callback);
+            })
+          })
         },
-        "should reset the local files in the repository": function (err, updated, installed) {
+        "should install to the specified location": function (err, updated, installed) {
           assert.isNull(err);
           assert.isTrue(updated);
           assert.isArray(installed);
         }
-      },
+      }
     }
   }
 }).export(module);

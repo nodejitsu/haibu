@@ -7,18 +7,15 @@
 
 var assert = require('assert'),
     path = require('path'),
+    exec = require('child_process').exec,
     eyes = require('eyes'),
     vows = require('vows'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
-var ipAddress = '127.0.0.1',
-    port = 9000,
-    config = helpers.loadConfig(true) || {},
-    cloudfilesApp,
-    httpApp;
+var config = helpers.loadConfig(false) || {};
     
-httpApp = {
+var httpApp = {
   "name": "test",
   "user": "marak",
   "repository": {
@@ -31,7 +28,7 @@ httpApp = {
   }
 };
 
-cloudfilesApp = {
+var cloudfilesApp = {
   "name": "test",
   "user": "charlie",
   "repository": {
@@ -58,29 +55,45 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
 [httpApp, cloudfilesApp].forEach(function (app) {
   var remoteType = (app === httpApp) ? "http" : "cloudfiles";
   var tests = {};
-
-  tests["with an " + remoteType + " remote"] = {
-    topic: function () {
-      return haibu.repository.create(app);
-    },
-    "should be a valid repository": function (zip) {
-      assert.equal(haibu.repository.validate(zip.app).valid, true);
-      assert.isFunction(zip.init);
-      assert.isFunction(zip.exists);
-      assert.isFunction(zip.update);
-      assert.isFunction(zip.fetchHttp);
-      assert.isFunction(zip.fetchCloudfiles);
-    },
-    "the init() method": {
-      topic: function (zip) {
-        zip.init(this.callback);
+  
+  // skip cloudfiles tests if no authentication available
+  if (!config.auth && app === cloudfilesApp) {
+    tests["Config file test/fixtures/test-config.json doesn't have valid data"] = {
+      topic: function () {
+        return {};
       },
-      "should unzip to the specified location": function (err, success, files) {
-        assert.isNull(err);
-        assert.isArray(files);
+      "so skipping cloudfiles tests": function(obj) {
       }
-    }
-  };
+    };
+  } else {
+    tests["with an " + remoteType + " remote"] = {
+      topic: function () {
+        return haibu.repository.create(app);
+      },
+      "should be a valid repository": function (zip) {
+        assert.instanceOf(zip, haibu.repository.Repository);
+        assert.isFunction(zip.init);
+        assert.isFunction(zip.fetchHttp);
+        assert.isFunction(zip.fetchCloudfiles);
+      },
+      "the init() method": {
+        topic: function (zip) {
+          var self = this;
+          if (!(zip instanceof haibu.repository.Repository)) return zip;
+          exec('rm -rf ' + path.join(zip.appDir, '*'), function(err) {
+            zip.mkdir(function (err, created) {
+              if (err) self.callback(err);
+              zip.init(self.callback);
+            });
+          });
+        },
+        "should unzip to the specified location": function (err, success, files) {
+          assert.isNull(err);
+          assert.isArray(files);
+        }
+      }
+    };
+  }
 
   var batch = {
     "When using haibu": {
@@ -91,9 +104,7 @@ var suite = vows.describe('haibu/repositories/zip').addBatch(
   suite.addBatch(batch);
 });
 
-if (config.auth) {
-  //
-  // Export the suite to the test module
-  //
-  suite.export(module);
-}
+//
+// Export the suite to the test module
+//
+suite.export(module);
