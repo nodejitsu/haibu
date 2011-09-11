@@ -57,19 +57,20 @@ if (!config.auth) {
       }
     }
   });
-} else {
-  // cloudfiles remote tests
+} 
+else {
+  //
+  // Cloudfiles remote tests
+  //
   suite.addBatch(
     helpers.requireInit(function () {
       remoteFile = new RemoteFile(cloudfilesApp);
     })
-  );
-
-  suite.addBatch({
+  ).addBatch({
     "When using haibu": {
       "an instance of the RemoteFile repository": {
         "should be a valid repository": function () {
-          assert.isFunction(remoteFile.init);
+          assert.isFunction(remoteFile.fetch);
           assert.isFunction(remoteFile.fetchHttp);
           assert.isFunction(remoteFile.fetchCloudfiles);
         },
@@ -95,7 +96,7 @@ if (!config.auth) {
         }
       }
     }
-  })
+  });
 }
 
 suite.addBatch(
