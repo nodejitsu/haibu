@@ -28,7 +28,7 @@
     "pkginfo": "0.2.x",
     "rimraf": "1.0.x",
     "request": "2.1.x",
-    "winston": "0.4.x"
+    "winston": "0.5.x"
   },
   "devDependencies": {
     "vows": "0.5.x >=0.5.10"
