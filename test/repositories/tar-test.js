@@ -62,7 +62,7 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
       topic: function () {
         return {};
       },
-      "so skipping cloudfiles tests": function(obj) {
+      "so skipping cloudfiles tests": function (obj) {
       }
     };
   } else {
@@ -80,7 +80,7 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
         topic: function (tar) {
           var self = this;
           if (!(tar instanceof haibu.repository.Repository)) return tar;
-          exec('rm -rf ' + path.join(tar.appDir, '*'), function(err) {
+          exec('rm -rf ' + path.join(tar.appDir, '*'), function (err) {
             tar.mkdir(function (err, created) {
               if (err) self.callback(err);
               tar.init(self.callback);

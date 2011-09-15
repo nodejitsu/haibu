@@ -41,7 +41,7 @@ vows.describe('haibu/repositories/git').addBatch(
         topic: function (git) {
           var self = this;
           if (!(git instanceof haibu.repository.Repository)) return git;
-          exec('rm -rf ' + path.join(git.appDir, '*'), function(err) {
+          exec('rm -rf ' + path.join(git.appDir, '*'), function (err) {
             git.mkdir(function (err, created) {
               if (err) self.callback(err);
               git.init(self.callback);

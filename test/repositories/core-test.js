@@ -123,7 +123,7 @@ vows.describe('haibu/repositories/core').addBatch(helpers.requireInit()).addBatc
       topic: function (repo, repositories) {
         self = this;
         repo.appsDir = haibu.config.get('directories:apps');
-        exec('rm -rf ' + path.join(repo.appDir, '*'), function(err) {
+        exec('rm -rf ' + path.join(repo.appDir, '*'), function (err) {
           repo.mkdir(self.callback);
         })
       },

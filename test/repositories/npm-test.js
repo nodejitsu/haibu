@@ -41,7 +41,7 @@ vows.describe('haibu/repositories/npm').addBatch(
         topic: function (npm) {
           var self = this;
           if (!(npm instanceof haibu.repository.Repository)) return npm;
-          exec('rm -rf ' + path.join(npm.appDir, '*'), function(err) {
+          exec('rm -rf ' + path.join(npm.appDir, '*'), function (err) {
             npm.mkdir(function (err, created) {
               if (err) self.callback(err);
               npm.init(self.callback);
