@@ -28,7 +28,11 @@
     "pkginfo": "0.2.x",
     "rimraf": "1.0.x",
     "request": "2.1.x",
-    "winston": "0.5.x"
+    "winston": "0.5.x",
+    "ubelt"  : "~2.6",
+    "event-stream"  : "~0.5",
+    "morestreams"  : "~0.0"
+
   },
   "devDependencies": {
     "vows": "0.5.x >=0.5.10"
