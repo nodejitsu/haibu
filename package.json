@@ -30,7 +30,7 @@
     "request": "2.1.x",
     "winston": "0.5.x",
     "ubelt"  : "~2.6",
-    "event-stream"  : "~0.5",
+    "it-is"  : "1",
     "morestreams"  : "~0.0"
 
   },
