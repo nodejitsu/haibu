@@ -127,6 +127,33 @@ client.start(app, function (err, result) {
 });
 ```
 
+## Push deploy
+
+``` bash
+cd path/to/your/app
+tar -cz | curl -sSNT- localhost:9002/deploy/username/appname
+# or, like this:
+tar -czf app.tgz .
+curl -sSNT app.tgz localhost:9002/deploy/username/appname
+
+```
+> NOTE: you will need to invoke `tar -czf app.tgz .` inside your app's directory
+> else it will add directories inside the tarball that will confuse haibu.
+> haibu only accepts gzip format.
+
+or, programmatically:
+
+``` js
+  var request = require('request')
+    , fs = require('fs');
+    
+  fs.createReadStream(tarball)
+    .pipe(request.put({url: 'http://localhost:9002/deploy/username/appname'}, function (err, res, body) {
+      var result = JSON.parse(body) //app information
+    })
+  
+```
+
 ## Using haibu-balancer
 
 Once your node.js application has been started on `haibu` you're going to want to access it. `haibu-balancer` will load balance multiple instances of your application using [node-http-proxy][1] based on the `domain` property supplied in the package.json sent to each `start` request. Starting `haibu-balancer` is very simple:
