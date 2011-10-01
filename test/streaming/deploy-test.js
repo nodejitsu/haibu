@@ -18,7 +18,6 @@ var assert = require('assert'),
     helloTarball = path.join(fixtureDir , 'repositories', 'streaming', 'hn.tar.gz'),
     brokenTarball = path.join(fixtureDir , 'repositories', 'streaming', 'broken.tar'), //this one is not in gzip format
     u = require('ubelt'),
-//    es = require('event-stream'),
     it = require('it-is')
     ;
 
