@@ -17,7 +17,6 @@ var assert = require('assert'),
     fixtureDir = path.join(__dirname, '..', 'fixtures')
     helloTarball = path.join(fixtureDir , 'repositories', 'streaming', 'hn.tar.gz'),
     brokenTarball = path.join(fixtureDir , 'repositories', 'streaming', 'broken.tar'), //this one is not in gzip format
-    u = require('ubelt'),
     it = require('it-is')
     ;
 
@@ -93,6 +92,7 @@ vows.describe('haibu/deploy')
       })      
     },
     'responds with 400 (bad request)': function (err, res, body) {
+      console.dir(body);
       it(res).has({
         statusCode: 400 //bad request
       })
