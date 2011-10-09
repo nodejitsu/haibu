@@ -14,17 +14,14 @@ var assert = require('assert'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu'),
     request = require('request'),
-    fixtureDir = path.join(__dirname, '..', 'fixtures')
-    helloTarball = path.join(fixtureDir , 'repositories', 'streaming', 'hn.tar.gz'),
-    brokenTarball = path.join(fixtureDir , 'repositories', 'streaming', 'broken.tar'), //this one is not in gzip format
-    it = require('it-is')
-    ;
+    it = require('it-is');
 
-var appPort
+var fixtureDir = path.join(__dirname, '..', 'fixtures')
+    helloTarball = path.join(fixtureDir , 'repositories', 'streaming', 'hn.tar.gz'),
+    brokenTarball = path.join(fixtureDir , 'repositories', 'streaming', 'broken.tar'),
+    appPort;
   
-vows.describe('haibu/deploy')
-.addBatch(helpers.requireStart(9011))
-.addBatch({
+vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
   'begin with no apps': {
     topic: function () { 
       request({url: 'http://localhost:9011/info'},  this.callback)    
@@ -35,8 +32,7 @@ vows.describe('haibu/deploy')
       assert.deepEqual(apps, [])
     }
   }
-})
-.addBatch({
+}).addBatch({
   'deploy in a single PUT': {
     topic: function () {
       var that = this
@@ -72,8 +68,7 @@ vows.describe('haibu/deploy')
       }
     }
   }
-})
-.addBatch({
+}).addBatch({
   'PUT deploy with wrong format': {
     topic: function () {
       var that = this
@@ -98,4 +93,4 @@ vows.describe('haibu/deploy')
       })
     }
   }
-}).export(module)
+}).export(module);
