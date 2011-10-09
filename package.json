@@ -15,11 +15,12 @@
     "clip": "0.1.x",
     "colors": "0.x.x",
     "eyes": "0.1.x",
-    "forever": "0.6.x >=0.6.6",
-    "haibu-carapace": "0.2.x >=0.2.4",
+    "forever": "0.7.x",
+    "haibu-carapace": "0.2.x >=0.2.7",
     "hook.io": "0.6.x >=0.6.0",
     "http-proxy": "0.7.x",
     "journey": ">= 0.4.0-pre-2",
+    "morestreams": "~0.0",
     "mkdirp": "0.0.x",
     "nconf": "0.3.x",
     "nconf-redis": "0.2.x",
@@ -28,8 +29,7 @@
     "pkginfo": "0.2.x",
     "rimraf": "1.0.x",
     "request": "2.1.x",
-    "winston": "0.5.x",
-    "morestreams": "~0.0"
+    "winston": "0.5.x"
   },
   "devDependencies": {
     "it-is": "1",
