@@ -16,7 +16,7 @@ var assert = require('assert'),
     request = require('request'),
     it = require('it-is');
 
-var fixtureDir = path.join(__dirname, '..', 'fixtures')
+var fixtureDir = path.join(__dirname, '..', 'fixtures'),
     helloTarball = path.join(fixtureDir , 'repositories', 'streaming', 'hn.tar.gz'),
     brokenTarball = path.join(fixtureDir , 'repositories', 'streaming', 'broken.tar'),
     appPort;
