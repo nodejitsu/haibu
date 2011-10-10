@@ -11,10 +11,10 @@ var assert = require('assert'),
     fs = require('fs')
     sys = require('sys'),
     vows = require('vows'),
-    helpers = require('../helpers'),
-    haibu = require('../../lib/haibu'),
     request = require('request'),
-    it = require('it-is');
+    it = require('it-is'),
+    helpers = require('../helpers'),
+    haibu = require('../../lib/haibu');
 
 var fixtureDir = path.join(__dirname, '..', 'fixtures'),
     helloTarball = path.join(fixtureDir , 'repositories', 'streaming', 'hn.tar.gz'),
@@ -22,75 +22,76 @@ var fixtureDir = path.join(__dirname, '..', 'fixtures'),
     appPort;
   
 vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
-  'begin with no apps': {
+  "Before testing streaming deploys": {
     topic: function () { 
-      request({url: 'http://localhost:9011/info'},  this.callback)    
+      request({ url: 'http://localhost:9011/drones/info' },  this.callback)    
     },
-    'no apps running' : function (err, res, body) {
-      var apps = JSON.parse(body)
-  
-      assert.deepEqual(apps, [])
+    "there should be no apps running": function (err, res, body) {
+      var apps = JSON.parse(body);
+      assert.deepEqual(apps, []);
     }
   }
 }).addBatch({
-  'deploy in a single PUT': {
-    topic: function () {
-      var that = this
-      var deployStream = fs.createReadStream(helloTarball)
-      var reqStream = request({url: 'http://localhost:9011/deploy/test/hellonode', method:'PUT'}
-        , function (err, res, body) {
-        try { appPort = JSON.parse(body).port } catch (err) {console.error(err)} //just assign this stuff, it's tested next.
-        that.callback(err, res, body)
-      })
-      deployStream.pipe(reqStream)
-    },
-    'responds with app infomation': function (err, res, body) {
-      var result = JSON.parse(body)
-      assert.isNull(err);
-      it(result).has({
-        user: 'test',
-        name: 'hellonode',
-        app: {
-          name: 'hellonode'
-        },
-        drone: {
-          port: it.isNumber(),
-          pid: it.isNumber()
-        }
-      })
-    },
-    'app responds on correct port': {
+  "Deploying to haibu in a single PUT": {
+    "with a valid tarball": {
       topic: function () {
-        request('http://localhost:'+appPort, this.callback)    
+        var deployStream = fs.createReadStream(helloTarball),
+            reqStream;
+
+        reqStream = request({
+          url: 'http://localhost:9011/drones/deploy/test/hellonode', 
+          method:'PUT'
+        }, this.callback);
+
+        deployStream.pipe(reqStream)
       },
-      'hello, i know nodejitsu': function (err, res, body) {
-        assert.equal(body.toLowerCase(), 'hello, i know nodejitsu.')
+      "should respond with app infomation": function (err, res, body) {
+        var result = JSON.parse(body);
+        assert.isNull(err);
+        it(result).has({
+          user: 'test',
+          name: 'hellonode',
+          app: {
+            name: 'hellonode'
+          },
+          drone: {
+            port: it.isNumber(),
+            pid: it.isNumber()
+          }
+        })
+      },
+      "the spawned application": {
+        topic: function () {
+          request('http://localhost:'+appPort, this.callback)    
+        },
+        "should respond with 'hello, i know nodejitsu'": function (err, res, body) {
+          assert.equal(body.toLowerCase(), 'hello, i know nodejitsu.')
+        }
       }
-    }
-  }
-}).addBatch({
-  'PUT deploy with wrong format': {
-    topic: function () {
-      var that = this
-      var deployStream = fs.createReadStream(brokenTarball)
-      var reqStream = request({url: 'http://localhost:9011/deploy/test/hellonode', method:'PUT'}
-        , function (err, res, body) {
-        try { appPort = JSON.parse(body).port } catch (err) {console.error(err)} //just assign this stuff, it's tested next.
-        that.callback(err, res, body)
-      })
-      deployStream.pipe(reqStream)
     },
-    'responds with usage message': function (err, res, body) {
-      var usage = JSON.parse(body)
-      it(usage).has({
-        usage: it.isString()
-      })      
-    },
-    'responds with 400 (bad request)': function (err, res, body) {
-      console.dir(body);
-      it(res).has({
-        statusCode: 400 //bad request
-      })
+    "with a tar that generates an error": {
+      topic: function () {
+        var deployStream = fs.createReadStream(brokenTarball),
+            reqStream;
+
+        reqStream = request({
+          url: 'http://localhost:9011/drones/deploy/test/hellonode', 
+          method:'PUT'
+        }, this.callback);
+
+        deployStream.pipe(reqStream);
+      },
+      'responds with usage message': function (err, res, body) {
+        var usage = JSON.parse(body);
+        it(usage).has({
+          usage: it.isString()
+        });
+      },
+      'responds with 400 (bad request)': function (err, res, body) {
+        it(res).has({
+          statusCode: 400
+        });
+      }
     }
   }
 }).export(module);
