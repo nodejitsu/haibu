@@ -20,7 +20,7 @@
     "hook.io": "0.6.x >=0.6.0",
     "http-proxy": "0.7.x",
     "journey": ">= 0.4.0-pre-2",
-    "morestreams": "~0.0",
+    "morestreams": "0.0.x",
     "mkdirp": "0.0.x",
     "nconf": "0.3.x",
     "nconf-redis": "0.2.x",
@@ -29,7 +29,7 @@
     "pkginfo": "0.2.x",
     "rimraf": "1.0.x",
     "request": "2.1.x",
-    "winston": "0.5.x"
+    "winston": "0.5.x >=0.5.5"
   },
   "devDependencies": {
     "it-is": "1",
