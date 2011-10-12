@@ -186,6 +186,12 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
             
             assert.length(pids, 1);
             assert.notEqual(pids[0], updatedPids[0]);
+          },
+          ".list() should return an updated pid" : function (_, pids, drone ){
+          
+            var updatedPids = Object.keys(drone.apps['delayed-fail'].drones);
+            var listed = drone.list()['delayed-fail'].drones[0]
+            assert.equal(listed.pid, updatedPids[0])
           }
         }
       }
