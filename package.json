@@ -29,6 +29,7 @@
     "pkginfo": "0.2.x",
     "rimraf": "1.0.x",
     "request": "2.1.x",
+    "little-big-events": "0.0.x",
     "winston": "0.5.x >=0.5.5"
   },
   "devDependencies": {
