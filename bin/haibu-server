@@ -52,6 +52,9 @@ haibu.utils.bin.getAddress(argv.a, function (err, address) {
       if (logger) {
         haibu.use(haibu.plugins.logger);
       }
+      if (argv.pubsub) {
+        haibu.use(haibu.plugins.pubsub, options);
+      }
       
       haibu.utils.showWelcome('api-server', address, port, hookPort);
     });
