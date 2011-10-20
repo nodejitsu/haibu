@@ -46,8 +46,9 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
         deployStream.pipe(reqStream)
       },
       "should respond with app infomation": function (err, res, body) {
-        var result = JSON.parse(body);
         assert.isNull(err);
+
+        var result = JSON.parse(body);
         it(result).has({
           user: 'test',
           name: 'hellonode',
@@ -58,13 +59,15 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
             port: it.isNumber(),
             pid: it.isNumber()
           }
-        })
+        });
       },
       "the spawned application": {
-        topic: function () {
-          request('http://localhost:'+appPort, this.callback)    
+        topic: function (res, body) {
+          var app = JSON.parse(body);
+          request('http://localhost:' + app.port, this.callback)    
         },
         "should respond with 'hello, i know nodejitsu'": function (err, res, body) {
+          assert.isNull(err);
           assert.equal(body.toLowerCase(), 'hello, i know nodejitsu.')
         }
       }
