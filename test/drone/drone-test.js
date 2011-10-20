@@ -44,7 +44,7 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
           assert.isNotNull(result);
           assert.isObject(result);
           assert.include(this.drone.apps, app.name);
-          assert.include(this.drone.apps[app.name].drones, result.pid);
+          assert.include(this.drone.apps[app.name].drones, result.uid);
         },
         "the stop() method when stopping a single drone": {
           topic: function (_, create) {
@@ -176,22 +176,22 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
         },
         "after the user has made the application crash": {
           topic: function () {
-            this.pids = Object.keys(this.drone.apps['delayed-fail'].drones);
-            setTimeout(this.callback.bind(this, null, this.pids, this.drone), 3000);
-          },
-          "should have an updated pid for the drone": function (_, pids, drone) {
-            assert.isObject(drone);
+            var uid = Object.keys(this.drone.apps['delayed-fail'].drones)[0],
+                pid = this.drone.apps['delayed-fail'].drones[uid].data.pid;
             
-            var updatedPids = Object.keys(drone.apps['delayed-fail'].drones);
-            
-            assert.length(pids, 1);
-            assert.notEqual(pids[0], updatedPids[0]);
+            setTimeout(this.callback.bind(this, null, uid, pid, this.drone), 3000);
           },
-          ".list() should return an updated pid" : function (_, pids, drone ){
-          
-            var updatedPids = Object.keys(drone.apps['delayed-fail'].drones);
-            var listed = drone.list()['delayed-fail'].drones[0]
-            assert.equal(listed.pid, updatedPids[0])
+          "should have an updated pid for the drone": function (_, uid, pid, updated) {
+            assert.isString(uid);
+            assert.isNumber(pid);
+            assert.isObject(updated);            
+            assert.notEqual(pid, updated.apps['delayed-fail'].drones[uid].data.pid);
+          },
+          "the list() method should return an updated pid": function (_, uid, pid, drone) {
+            var updatedPids = drone.apps['delayed-fail'].drones,
+                listed = drone.list()['delayed-fail'].drones[0];
+            
+            assert.equal(listed.pid, updatedPids[listed.uid].data.pid);
           }
         }
       }
