@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "it-is": "1",
-    "vows": "0.5.x >=0.5.10"
+    "vows": "0.5.x >=0.5.12"
   },
   "main": "./lib/haibu",
   "bin": {

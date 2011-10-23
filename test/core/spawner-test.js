@@ -172,7 +172,7 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
         "should output the expected `username:password`": function (err, child, result) {
           assert.isNull(err);
           result = result.toString().split(':');
-          assert.length(result, 2);
+          assert.lengthOf(result, 2);
           assert.equal(result[0], this.repo.app.env['username']);
           assert.equal(result[1], this.repo.app.env['password']);
           child.kill();
