@@ -103,7 +103,7 @@ vows.describe('haibu/drone/api').addBatch(
         "should respond with a list of drones": function (error, response, body) {
           var drones = JSON.parse(body).drones;
           assert.isArray(drones);
-          assert.length(drones, 1);
+          assert.lengthOf(drones, 1);
         }
       }
     }
@@ -150,7 +150,7 @@ vows.describe('haibu/drone/api').addBatch(
         "should respond with a list of drones": function (error, response, body) {
           var drones = JSON.parse(body).drones;
           assert.isObject(drones);
-          assert.length(drones['test'].drones, 1);
+          assert.lengthOf(drones['test'].drones, 1);
         }
       }
     }
@@ -352,7 +352,7 @@ vows.describe('haibu/drone/api').addBatch(
       "should remove the files from the app dir": function (err, response, body) {
         assert.isTrue(!err);
         var files = fs.readdirSync(haibu.config.get('directories:apps'));
-        assert.length(files, 0);
+        assert.lengthOf(files, 0);
       }
     }
   }
