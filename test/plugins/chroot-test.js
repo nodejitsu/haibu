@@ -111,7 +111,7 @@ vows.describe('haibu/plugins/chroot').addBatch(
           if (err) {
             that.callback(err);
           }
-
+          
           path.exists(repo.homeDir, that.callback.bind(null, null));
         });
       },
