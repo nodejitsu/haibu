@@ -58,11 +58,12 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
             port: it.isNumber(),
             pid: it.isNumber()
           }
-        })
+        });
       },
       "the spawned application": {
-        topic: function () {
-          request('http://localhost:'+appPort, this.callback)    
+        topic: function (req, body) {
+          var result = JSON.parse(body);
+          request('http://localhost:'+result.drone.port, this.callback)    
         },
         "should respond with 'hello, i know nodejitsu'": function (err, res, body) {
           assert.equal(body.toLowerCase(), 'hello, i know nodejitsu.')

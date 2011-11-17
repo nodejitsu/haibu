@@ -64,7 +64,7 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
       topic: app,
       "the stop() method when stopping multiple drones": {
         topic: function (create) {
-          var that = this;
+          var callback = this.callback;
           var drone = this.drone = new Drone({
             minUptime: 0,
             host: ipAddress
@@ -73,7 +73,7 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
           drone.start(create, function (err, result) {
             drone.start(create, function (err, result) {
               drone.start(create, function (err, result) {
-                drone.stop(create.name, that.callback);
+                drone.stop(create.name, callback);
               });
             });
           });
