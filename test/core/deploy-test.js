@@ -62,9 +62,9 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
         });
       },
       "the spawned application": {
-        topic: function (res, body) {
-          var app = JSON.parse(body);
-          request('http://localhost:' + app.port, this.callback)    
+        topic: function (req, body) {
+          var result = JSON.parse(body);
+          request('http://localhost:' + result.drone.port, this.callback)    
         },
         "should respond with 'hello, i know nodejitsu'": function (err, res, body) {
           assert.isNull(err);
