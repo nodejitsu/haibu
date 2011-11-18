@@ -14,6 +14,7 @@
     "cliff": "0.1.x",
     "clip": "0.1.x",
     "colors": "0.x.x",
+    "daemon": "0.4.x",
     "eyes": "0.1.x",
     "forever": "0.7.x",
     "haibu-carapace": "0.2.x >=0.2.7",
