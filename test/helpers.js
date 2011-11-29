@@ -55,17 +55,12 @@ helpers.cleanAutostart = function (callback) {
 helpers.init = function (callback) {
   var config = helpers.loadConfig() || {};
   helpers.cleanAutostart(function () {
-    haibu.init({ env: 'development' }, function (err) {
-      haibu.use(haibu.plugins.logger, {
-        loggly: config.loggly || haibu.config.get('loggly'),
-        console: {
-          level: 'silly',
-          silent: true
-        }
-      });
-
-      return callback(err);
-    });
+    haibu.config.sources.push(haibu.config.create('redis', {
+      namespace: 'development',
+      host: '127.0.0.1'
+    }));
+    
+    haibu.init(callback);
   });
 };
 
