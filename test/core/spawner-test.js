@@ -47,7 +47,9 @@ var appWithSubmodules = {
   }
 };
 
-vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatch({
+vows.describe('haibu/core/spawner').addBatch(
+  helpers.requireStart(9010)
+).addBatch({
   "An instance of haibu.Spawner": {
     "when passed a valid app json with submodules": {
       topic: appWithSubmodules,
