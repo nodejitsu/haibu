@@ -36,7 +36,7 @@ vows.describe('haibu/plugins/chroot').addBatch(
 ).addBatch({
   "This test requires the chroot plugin": {
     "should respond without an error": function () {
-      haibu.use(haibu.plugins.chroot);
+      haibu.use(haibu.chroot);
       assert.isTrue(true);
     }
   }
