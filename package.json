@@ -26,15 +26,13 @@
     "union": "0.x.x"
   },
   "devDependencies": {
-    "it-is": "1",
-    "vows": "0.5.x >=0.5.12"
+    "vows": "0.6.x"
   },
   "main": "./lib/haibu",
   "bin": {
     "haibu-server": "./bin/haibu-server",
-    "haibu-balancer": "./bin/haibu-balancer",
     "haibu": "./bin/haibu"
   },
   "scripts": { "test": "sudo vows test/**/*-test.js --isolate --spec" },
-  "engines": { "node": "0.4.x || 0.5.x" }
+  "engines": { "node": "0.4.x || 0.6.x" }
 }
