@@ -26,8 +26,7 @@
     "union": "0.x.x"
   },
   "devDependencies": {
-    "it-is": "1",
-    "vows": "0.5.x >=0.5.12"
+    "vows": "0.6.x"
   },
   "main": "./lib/haibu",
   "bin": {

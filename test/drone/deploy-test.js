@@ -12,7 +12,6 @@ var assert = require('assert'),
     sys = require('sys'),
     vows = require('vows'),
     request = require('request'),
-    it = require('it-is'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
 
@@ -21,10 +20,12 @@ var fixtureDir = path.join(__dirname, '..', 'fixtures'),
     brokenTarball = path.join(fixtureDir , 'repositories', 'streaming', 'broken.tar'),
     appPort;
   
-vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
+vows.describe('haibu/drone/deploy').addBatch(
+  helpers.requireStart(9011)
+).addBatch({
   "Before testing streaming deploys": {
     topic: function () { 
-      request({ url: 'http://localhost:9011/drones/info' },  this.callback)    
+      request({ url: 'http://localhost:9011/drones/running' }, this.callback);
     },
     "there should be no apps running": function (err, res, body) {
       var apps = JSON.parse(body);
@@ -39,27 +40,20 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
             reqStream;
 
         reqStream = request({
-          url: 'http://localhost:9011/drones/deploy/test/hellonode', 
-          method:'PUT'
+          url: 'http://localhost:9011/deploy/test/hellonode', 
+          method: 'POST'
         }, this.callback);
 
-        deployStream.pipe(reqStream)
+        deployStream.pipe(reqStream);
       },
       "should respond with app infomation": function (err, res, body) {
         assert.isNull(err);
 
-        var result = JSON.parse(body);
-        it(result).has({
-          user: 'test',
-          name: 'hellonode',
-          app: {
-            name: 'hellonode'
-          },
-          drone: {
-            port: it.isNumber(),
-            pid: it.isNumber()
-          }
-        });
+        var result = JSON.parse(body).drone;
+        assert.equal(result.user, 'test');
+        assert.equal(result.name, 'hellonode');
+        assert.isNumber(result.port);
+        assert.isNumber(result.pid);
       },
       "the spawned application": {
         topic: function (req, body) {
@@ -69,6 +63,23 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
         "should respond with 'hello, i know nodejitsu'": function (err, res, body) {
           assert.isNull(err);
           assert.equal(body.toLowerCase(), 'hello, i know nodejitsu.')
+        },
+        "when stopped": {
+          topic: function () {
+            request({
+              url: 'http://localhost:9011/drones/hellonode/stop', 
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                stop: { name: 'hellonode' }
+              })
+            }, this.callback);
+          },
+          "should respond with 200": function (error, response, body) {
+            assert.equal(response.statusCode, 200);
+          }
         }
       }
     },
@@ -78,22 +89,18 @@ vows.describe('haibu/deploy').addBatch(helpers.requireStart(9011)).addBatch({
             reqStream;
 
         reqStream = request({
-          url: 'http://localhost:9011/drones/deploy/test/hellonode', 
-          method:'PUT'
+          url: 'http://localhost:9011/deploy/broken/hellonode', 
+          method: 'POST'
         }, this.callback);
 
         deployStream.pipe(reqStream);
       },
-      'responds with usage message': function (err, res, body) {
-        var usage = JSON.parse(body);
-        it(usage).has({
-          usage: it.isString()
-        });
+      "responds with usage message": function (err, res, body) {
+        var result = JSON.parse(body);
+        assert.isString(result.error.usage);
       },
-      'responds with 400 (bad request)': function (err, res, body) {
-        it(res).has({
-          statusCode: 400
-        });
+      "responds with 500": function (err, res, body) {
+        assert.equal(res.statusCode, 500);
       }
     }
   }
