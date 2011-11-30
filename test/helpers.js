@@ -49,7 +49,7 @@ helpers.loadConfig = function (requireAuth) {
 };
 
 helpers.cleanAutostart = function (callback) {
-  exec('rm -rf ' + path.join(haibu.config.get('directories:autostart'), '*'), callback);
+  exec('rm -rf autostart/*', callback);
 };
 
 helpers.init = function (callback) {
