@@ -17,9 +17,13 @@
     "flatiron": "0.1.x",
     "haibu-carapace": "0.2.x >=0.2.7",
     "hook.io": "0.6.x >=0.6.0",
+    "morestreams": "*",
+    "nconf": "0.5.x",
+    "nconf-redis": "0.3.x",
     "npm": "1.0.x",
     "pkginfo": "0.2.x",
     "request": "2.1.x",
+    "union": "0.x.x"
   },
   "devDependencies": {
     "it-is": "1",
