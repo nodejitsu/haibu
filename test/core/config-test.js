@@ -27,23 +27,14 @@ vows.describe('haibu/config').addBatch({
       topic: function () {
         haibu.config.seed(this.callback.bind(null, null));
       },
-      "should respond without an error": function (ign, err) {
+      "should respond without an error": function (_, err) {
         assert.isTrue(typeof err === 'undefined');
       }
     }
   }
-}).addBatch({
-  "When using the haibu config module": {
-    "the load() method": {
-      topic: function () {
-        haibu.config.load(this.callback.bind(null, null));
-      },
-      "should respond without an error": function (ign, err) {
-        assert.isTrue(typeof err === 'undefined');
-      }
-    }
-  }
-}).addBatch({
+}).addBatch(
+  helpers.requireInit()
+).addBatch({
   "When using the haibu config module": {
     "it should have the correct default config": function () {
       var include = {
