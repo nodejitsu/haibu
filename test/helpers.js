@@ -55,6 +55,12 @@ helpers.cleanAutostart = function (callback) {
 helpers.init = function (callback) {
   var config = helpers.loadConfig() || {};
   helpers.cleanAutostart(function () {
+    if (config) {
+      Object.keys(config).forEach(function (key) {
+        haibu.config.set(key, config[key]);
+      });
+    }
+    
     haibu.config.sources.push(haibu.config.create('redis', {
       namespace: 'development',
       host: '127.0.0.1'
