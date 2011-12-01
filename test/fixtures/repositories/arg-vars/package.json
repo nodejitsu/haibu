@@ -1,0 +1,20 @@
+{
+  "name": "arg-vars",
+  "description": "This application tests if argument variable passing works correctly in haibu",
+  "version": "0.1.0",
+  "author": "Sander Tolsma",
+  "repository": {
+    "type": "local"
+  },
+  "scripts": {
+    "start": "index.js",
+    "arguments": [
+      "-w", "firstwarg",
+      "-h", "%h",
+      "-a", "%a",
+      "-c", "%c",
+      "-o", "%o"
+    ]
+  },
+  "engines": { "node": ">= 0.4.0" }
+}
