@@ -180,4 +180,45 @@ vows.describe('haibu/core/spawner').addBatch(helpers.requireStart(9010)).addBatc
       }
     }
   }
+}).addBatch({
+  "An instance of haibu.Spawner": {
+    "when passed a valid app json with script arguments": {
+      "the trySpawn() method": {
+        topic: function () {
+          var that = this,
+              sourceDir = path.join(__dirname, '..', 'fixtures', 'repositories', 'arg-vars'),
+              pkg = this.pkg = fs.readFileSync(path.join(sourceDir, 'package.json')),
+              envApp = JSON.parse(pkg);
+
+          envApp.user = 'charlie';
+          envApp.repository.directory = sourceDir;
+          this.repo = haibu.repository.create(envApp);
+          
+          spawner.trySpawn(this.repo, function (err, result) {
+            if (err) {
+              return that.callback(err);
+            }
+            
+            result.process.stdout.on('data', that.callback.bind(that, null, result.process));
+          });
+        },
+        "should output the expected script arguments": function (err, child, result) {
+          assert.isNull(err);
+          result = JSON.parse(result);
+          assert.lengthOf(result, 12);
+          assert.equal(result[2], '-w');
+          assert.equal(result[3], 'firstwarg');
+          assert.equal(result[4], '-h');
+          assert.equal(result[5], '%h');
+          assert.equal(result[6], '-a');
+          assert.equal(result[7], '%a');
+          assert.equal(result[8], '-c');
+          assert.equal(result[9], '%c');
+          assert.equal(result[10], '-o');
+          assert.equal(result[11], '%o');
+          child.kill();
+        }
+      }
+    }
+  }
 }).export(module);
