@@ -121,7 +121,7 @@ vows.describe('haibu/repositories/core').addBatch(helpers.requireInit()).addBatc
     },
     "executing the mkdir() method": {
       topic: function (repo, repositories) {
-        self = this;
+        var self = this;
         repo.appsDir = haibu.config.get('directories:apps');
         exec('rm -rf ' + path.join(repo.appDir, '*'), function (err) {
           repo.mkdir(self.callback);
@@ -139,7 +139,7 @@ vows.describe('haibu/repositories/core').addBatch(helpers.requireInit()).addBatc
       },
       "plus the installDependencies() method with package.json": {
         topic: function (ready, repo, repositories) {
-          self = this;
+          var self = this;
           exec('cp -r ' + path.join(__dirname, '..', 'fixtures', 'repositories', 'local-file-dependencies') + ' ' + repo.homeDir, function (err) {
             if (err) {
               return self.callback(err);
