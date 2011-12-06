@@ -29,7 +29,7 @@ var env      = argv.env || 'development',
     port     = argv.p   || 9002,
     hookPort = argv.hp || argv.hookPort || 5000;
 
-haibu.utils.bin.getAddress(argv.a, function (err, address) {
+haibu.common.bin.getAddress(argv.a, function (err, address) {
   if (err) {
     console.log('Error getting IP Address: ' + err.message);
   }
@@ -44,6 +44,6 @@ haibu.utils.bin.getAddress(argv.a, function (err, address) {
   haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
     
   haibu.drone.start(options, function () {
-    haibu.utils.showWelcome('api-server', address, port, hookPort);
+    haibu.common.showWelcome('api-server', address, port, hookPort);
   });
 });
