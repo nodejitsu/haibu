@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var util = require('util'),
-    colors = require('colors'),
+var path = require('path'),
+    util = require('util'),
     argv = require('optimist').argv,
     haibu = require('../lib/haibu');
 
@@ -25,38 +25,25 @@ if (argv.h || argv.help) {
   return util.puts(help);
 }
 
-if (argv.chroot) {
-  haibu.use(haibu.plugins.chroot);
-}
-
-var env    = argv.env || 'development',
-    port   = argv.p   || 9002,
-    hookPort   = argv.hp || argv.hookPort || 5000,
-    logger = typeof argv.logger !== 'undefined' ? argv.logger : true;
+var env      = argv.env || 'development',
+    port     = argv.p   || 9002,
+    hookPort = argv.hp || argv.hookPort || 5000;
 
 haibu.utils.bin.getAddress(argv.a, function (err, address) {
   if (err) {
-    log('Error getting IP Address: ' + err.message);
+    console.log('Error getting IP Address: ' + err.message);
   }
   
-  haibu.utils.bin.tryLoadCache(function (err, config) {
-    var options = {
-      env: env,
-      port: port,
-      'hook-port': hookPort,
-      host: address,
-      config: config
-    };
+  var options = {
+    env: env,
+    port: port,
+    'hook-port': hookPort,
+    host: address
+  };
+  
+  haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
     
-    haibu.drone.start(options, function () {
-      if (logger) {
-        haibu.use(haibu.plugins.logger);
-      }
-      if (argv.pubsub) {
-        haibu.use(haibu.plugins.pubsub, options);
-      }
-      
-      haibu.utils.showWelcome('api-server', address, port, hookPort);
-    });
+  haibu.drone.start(options, function () {
+    haibu.utils.showWelcome('api-server', address, port, hookPort);
   });
 });

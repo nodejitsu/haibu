@@ -287,9 +287,12 @@ or:
 
 ## Run Tests
 All of the `haibu` tests are written in [vows][0], and cover all of the use cases described above.
-<pre>
-  sudo bin/test --spec
-</pre>
+
+``` bash
+  $ npm test
+```
+
+If you wish to take advantage of all of the configuration offered in `haibu` through `flatiron` see the sample [test-config.json.example][2] configuration file.
 
 *If you copy and paste the above link, the test suite will attempt to connect to Rackspace for some of the remote file tests. You don't need to run these tests or use Rackspace to get started. We'll be improving our test runner soon to help make this process a bit more intuitive.*
 
@@ -304,3 +307,4 @@ All of the `haibu` tests are written in [vows][0], and cover all of the use case
 
 [0]: http://vowsjs.org
 [1]: http://github.com/nodejitsu/node-http-proxy
+[2]: https://github.com/nodejitsu/haibu/tree/master/test/fixtures/test-config.json.example

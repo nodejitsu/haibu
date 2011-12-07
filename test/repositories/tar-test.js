@@ -59,13 +59,12 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
   // skip cloudfiles tests if no authentication available
   if (!config.auth && app === cloudfilesApp) {
     tests["Config file test/fixtures/test-config.json doesn't have valid data"] = {
-      topic: function () {
-        return {};
-      },
       "so skipping cloudfiles tests": function (obj) {
+        assert.isTrue(true);
       }
     };
-  } else {
+  } 
+  else {
     tests["with an " + remoteType + " remote"] = {
       topic: function () {
         return haibu.repository.create(app);

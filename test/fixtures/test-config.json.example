@@ -1,15 +1,28 @@
 {
   "auth": {
-    "username": "test-username",
-    "apiKey": "test-apiKey"
+    "username": "your-rackspace-username",
+    "apiKey": "your-rackspace-api-key"
   },
-  "loggly": {
-    "subdomain": "your-subdomain",
-    "inputs": {
-      "errors": "your-input-token-for-error-logs",
-      "exceptions": "your-input-token-exceptions-logs",      
-      "haibu": "your-input-token-for-haibu-logs",
-      "user": "your-input-token-for-user-logs"
+  "log": {
+    "logAll": true,
+    "console": {
+      "silent": true,
+    },
+    "loggly": {
+      "json": true,
+      "subdomain": "your-loggly-subdomain",
+      "inputs": {
+        "errors": "a-really-long-input-token",
+        "default": "a-really-long-input-token",
+        "user": "a-really-long-input-token"
+      }
     }
+  },
+  "exceptions": {
+    "loggly": {
+      "json": true,
+      "subdomain": "your-loggly-subdomain",
+      "inputToken": "a-really-long-input-token"
+    }  
   }
 }
