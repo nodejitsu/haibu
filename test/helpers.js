@@ -61,11 +61,6 @@ helpers.init = function (callback) {
       });
     }
     
-    haibu.config.sources.push(haibu.config.create('redis', {
-      namespace: 'development',
-      host: '127.0.0.1'
-    }));
-    
     haibu.init(callback);
   });
 };
