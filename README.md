@@ -18,26 +18,6 @@ haibu (which is Japanese for "hive") transforms node.js applications (using a [C
 
 `haibu` doesn't discriminate. If your environment supports node.js, you can install `haibu` and start up your own node.js cloud. This makes `haibu` an ideal tool for both development purposes and production usage since you can seamlessly setup haibu on your local machine, on utility computing providers (such as Amazon EC2 or Rackspace), on dedicated servers, or even on a mobile phone!
 
-## What are the parts of haibu?
-
-`haibu` consists of 3 main applications, while only 2 of those are required to run your own cloud.
-
-### haibu-balancer
-
-`haibu` includes a load balancer that can manage domain filtering and drone load balancing for you.
-The `haibu-balancer` application will spawn up a load-balancer for your haibu installation.
-This is entirely optional and not all deployments will want to use it.
-
-### haibu-server
-
-`haibu-server` is `haibu`'s main server and drone management application.
-This application is used to manage all of the drones that are active on a particular install as well as track installed apps.
-
-### haibu
-
-`haibu` is the main application used for interaction with a running haibu server.
-This application will help administration of drones and applications.
-
 # Installation
 
     [sudo] npm install haibu -g
@@ -57,28 +37,6 @@ haibu started @ 127.0.0.1 on port 9002 as api-server
 ```
 
 **Now that there is a haibu server running, we can begin to interact with it's API.**
-
-##Starting an application using the haibu CLI
-
-The haibu CLI allows for easy deployments into haibu with configuration files. A configuration file may be specified or the default '.haibuconf' file will be used. Haibu's CLI will recurse the directory path looking for the config file and prepopulate values for commands for you.
-
-This is what a .haibuconf file may look like:
-
-```javascript
-{
-  "address": "127.0.0.1",
-  "port": 9002
-}
-```
-
-The address and port should correspond to our haibu server's API endpoint.
-The API port is displayed in haibu-servers startup and defaults to port 9002.
-
-Once we are in a directory with a package.json we want to use to deploy our script we can let the config file take care of communications to haibu for us:
-
-```
-haibu start
-```
 
 ##Starting an application using the haibu Client
 *(From: /examples/hello-spawn.js)*
@@ -153,35 +111,6 @@ or, programmatically:
     })
   
 ```
-
-## Using haibu-balancer
-
-Once your node.js application has been started on `haibu` you're going to want to access it. `haibu-balancer` will load balance multiple instances of your application using [node-http-proxy][1] based on the `domain` property supplied in the package.json sent to each `start` request. Starting `haibu-balancer` is very simple:
-
-```
-sudo haibu-balancer
-(...)
-haibu started @ 127.0.0.1 on port 80 as balancer
-```
-
-Lets look at the sample data we sent to the `haibu-server` in the above example
-
-```javascript
-{
-   "user": "marak",
-   "name": "test",
-   "domain": "devjitsu.com",
-   "repository": {
-     "type": "git",
-     "url": "https://github.com/Marak/hellonode.git"
-   },
-   "scripts": {
-     "start": "server.js"
-   }
-}
-```
-
-As you can see, the `domain` property is set to `devjitsu.com`. This means that incoming HTTP requests which have their `HOST` header set to `devjitsu.com` will be round-robin load-balanced across all instances of your application managed by `haibu`. If you're testing locally you can modify your `/etc/hosts` file for `devjitsu.com` and see your applications running in your local development environment.
 
 ## RESTful Webservice
 
@@ -370,13 +299,6 @@ All of the `haibu` tests are written in [vows][0], and cover all of the use case
 
 `jitsu` is intended to work with the full production stack at Nodejitsu and should not be used with `haibu`.
 
-### My drones are not being balanced in a logical order
-
-Many browsers will submit multiple requests beyond a simple html page, favicons are a likely culprit.
-
-### Do I have to use `haibu-balancer`?
-
-No, `haibu-balancer` is a completely optional part of `haibu` and does not need to be run.
 
 #### Author: [Nodejitsu Inc.](http://www.nodejitsu.com)
 

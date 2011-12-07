@@ -1,83 +1,62 @@
 #!/usr/bin/env node
 
-var clip = require('clip');
-var winston = require('winston');
-var colors = require('colors');
-var haibu = require('../');
-var app = new clip();
-var fs = require('fs');
+var util = require('util'),
+    colors = require('colors'),
+    argv = require('optimist').argv,
+    haibu = require('../lib/haibu');
 
-app.config('.haibuconf', {
-  flags: ['c', 'conf'],
-  defaults: {
-    port: 9002,
-    host: '127.0.0.1'
+var help = [
+    'usage: haibu-server [options]',
+    '',
+    'Starts the haibu API server responsible for spawning node.js applications.',
+    '',
+    'options:',
+    '  -a             IP Address that you want the server to bind to  [dynamic]',
+    '  -p             Port that you want the server to run on         [9002]',
+    '  -hp            Port that you want the Hook.io to run on        [5000]',
+    '  -e [env]       The environment to the specified command in     [development]',
+    '  --logger       Use the haibu logger plugin                     [true]',
+    '  --chroot       Deploy drones using chroot',
+    '  -s --silent    Suppress the log messages from the output',
+    '  -h, --help     You\'re staring at it',
+].join('\n');
+
+if (argv.h || argv.help) {
+  return util.puts(help);
+}
+
+if (argv.chroot) {
+  haibu.use(haibu.plugins.chroot);
+}
+
+var env    = argv.env || 'development',
+    port   = argv.p   || 9002,
+    hookPort   = argv.hp || argv.hookPort || 5000,
+    logger = typeof argv.logger !== 'undefined' ? argv.logger : true;
+
+haibu.utils.bin.getAddress(argv.a, function (err, address) {
+  if (err) {
+    log('Error getting IP Address: ' + err.message);
   }
-});
-
-app.flag(['s', 'silent'], function (cmd, tty, next) {
-  tty.remove(tty.transports.Console);
-})
-
-app.use(function (cmd, tty, next) {
-  tty.info('Using config file '+cmd.config.store.file.magenta);
-
-  try {
-    var app = JSON.parse(fs.readFileSync('package.json'));
-    var deploymentscript = cmd.config.get('f') || cmd.config.get('file') || 'deploy.json';
-    try {
-      var deployment = JSON.parse(fs.readFileSync(deploymentscript));
-      tty.info('Deployment script is ' + fs.realpathSync(deploymentscript).magenta);
-      ['repository', 'name', 'domain', 'subdomain', 'env', 'user'].forEach(function (item) {
-        if (deployment.hasOwnProperty(item)) {
-          app[item] = deployment[item];
-        }
-      })
-      if (!app.user) {
-        app.user = cmd.config.get('user');
+  
+  haibu.utils.bin.tryLoadCache(function (err, config) {
+    var options = {
+      env: env,
+      port: port,
+      'hook-port': hookPort,
+      host: address,
+      config: config
+    };
+    
+    haibu.drone.start(options, function () {
+      if (logger) {
+        haibu.use(haibu.plugins.logger);
       }
-    }
-    catch (e) {
-      tty.warn('No deployment script was detected');
-    }
-    cmd.app = app;
-  } 
-  catch (e) {
-    if (e.name === 'SyntaxError') {
-      tty.error('Unable to read deployment configuration.');
-      process.exit(1);
-      return;
-    }
-
-    cmd.app = {};
-  }
-
-  var clientsettings = {
-    host: cmd.config.get('a') || cmd.config.get('address'),
-    port: cmd.config.get('p') || cmd.config.get('port')
-  };
-
-  tty.info('haibu-server located at '+(clientsettings.host+':'+clientsettings.port).magenta);
-  cmd.client = new haibu.drone.Client(clientsettings);
-
-  next();
+      if (argv.pubsub) {
+        haibu.use(haibu.plugins.pubsub, options);
+      }
+      
+      haibu.utils.showWelcome('api-server', address, port, hookPort);
+    });
+  });
 });
-require('../lib/haibu/cli/config')(app);
-require('../lib/haibu/cli/apps')(app);
-
-app.usage(function usage(cmd, tty) {
-  tty.info('');
-  tty.info('haibu'.bold.underline);
-  tty.info('  CLI interface to manage a Haibu server.');
-  tty.info('  Please refer to documentation of commands using `-h` or `--help`.');
-  tty.info('');
-  tty.info('commands'.bold);
-  tty.info('  haibu apps'.green);
-  tty.info('  haibu config'.green);
-  tty.info('');
-  tty.info('flags'.bold);
-  tty.info('  -s --silent                Do not log to console');
-  tty.info('');
-});
-
-app.run();
