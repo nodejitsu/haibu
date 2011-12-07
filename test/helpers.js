@@ -49,23 +49,19 @@ helpers.loadConfig = function (requireAuth) {
 };
 
 helpers.cleanAutostart = function (callback) {
-  exec('rm -rf ' + path.join(haibu.config.get('directories:autostart'), '*'), callback);
+  exec('rm -rf autostart/*', callback);
 };
 
 helpers.init = function (callback) {
   var config = helpers.loadConfig() || {};
   helpers.cleanAutostart(function () {
-    haibu.init({ env: 'development' }, function (err) {
-      haibu.use(haibu.plugins.logger, {
-        loggly: config.loggly || haibu.config.get('loggly'),
-        console: {
-          level: 'silly',
-          silent: true
-        }
+    if (config) {
+      Object.keys(config).forEach(function (key) {
+        haibu.config.set(key, config[key]);
       });
-
-      return callback(err);
-    });
+    }
+    
+    haibu.init(callback);
   });
 };
 

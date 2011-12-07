@@ -31,18 +31,16 @@ var repo, npmApp, app = {
   }
 };
 
-vows.describe('haibu/plugins/chroot').addBatch(
-  helpers.requireHook()
-).addBatch({
+vows.describe('haibu/plugins/chroot').addBatch({
   "This test requires the chroot plugin": {
-    topic: function () {
-      haibu.use(haibu.plugins.chroot, this.callback);
-    },
-    "should respond without an error": function (err, dirs) {
-      assert.isNull(err);
+    "should respond without an error": function () {
+      haibu.use(haibu.chroot);
+      assert.isTrue(true);
     }
   }
-}).addBatch({
+}).addBatch(
+  helpers.requireHook()
+).addBatch({
   "This test requires the chroot directory": {
     topic: function () {
       var that = this,
