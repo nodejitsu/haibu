@@ -6,13 +6,13 @@
 
 # What is haibu?
 
-haibu is the open-source [node.js](http://nodejs.org) project for spawning and managing several node.js applications on a single server. It's an integral part of [Nodejitsu's](http://nodejitsu.com) production stack and is fully supported by a dedicated team of core node.js developers.
+haibu is the open-source [node.js](http://nodejs.org) project used at [Nodejitsu's](http://nodejitsu.com) for spawning and managing several node.js applications on a single server. It's an integral part of our production stack and is fully supported.
 
 # How does it work?
 
-haibu (which is Japanese for "hive") transforms node.js applications (using a [Carapace](https://github.com/nodejitsu/haibu-carapace)) into "drones". This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. haibu also contains a plugin system, so you can easily add even more functionality without needing to dive too far into the codebase.
+haibu (which is Japanese for "hive") recieves commands for spawning, transforming, and managing multiple node.js applications. Haibu utilizes a unique approach by wrapping spawned Node.js applications in a "[Carapace](https://github.com/nodejitsu/haibu-carapace)" which allows haibu to extend spawned applications with all sorts of additional functionaltiy. When haibu wraps a node.js application in a "carapace" the application becomes a "drone".
 
-`haibu` builds on this concept of "drones" and exposes a robust and granular API for interacting with your node.js applications. At a low level, haibu's API is exposed as a RESTFul HTTP webservice. Any system that supports basic HTTP requests can communicate with a haibu server. If you are working in Node.js, haibu comes with a high-level Node.js API client.
+This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. [Carapace](https://github.com/nodejitsu/haibu-carapace) also contains a plugin system including functionality for things like: chroot, chdir, and even a [http://hook.io](hook.io) bridge.
 
 ## Where can I run haibu?
 
@@ -22,16 +22,12 @@ haibu (which is Japanese for "hive") transforms node.js applications (using a [C
 
     [sudo] npm install haibu -g
 
-# Documentation
-
-haibu's documentation is still very much a work in progress. We'll be actively updating the documentation in the upcoming weeks to make it easier to get acclimated with `haibu`. Aside from the overview provided in this `README.md` file, `haibu` uses docco and literate style programming to provide comprehensive source code documentation. Check out `/docs/haibu.html` for more information.
-
 # An overview of using haibu
 
-## Starting up a haibu-server
+## Starting up a haibu
 
 ```
-[sudo] node bin/haibu-server
+[sudo] node bin/haibu
 (...)
 haibu started @ 127.0.0.1 on port 9002 as api-server
 ```
@@ -220,7 +216,7 @@ This type of repository will pull a git repository into haibu and deploy its con
 
 #### local
 
-This type of repository will pull a directory relative to the `haibu-server` and deploy its contents.
+This type of repository will pull a directory relative to the `haibu` and deploy its contents.
 
 ```json
 {
@@ -233,7 +229,7 @@ This type of repository will pull a directory relative to the `haibu-server` and
 
 #### tar
 
-This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
+This type of repository will pull a remote archive relative to the `haibu` and deploy its contents.
 
 ```json
 {
@@ -246,7 +242,7 @@ This type of repository will pull a remote archive relative to the `haibu-server
 
 #### zip
 
-This type of repository will pull a remote archive relative to the `haibu-server` and deploy its contents.
+This type of repository will pull a remote archive relative to the `haibu` and deploy its contents.
 
 ```json
 {
