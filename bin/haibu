@@ -11,14 +11,15 @@ var help = [
     'Starts the haibu API server responsible for spawning node.js applications.',
     '',
     'options:',
-    '  -a             IP Address that you want the server to bind to  [dynamic]',
-    '  -p             Port that you want the server to run on         [9002]',
-    '  -hp            Port that you want the Hook.io to run on        [5000]',
-    '  -e [env]       The environment to the specified command in     [development]',
-    '  --logger       Use the haibu logger plugin                     [true]',
-    '  --chroot       Deploy drones using chroot',
-    '  -s --silent    Suppress the log messages from the output',
-    '  -h, --help     You\'re staring at it',
+    '  -a                  IP Address that you want the server to bind to  [dynamic]',
+    '  -p                  Port that you want the server to run on         [9002]',
+    '  -hp                 Port that you want the Hook.io to run on        [5000]',
+    '  -e [env]            The environment to the specified command in     [development]',
+    '  --logger            Use the haibu logger plugin                     [true]',
+    '  --chroot            Deploy drones using chroot',
+    '  --advanced-replies  Send extra info with replies',
+    '  -s --silent         Suppress the log messages from the output',
+    '  -h, --help          You\'re staring at it',
 ].join('\n');
 
 if (argv.h || argv.help) {
@@ -28,6 +29,14 @@ if (argv.h || argv.help) {
 var env      = argv.env || 'development',
     port     = argv.p   || 9002,
     hookPort = argv.hp || argv.hookPort || 5000;
+
+if (argv.chroot) {
+  haibu.use(haibu.chroot, {});
+}
+
+if (argv['advanced-replies']) {
+  haibu.use(haibu['advanced-replies'], {});
+}
 
 haibu.utils.bin.getAddress(argv.a, function (err, address) {
   if (err) {
