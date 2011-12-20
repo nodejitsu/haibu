@@ -34,6 +34,10 @@ if (argv.chroot) {
   haibu.use(haibu.chroot, {});
 }
 
+if (argv.coffee) {
+  haibu.use(haibu.coffee, {});
+}
+
 if (argv['advanced-replies']) {
   haibu.use(haibu['advanced-replies'], {});
 }
