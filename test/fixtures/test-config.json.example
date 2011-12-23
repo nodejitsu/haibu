@@ -5,6 +5,17 @@
   },
   "log": {
     "logAll": true,
+    "namespaces": {
+	  "drone": "user",
+	  "git": "haibu",
+	  "npm": "haibu",
+	  "plugin": "haibu",
+	  "repo": "haibu",
+	  "spawn": "haibu",
+	  "tar": "haibu",
+	  "user": "user",
+	  "error": "errors"
+	},
     "console": {
       "silent": true,
     },
