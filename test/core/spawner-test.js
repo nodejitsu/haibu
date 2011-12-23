@@ -182,4 +182,13 @@ vows.describe('haibu/core/spawner').addBatch(
       }
     }
   }
+}).addBatch({
+  "When the tests are over": {
+    topic: function () {
+      setTimeout(this.callback, 5000);
+    },
+    "wait for the log buffer to flush": function () {
+      assert.isTrue(true);
+    }
+  }
 }).export(module);
