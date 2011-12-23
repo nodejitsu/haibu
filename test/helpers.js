@@ -44,6 +44,7 @@ helpers.loadConfig = function (requireAuth) {
     return showConfig();
   }
   catch (ex) {
+    console.warn('Error parsing test-config.json: ' + ex.message);
     return showConfig();
   }
 };
