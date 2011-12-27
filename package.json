@@ -9,7 +9,7 @@
   },
   "keywords": ["cloud computing", "automated deployment", "platform-as-a-service"],
   "dependencies": {
-    "cloudfiles": "0.2.x",
+    "cloudfiles": "0.3.x",
     "cliff": "0.1.x",
     "daemon": "0.4.x",
     "eyes": "0.1.x",
@@ -33,3 +33,4 @@
   "scripts": { "test": "sudo vows test/**/*-test.js --isolate --spec" },
   "engines": { "node": "0.4.x" }
 }
+
