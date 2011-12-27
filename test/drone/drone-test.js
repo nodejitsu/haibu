@@ -251,3 +251,4 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
     }
   }
 }).export(module);
+

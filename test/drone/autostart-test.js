@@ -89,3 +89,4 @@ vows.describe('haibu/drone/autostart').addBatch(helpers.requireInit()).addBatch(
     }
   }
 }).export(module);
+
