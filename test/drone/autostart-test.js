@@ -7,7 +7,6 @@
 
 var assert = require('assert'),
     path = require('path'),
-    sys = require('sys'),
     vows = require('vows'),
     data = require('../fixtures/apps'),
     helpers = require('../helpers'),
@@ -90,3 +89,4 @@ vows.describe('haibu/drone/autostart').addBatch(helpers.requireInit()).addBatch(
     }
   }
 }).export(module);
+

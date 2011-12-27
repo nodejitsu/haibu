@@ -9,7 +9,6 @@ var assert = require('assert'),
     exec = require('child_process').exec,
     fs = require('fs'),
     path = require('path'),
-    sys = require('sys'),
     eyes = require('eyes'),
     vows = require('vows'),
     data = require('../fixtures/apps'),
@@ -252,3 +251,4 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
     }
   }
 }).export(module);
+

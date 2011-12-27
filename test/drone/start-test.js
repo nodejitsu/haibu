@@ -7,7 +7,6 @@
 
 var assert = require('assert'),
     path = require('path'),
-    sys = require('sys'),
     vows = require('vows'),
     helpers = require('../helpers'),
     haibu = require('../../lib/haibu');
@@ -39,3 +38,4 @@ vows.describe('haibu/drone/start').addBatch(helpers.requireInit()).addBatch({
     }
   }
 }).export(module);
+
