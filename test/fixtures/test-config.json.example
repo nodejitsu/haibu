@@ -6,18 +6,18 @@
   "log": {
     "logAll": true,
     "namespaces": {
-	  "drone": "user",
-	  "git": "haibu",
-	  "npm": "haibu",
-	  "plugin": "haibu",
-	  "repo": "haibu",
-	  "spawn": "haibu",
-	  "tar": "haibu",
-	  "user": "user",
-	  "error": "errors"
-	},
+      "drone": "user",
+      "git": "haibu",
+      "npm": "haibu",
+      "plugin": "haibu",
+      "repo": "haibu",
+      "spawn": "haibu",
+      "tar": "haibu",
+      "user": "user",
+      "error": "errors"
+    },
     "console": {
-      "silent": true,
+      "silent": true
     },
     "loggly": {
       "json": true,
@@ -34,6 +34,7 @@
       "json": true,
       "subdomain": "your-loggly-subdomain",
       "inputToken": "a-really-long-input-token"
-    }  
+    }
   }
 }
+
