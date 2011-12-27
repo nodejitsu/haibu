@@ -32,3 +32,4 @@
   "scripts": { "test": "sudo vows test/**/*-test.js --isolate --spec" },
   "engines": { "node": "0.6.x" }
 }
+
