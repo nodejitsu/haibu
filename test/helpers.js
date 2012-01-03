@@ -79,12 +79,6 @@ helpers.start = function (port, callback) {
   });
 };
 
-helpers.startHook = function (callback) {
-  helpers.init(function (err) {
-    haibu.drone.startHook(callback);
-  });
-}
-
 helpers.requireInit = function (initialized) {
   return {
     "This test requires haibu.init": {

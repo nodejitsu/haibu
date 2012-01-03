@@ -31,7 +31,7 @@ var repo, npmApp, app = {
   }
 };
 
-vows.describe('haibu/plugins/chroot').addBatch({
+vows.describe('haibu/plugins/chroot').addBatch(helpers.requireInit()).addBatch({
   "This test requires the chroot plugin": {
     "should respond without an error": function () {
       haibu.use(haibu.chroot);
