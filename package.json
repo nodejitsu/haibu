@@ -15,11 +15,11 @@
     "eyes": "0.1.x",
     "forever": "0.7.x",
     "flatiron": "0.1.x",
-    "haibu-carapace": "0.2.x >=0.2.7",
+    "haibu-carapace": "0.3.x",
     "npm": "1.0.x",
     "optimist": "0.x.x",
     "pkginfo": "0.2.x",
-    "request": "2.1.x",
+    "request": "2.x.x",
     "union": "0.x.x"
   },
   "devDependencies": {
