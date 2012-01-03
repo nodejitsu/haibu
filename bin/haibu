@@ -13,7 +13,6 @@ var help = [
     'options:',
     '  -a                  IP Address that you want the server to bind to  [dynamic]',
     '  -p                  Port that you want the server to run on         [9002]',
-    '  -hp                 Port that you want the Hook.io to run on        [5000]',
     '  -e [env]            The environment to the specified command in     [development]',
     '  --logger            Use the haibu logger plugin                     [true]',
     '  --chroot            Deploy drones using chroot',
@@ -27,8 +26,7 @@ if (argv.h || argv.help) {
 }
 
 var env      = argv.env || 'development',
-    port     = argv.p   || 9002,
-    hookPort = argv.hp || argv.hookPort || 5000;
+    port     = argv.p   || 9002;
 
 if (argv.chroot) {
   haibu.use(haibu.chroot, {});
@@ -50,13 +48,12 @@ haibu.utils.bin.getAddress(argv.a, function (err, address) {
   var options = {
     env: env,
     port: port,
-    'hook-port': hookPort,
     host: address
   };
   
   haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
     
   haibu.drone.start(options, function () {
-    haibu.utils.showWelcome('api-server', address, port, hookPort);
+    haibu.utils.showWelcome('api-server', address, port);
   });
 });

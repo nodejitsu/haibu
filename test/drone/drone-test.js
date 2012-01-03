@@ -25,7 +25,7 @@ var ipAddress = '127.0.0.1',
 //
 app.user = 'marak';
 
-vows.describe('haibu/drone/drone').addBatch(helpers.requireHook()).addBatch({
+vows.describe('haibu/drone/drone').addBatch({
   "An instance of haibu.drone.Drone": {
     "when passed a valid app json": {
       topic: app,

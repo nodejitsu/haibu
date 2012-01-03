@@ -38,9 +38,7 @@ vows.describe('haibu/plugins/chroot').addBatch({
       assert.isTrue(true);
     }
   }
-}).addBatch(
-  helpers.requireHook()
-).addBatch({
+}).addBatch({
   "This test requires the chroot directory": {
     topic: function () {
       var that = this,
