@@ -9,7 +9,6 @@ var assert = require('assert'),
     path = require('path'),
     url = require('url'),
     fs = require('fs')
-    sys = require('sys'),
     vows = require('vows'),
     request = require('request'),
     helpers = require('../helpers'),
