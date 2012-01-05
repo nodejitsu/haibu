@@ -86,8 +86,9 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
             });
           });
         },
-        "should untar to the specified location": function (err, success, files) {
+        "should untar to the specified location": function (err, success, packages, files) {
           assert.isNull(err);
+          assert.isArray(packages);
           assert.isArray(files);
         }
       }
@@ -107,3 +108,4 @@ var suite = vows.describe('haibu/repositories/tar').addBatch(
 // Export the suite to the test module
 //
 suite.export(module);
+
