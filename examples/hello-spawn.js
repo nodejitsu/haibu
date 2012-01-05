@@ -18,6 +18,9 @@ var app = {
    },
    "scripts": {
      "start": "server.js"
+   },
+   "engine": {
+     "node": "0.4.12"
    }
 };
 
