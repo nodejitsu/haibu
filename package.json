@@ -1,7 +1,7 @@
 {
   "name": "haibu",
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
-  "version": "0.7.3",
+  "version": "0.7.3-1",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "optimist": "0.x.x",
     "pkginfo": "0.2.x",
     "request": "2.x.x",
+    "semver": "1.0.x",
     "union": "0.x.x"
   },
   "devDependencies": {
