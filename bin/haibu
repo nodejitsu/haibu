@@ -25,8 +25,8 @@ if (argv.h || argv.help) {
   return util.puts(help);
 }
 
-var env      = argv.env || 'development',
-    port     = argv.p   || 9002;
+var env  = argv.env || 'development',
+    port = argv.p   || 9002;
 
 if (argv.chroot) {
   haibu.use(haibu.chroot, {});
