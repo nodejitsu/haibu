@@ -37,7 +37,7 @@ var appWithSubmodules = {
   "user": "charlie",
   "repository": {
     "type": "git",
-    "url": "http://github.com/bmeck/exceptiony.git"
+    "url": "http://github.com/indexzero/exceptiony.git"
   },
   "scripts": {
     "start": "server.js"
@@ -47,7 +47,6 @@ var appWithSubmodules = {
   }
 };
 
-process.on('uncaughtException', console.error)
 vows.describe('haibu/core/spawner').addBatch(
   helpers.requireStart(9010)
 ).addBatch({
