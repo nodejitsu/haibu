@@ -3,7 +3,7 @@ var eyes = require('eyes'),
 
 // Create a new client for communicating with the haibu server
 var client = new haibu.drone.Client({
-  host: 'localhost',
+  host: process.env.HOST || '127.0.0.1',
   port: 9002
 });
 
@@ -20,7 +20,7 @@ var app = {
      "start": "server.js"
    },
    "engine": {
-     "node": "0.4.12"
+     "node": "0.6.6"
    }
 };
 
