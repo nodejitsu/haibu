@@ -1,7 +1,7 @@
 {
   "name": "haibu",
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "repository": {
     "type": "git",
@@ -33,4 +33,3 @@
   "scripts": { "test": "sudo vows test/**/*-test.js --isolate --spec" },
   "engines": { "node": "0.4.x || 0.6.x" }
 }
-
