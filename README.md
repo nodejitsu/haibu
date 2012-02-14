@@ -110,7 +110,7 @@ or, programmatically:
 
 ## RESTful Webservice
 
-If you need to integrate non-node.js systems with haibu, you can use haibu's RESTful JSON API. We recommend using haibu's native Node.js Client, but if you need to integrate with none-node.js systems this is not always a viable option.
+If you need to integrate non-node.js systems with haibu, you can use haibu's RESTful JSON API. We recommend using haibu's native Node.js Client, but if you need to integrate with non-node.js systems this is not always a viable option.
 
 **Starting an application through the webservice**
 

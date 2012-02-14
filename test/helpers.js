@@ -130,3 +130,22 @@ helpers.assertTestApp = function () {
     assert.equal(body, 'hello, i know nodejitsu.');
   });
 };
+
+helpers.requireResponse = function(url, headers, code) {
+  var vow = {
+    topic: function () {
+      var options = {
+        uri: 'http://localhost:9000' + url,
+        headers: headers,
+      };
+
+      request(options, this.callback);
+    }
+  };
+
+  vow['should respond with ' + code] = function (error, response, body) {
+    assert.equal(response.statusCode, code);
+  };
+
+  return vow;
+};
