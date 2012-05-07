@@ -3,11 +3,19 @@
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
   "version": "0.7.14",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
+  "maintainers": [
+    "bmeck <bradley@nodejitsu.com>",
+    "indexzero <charlie@nodejitsu.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "http://github.com/nodejitsu/haibu.git"
   },
-  "keywords": ["cloud computing", "automated deployment", "platform-as-a-service"],
+  "keywords": [
+    "cloud computing",
+    "automated deployment",
+    "platform-as-a-service"
+  ],
   "dependencies": {
     "cloudfiles": "0.3.x",
     "cliff": "0.1.x",
@@ -30,6 +38,11 @@
   "bin": {
     "haibu": "./bin/haibu"
   },
-  "scripts": { "test": "sudo vows test/**/*-test.js --isolate --spec" },
-  "engines": { "node": "0.4.x || 0.6.x" }
+  "scripts": {
+    "test": "sudo vows test/**/*-test.js --isolate --spec"
+  },
+  "engines": {
+    "node": "0.4.x || 0.6.x"
+  }
 }
+
