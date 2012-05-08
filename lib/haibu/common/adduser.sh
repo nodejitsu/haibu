@@ -10,10 +10,21 @@ if [ '0' != `id -u` ]; then
    exit 1
 fi
 
-if command -v useradd; then
+id $USER
+EXISTS=$?
+if [ $EXISTS == 0 ]; then
+   exit 0
+fi
+
+if command -v adduser; then
+   adduser --home $HOME $USER
+elif command -v useradd; then
    useradd -d $HOME -m $USER
-elif command -v adduser; then
-   adduser -d $HOME -m $USER
+   RESULT=$?
+   if [ $RESULT == 9 ]; then
+     exit 0
+   fi
+   exit $RESULT
 elif command -v dscl; then
    # Find out the next available user ID
    MAXID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ug | tail -1)
