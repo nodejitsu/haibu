@@ -21,7 +21,7 @@
     "cliff": "0.1.x",
     "daemon": "0.4.x",
     "eyes": "0.1.x",
-    "forever": "0.8.x",
+    "forever": "0.9.x",
     "flatiron": "0.1.x",
     "haibu-carapace": "0.5.x",
     "npm": "1.0.x",
