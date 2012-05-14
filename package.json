@@ -29,6 +29,7 @@
     "pkginfo": "0.2.x",
     "request": "2.x.x",
     "semver": "1.0.x",
+    "tar": "0.1.x",
     "union": "0.x.x"
   },
   "devDependencies": {
