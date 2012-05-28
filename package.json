@@ -1,7 +1,7 @@
 {
   "name": "haibu",
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
-  "version": "0.7.15",
+  "version": "0.8.0",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "bmeck <bradley@nodejitsu.com>",
@@ -17,22 +17,21 @@
     "platform-as-a-service"
   ],
   "dependencies": {
-    "cloudfiles": "0.3.x",
-    "cliff": "0.1.x",
-    "daemon": "0.4.x",
-    "eyes": "0.1.x",
-    "forever": "0.9.x",
-    "flatiron": "0.1.x",
-    "haibu-carapace": "0.5.x",
-    "npm": "1.0.x",
-    "optimist": "0.x.x",
-    "pkginfo": "0.2.x",
-    "request": "2.x.x",
-    "semver": "1.0.x",
-    "union": "0.x.x"
+    "cloudfiles": "0.3.3",
+    "daemon": "0.4.1",
+    "eyes": "0.1.7",
+    "flatiron": "0.1.17",
+    "forever": "0.8.5",
+    "haibu-carapace": "0.5.6",
+    "npm": "1.0.106",
+    "optimist": "0.3.4",
+    "pkginfo": "0.2.3",
+    "request": "2.9.202",
+    "semver": "1.0.13",
+    "union": "0.3.2"
   },
   "devDependencies": {
-    "vows": "0.6.x"
+    "vows": "0.6.2"
   },
   "main": "./lib/haibu",
   "bin": {

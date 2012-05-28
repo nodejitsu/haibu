@@ -28,6 +28,10 @@ if (argv.h || argv.help) {
 var env  = argv.env || 'development',
     port = argv.p   || 9002;
 
+if (argv.useraccounts) {
+  haibu.use(haibu.useraccounts, {});
+}
+
 if (argv.chroot) {
   haibu.use(haibu.chroot, {});
 }
