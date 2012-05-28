@@ -25,8 +25,9 @@ if (argv.h || argv.help) {
   return util.puts(help);
 }
 
-var env  = argv.env || 'development',
-    port = argv.p   || 9002;
+var address = argv.a   || haibu.common.ipAddress(),
+    port    = argv.p   || 9002,
+    env     = argv.env || 'development';
 
 if (argv.useraccounts) {
   haibu.use(haibu.useraccounts, {});
@@ -44,20 +45,12 @@ if (argv['advanced-replies']) {
   haibu.use(haibu['advanced-replies'], {});
 }
 
-haibu.utils.bin.getAddress(argv.a, function (err, address) {
-  if (err) {
-    console.log('Error getting IP Address: ' + err.message);
-  }
+haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
   
-  var options = {
-    env: env,
-    port: port,
-    host: address
-  };
-  
-  haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
-    
-  haibu.drone.start(options, function () {
-    haibu.utils.showWelcome('api-server', address, port);
-  });
+haibu.drone.start({
+  env: env,
+  port: port,
+  host: address
+}, function () {
+  haibu.utils.showWelcome('api-server', address, port);
 });
