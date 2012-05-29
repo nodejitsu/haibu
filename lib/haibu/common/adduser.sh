@@ -16,15 +16,15 @@ if [ $EXISTS == 0 ]; then
    exit 0
 fi
 
-if command -v adduser; then
-   adduser --home $HOME $USER
-elif command -v useradd; then
+if command -v useradd; then
    useradd -d $HOME -m $USER
    RESULT=$?
    if [ $RESULT == 9 ]; then
      exit 0
    fi
    exit $RESULT
+elif command -v adduser; then
+   adduser --home $HOME --gecos $USER,na,na,na $USER
 elif command -v dscl; then
    # Find out the next available user ID
    MAXID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ug | tail -1)

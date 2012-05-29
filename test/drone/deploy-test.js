@@ -96,6 +96,7 @@ vows.describe('haibu/drone/deploy').addBatch(
       },
       "responds with usage message": function (err, res, body) {
         var result = JSON.parse(body);
+        console.error(result)
         assert.isString(result.error.usage);
       },
       "responds with 500": function (err, res, body) {
