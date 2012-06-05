@@ -89,31 +89,60 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
     "when passed a valid app json": {
       topic: app,
       "the restart() method when restarting a single drone": {
-        topic: function (create) {
-          var that = this;
-          var drone = this.drone = new Drone({
-            minUptime: 0,
-            host: ipAddress,
-            maxRestart: 2
-          });
+        "when passed a callback": {
+          topic: function (create) {
+            var that = this;
+            var drone = this.drone = new Drone({
+              minUptime: 0,
+              host: ipAddress,
+              maxRestart: 2
+            });
 
-          drone.start(create, function (err, result) {
-            if (err) {
-              return that.callback(err);
-            }
-            
-            drone.restart(create.name, that.callback);
-          });
+            drone.start(create, function (err, result) {
+              if (err) {
+                return that.callback(err);
+              }
+
+              drone.restart(create.name, that.callback);
+            });
+          },
+          "should return true": function (err, drones) {
+            assert.isNull(err);
+            assert.isArray(drones);
+            assert.equal(drones.length, 1);
+            this.drone.stop(app.name, function () { 
+              //
+              // TEST CLEAN UP 
+              //
+            });
+          }
         },
-        "should return true": function (err, drones) {
-          assert.isNull(err);
-          assert.isArray(drones);
-          assert.equal(drones.length, 1);
-          this.drone.stop(app.name, function () { 
-            //
-            // TEST CLEAN UP 
-            //
-          });
+        "with an event listener": {
+          topic: function (create) {
+            var that = this;
+            var drone = this.drone = new Drone({
+              minUptime: 0,
+              host: ipAddress,
+              maxRestart: 2
+            });
+
+            drone.start(create, function (err, result) {
+              if (err) {
+                return that.callback(err);
+              }
+
+              haibu.once(['drone', 'stop'], that.callback);
+              drone.restart(create.name, function () {});
+            });
+          },
+          "should emit the `drone:stop` event": function (err, drones) {
+            assert.isTrue(true);
+            this.drone.stop(app.name, function () { 
+              //
+              // TEST CLEAN UP 
+              //
+            });
+          }
         }
       }
     }
