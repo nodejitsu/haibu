@@ -131,12 +131,21 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
                 return that.callback(err);
               }
 
-              haibu.once(['drone', 'stop'], that.callback);
+              that.originalPid = result.pid;
+              haibu.once(['drone', 'stop'], function (_, result) {
+                that.stopPid = result.process.pid;
+              });
+              
+              haibu.once(['drone', 'start'], function () {
+                that.callback.apply(that, arguments);                
+              })
+              
               drone.restart(create.name, function () {});
             });
           },
-          "should emit the `drone:stop` event": function (err, drones) {
-            assert.isTrue(true);
+          "should emit the `drone:stop` event": function (_, result) {
+            assert.equal(this.originalPid, this.stopPid);
+            assert.notEqual(this.originalPid, result.process.pid);
             this.drone.stop(app.name, function () { 
               //
               // TEST CLEAN UP 
