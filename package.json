@@ -21,7 +21,7 @@
     "daemon": "0.4.1",
     "eyes": "0.1.7",
     "flatiron": "0.1.17",
-    "forever": "0.8.5",
+    "forever": "0.9.2",
     "haibu-carapace": "0.5.6",
     "npm": "1.0.106",
     "optimist": "0.3.4",
