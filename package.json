@@ -19,7 +19,7 @@
   "dependencies": {
     "cloudfiles": "0.3.3",
     "eyes": "0.1.7",
-    "flatiron": "0.2.2",
+    "flatiron": "0.2.3",
     "forever-monitor": "1.0.1",
     "haibu-carapace": "0.7.0",
     "npm": "1.0.106",
@@ -28,8 +28,8 @@
     "request": "2.9.202",
     "semver": "1.0.13",
     "tar": "0.1.13",
-    "winston": "0.6.1",
-    "union": "0.3.2"
+    "winston": "0.6.2",
+    "union": "0.3.3"
   },
   "devDependencies": {
     "winston-loggly": "0.6.0",
@@ -43,7 +43,7 @@
     "test": "sudo vows test/**/*-test.js --isolate --spec"
   },
   "engines": {
-    "node": "0.6.x"
+    "node": ">= 0.8.0"
   }
 }
 
