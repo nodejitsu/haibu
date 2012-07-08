@@ -12,7 +12,10 @@ var assert = require('assert'),
     path = require('path'),
     util = require('util'),
     request = require('request'),
+    winston = require('winston'),
     haibu = require('../lib/haibu');
+
+require('winston-loggly');
 
 var helpers = exports,
     testConfig;

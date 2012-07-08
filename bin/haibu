@@ -15,7 +15,6 @@ var help = [
     '  -p                  Port that you want the server to run on         [9002]',
     '  -e [env]            The environment to the specified command in     [development]',
     '  --logger            Use the haibu logger plugin                     [true]',
-    '  --chroot            Deploy drones using chroot',
     '  --advanced-replies  Send extra info with replies',
     '  -s --silent         Suppress the log messages from the output',
     '  -h, --help          You\'re staring at it',
@@ -31,10 +30,6 @@ var address = argv.a   || haibu.common.ipAddress(),
 
 if (argv.useraccounts) {
   haibu.use(haibu.useraccounts, {});
-}
-
-if (argv.chroot) {
-  haibu.use(haibu.chroot, {});
 }
 
 if (argv.coffee) {

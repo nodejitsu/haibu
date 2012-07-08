@@ -116,7 +116,15 @@ vows.describe('haibu/drone/drone').addBatch(helpers.requireInit()).addBatch({
               //
             });
           }
-        },
+        }
+      }
+    }
+  }
+}).addBatch({
+  "An instance of haibu.drone.Drone": {
+    "when passed a valid app json": {
+      topic: app,
+      "the restart() method when restarting a single drone": {
         "with an event listener": {
           topic: function (create) {
             var that = this;
