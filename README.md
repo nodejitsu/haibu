@@ -85,10 +85,10 @@ client.start(app, function (err, result) {
 
 ``` bash
 cd path/to/your/app
-tar -cz | curl -sSNT- localhost:9002/deploy/username/appname
+tar -cz . | curl -XPOST -sSNT- localhost:9002/deploy/username/appname
 # or, like this:
 tar -czf app.tgz .
-curl -sSNT app.tgz localhost:9002/deploy/username/appname
+curl -XPOST -sSNT app.tgz localhost:9002/deploy/username/appname
 
 ```
 > NOTE: you will need to invoke `tar -czf app.tgz .` inside your app's directory
