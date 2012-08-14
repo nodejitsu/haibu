@@ -35,7 +35,8 @@
   },
   "devDependencies": {
     "winston-loggly": "0.6.0",
-    "vows": "0.6.2"
+    "vows": "0.6.2",
+    "grunt": "~0.3.12"
   },
   "main": "./lib/haibu",
   "bin": {
