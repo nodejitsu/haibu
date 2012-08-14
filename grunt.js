@@ -7,6 +7,8 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
+        laxbreak: true,
+        node: true
       }
     }
   });
