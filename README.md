@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/nodejitsu/haibu.png)](http://travis-ci.org/nodejitsu/haibu)
 # haibu
 
 <img src="https://github.com/nodejitsu/haibu/raw/master/examples/haibu.png"/></img>
