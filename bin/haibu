@@ -2,50 +2,102 @@
 
 var path = require('path'),
     util = require('util'),
-    argv = require('optimist').argv,
-    haibu = require('../lib/haibu');
+    haibu = require('../lib/haibu'),
+    flatiron = require('flatiron'),
+    app = flatiron.app;
 
-var help = [
-    'usage: haibu-server [options]',
-    '',
-    'Starts the haibu API server responsible for spawning node.js applications.',
-    '',
-    'options:',
-    '  -a                  IP Address that you want the server to bind to  [dynamic]',
-    '  -p                  Port that you want the server to run on         [9002]',
-    '  -e [env]            The environment to the specified command in     [development]',
-    '  --logger            Use the haibu logger plugin                     [true]',
-    '  --advanced-replies  Send extra info with replies',
-    '  -s --silent         Suppress the log messages from the output',
-    '  -h, --help          You\'re staring at it',
-].join('\n');
+app.use(flatiron.plugins.cli, {
+  usage: haibu.common.welcome.concat([
+    'Commands:',
+    '  start                    Start the server.',
+    '  help                     You\'re looking at it!'
+  ]),
 
-if (argv.h || argv.help) {
-  return util.puts(help);
-}
-
-var address = argv.a   || haibu.common.ipAddress(),
-    port    = argv.p   || 9002,
-    env     = argv.env || 'development';
-
-if (argv.useraccounts) {
-  haibu.use(haibu.useraccounts, {});
-}
-
-if (argv.coffee) {
-  haibu.use(haibu.coffee, {});
-}
-
-if (argv['advanced-replies']) {
-  haibu.use(haibu['advanced-replies'], {});
-}
-
-haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
-  
-haibu.drone.start({
-  env: env,
-  port: port,
-  host: address
-}, function () {
-  haibu.utils.showWelcome('api-server', address, port);
+  argv: {
+    address: {
+      alias: 'a',
+      description: 'IP address for the server to bind to.',
+      string: true,
+      default: 'dynamic'
+    },
+    port: {
+      alias: 'p',
+      description: 'Port for the server to listen on.',
+      check: function(argv) {
+        if (isNaN(parseInt(argv.port))) return false;
+      },
+      default: 9002
+    },
+    env: {
+      alias: 'e',
+      description: 'Environment to run the server in.',
+      string: true,
+      default: 'development'
+    },
+    logger: {
+      description: 'Use the Haibu Logger plugin.',
+      boolean: true
+    },
+    'advanced-replies': {
+      description: 'Send extra info with replies.',
+      boolean: true
+    },
+    silent: {
+      alias: 's',
+      description: 'Suppress the log messages from the output.',
+      boolean: true
+    },
+    useraccounts: {
+      alias: 'u',
+      description: 'Use the Haibu User Accounts plugin.',
+      boolean: true
+    },
+    coffee: {
+      alias: 'c',
+      description: 'Use the Haibu CoffeeScript plugin.',
+      boolean: true
+    },
+    help: {
+      alias: 'h',
+      description: 'You\'re looking at it!',
+      boolean: true
+    }
+  }
 });
+
+var start = app.commands.start = function(address, port, env) {
+  address = address || app.argv.address         || haibu.common.ipAddress();
+  port    = port    || parseInt(app.argv.port)  || 9002;
+  env     = env     || app.argv.env             || 'development';
+
+  if (app.argv.useraccounts) {
+    haibu.use(haibu.useraccounts, {});
+  }
+
+  if (app.argv.coffee) {
+    haibu.use(haibu.coffee, {});
+  }
+
+  if (app.argv['advanced-replies']) {
+    haibu.use(haibu['advanced-replies'], {});
+  }
+
+  haibu.config.file({ file: path.join(__dirname, '..', 'config', 'config.json') });
+
+  haibu.drone.start({
+    env: env,
+    port: port,
+    host: address
+  }, function () {
+    haibu.utils.showWelcome('api-server', address, port);
+  });
+};
+
+
+// If no command was given, immediately start haibu.
+if (app.argv._.length == 0 && !app.argv.help) {
+  start();
+}
+else {
+  app.start();
+}

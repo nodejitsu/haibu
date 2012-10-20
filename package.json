@@ -1,7 +1,7 @@
 {
   "name": "haibu",
   "description": "A node.js application server - spawn your own node.js clouds, on your own hardware",
-  "version": "0.9.5-1",
+  "version": "0.9.6",
   "author": "Nodejitsu Inc. <info@nodejitsu.com>",
   "maintainers": [
     "bmeck <bradley@nodejitsu.com>",
@@ -19,12 +19,12 @@
   "dependencies": {
     "cloudfiles": "0.3.3",
     "eyes": "0.1.7",
-    "flatiron": "0.2.3",
+    "flatiron": "0.2.8",
     "forever-monitor": "1.1.0",
     "haibu-api": "0.9.0",
     "haibu-carapace": "0.7.0",
-    "npm": "1.1.36",
-    "optimist": "0.3.4",
+    "npm": "1.1.63",
+    "optimist": "0.3.5",
     "pkginfo": "0.2.3",
     "request": "2.9.202",
     "semver": "1.0.13",
