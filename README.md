@@ -12,7 +12,7 @@ haibu is the open-source [node.js](http://nodejs.org) project used at [Nodejitsu
 
 haibu (which is Japanese for "hive") recieves commands for spawning, transforming, and managing multiple node.js applications. Haibu utilizes a unique approach by wrapping spawned Node.js applications in a "[Carapace](https://github.com/nodejitsu/haibu-carapace)" which allows haibu to extend spawned applications with all sorts of additional functionaltiy. When haibu wraps a node.js application in a "carapace" the application becomes a "drone".
 
-This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. [Carapace](https://github.com/nodejitsu/haibu-carapace) also contains a plugin system including functionality for things like: chroot, chdir, and even a [http://hook.io](hook.io) bridge.
+This approach allows haibu to directly interact with node.js applications and add all sorts of additional functionality. [Carapace](https://github.com/nodejitsu/haibu-carapace) also contains a plugin system including functionality for things like: chroot, chdir, and `node`'s built-in IPC.
 
 ## Where can I run haibu?
 
