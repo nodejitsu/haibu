@@ -146,7 +146,6 @@ If you need to integrate non-node.js systems with haibu, you can use haibu's RES
             ctime: 1304619335818,
             pid: 7903,
             foreverPid: 7195,
-            logFile: '/Users/Charlie/.forever/gbE3.log',
             options: [ '/Users/Charlie/Nodejitsu/haibu/local/marak/test/hellonode/server.js', '127.0.0.1', 8001 ],
             file: '/Users/Charlie/Nodejitsu/haibu/bin/carapace',
             pidFile: '/Users/Charlie/.forever/pids/gbE3.pid',
