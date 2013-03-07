@@ -279,13 +279,8 @@ vows.describe('haibu/drone/api').addBatch(
 
           request(options, this.callback);
         },
-        "should respond with 500": function (error, response, body) {
-          assert.equal(response.statusCode, 500);
-        },
-        "should respond with the appropriate error": function (error, response, body) {
-          var result = JSON.parse(body);
-          assert.isObject(result.error);
-          assert.equal(result.error.message, 'Cannot stop application that is not running.');
+        "should respond with 200": function (error, response, body) {
+          assert.equal(response.statusCode, 200);
         }
       }
     }
