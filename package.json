@@ -19,23 +19,23 @@
   "dependencies": {
     "cloudfiles": "0.3.3",
     "eyes": "0.1.7",
-    "flatiron": "0.2.8",
+    "flatiron": "0.3.4",
     "forever-monitor": "1.1.0",
     "haibu-api": "0.9.0",
     "haibu-carapace": "0.7.1",
     "npm": "1.1.63",
-    "optimist": "0.3.5",
+    "optimist": "~0.3.5",
     "pkginfo": "0.2.3",
-    "request": "2.9.202",
-    "semver": "1.0.13",
+    "request": "~2.14.0",
+    "semver": "~1.1.4",
     "tar": "0.1.13",
     "winston": "0.6.2",
-    "union": "0.3.3",
-    "knox": "0.0.11"
+    "union": "0.3.7",
+    "knox": "0.5.4"
   },
   "devDependencies": {
     "winston-loggly": "0.6.0",
-    "vows": "0.6.2"
+    "vows": "~0.7.0"
   },
   "main": "./lib/haibu",
   "bin": {
