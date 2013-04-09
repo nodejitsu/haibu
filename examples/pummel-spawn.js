@@ -20,7 +20,7 @@ var app = {
      "start": "server.js"
    },
    "engine": {
-     "node": "0.6.6"
+     "node": "0.8.x"
    }
 };
 

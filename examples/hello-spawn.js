@@ -20,7 +20,7 @@ var app = {
      "start": "server.js"
    },
    "engine": {
-     "node": "0.6.6"
+     "node": "0.8.x"
    }
 };
 
@@ -30,7 +30,7 @@ client.start(app, function (err, result) {
     console.log('Error spawning app: ' + app.name);
     return eyes.inspect(err);
   }
-  
+
   console.log('Successfully spawned app:');
   eyes.inspect(result);
 });
