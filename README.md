@@ -1,5 +1,14 @@
 # haibu
 
+# Deprecated
+We deprecated Haibu on 27th of August, 2013. We hosted a goodbye party and all
+that. To be honest, no tears were shed.
+
+We moved to an agentless infrastrucure described in detail in
+[this blog post](https://blog.nodejitsu.com/infrastructure-at-nodejitsu-1).
+
+Haibu is dead, long live Haibu!
+
 <img src="https://github.com/nodejitsu/haibu/raw/master/examples/haibu.png"/></img>
 
 *spawn your own node.js clouds, on your own hardware*
